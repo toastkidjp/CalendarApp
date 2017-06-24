@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">今日は何の日か？</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="search_category_web">Web</string>
+    <string name="search_category_image">画像</string>
+    <string name="search_category_map">地図</string>
+    <string name="search_category_apps">アプリ</string>
+    <string name="search_category_twitter">SNS</string>
+    <string name="search_category_youtube">動画</string>
+    <string name="search_category_wikipedia">Wikipedia</string>
+    <string name="search_category_shopping">ショッピング</string>
+    <string name="search_category_technical_qa">ソフトウェア技術Ｑ＆Ａ</string>
+    <string name="search_category_technology">TechCrunch</string>
+    <string name="search_category_github">GitHub</string>
+    <string name="search_category_mvnrepository">MvnRepository</string>
+
+    <string name="action_settings">設定</string>
+    <string name="search_action_title">検索</string>
+    <string name="close">閉じる</string>
+    <string name="title_calendar">カレンダー</string>
+    <string name="title_search">Web 検索</string>
+    <string name="title_settings_color">色設定</string>
+    <string name="title_enable_suggest">検索入力補助を使う</string>
+    <string name="title_clear">設定を初期化</string>
+    <string name="title_advertisement_1">広</string>
+    <string name="title_advertisement_2">告</string>
+    <string name="production_app_admob_id">ca-app-pub-5751262573448755~2546242221</string>
+    <string name="production_banner_unit_id">ca-app-pub-5751262573448755/4022975429</string>
+    <string name="title_licenses">ライセンス情報</string>
+    <string name="title_app_version">アプリのバージョン: </string>
+    <string name="copyright">(c) @toastkidjp</string>
+    <string name="settings_color_commit">決定</string>
+    <string name="settings_color_reset">戻す</string>
+    <string name="settings_color_background_title">背景色</string>
+    <string name="settings_color_font_title">文字色</string>
+    <string name="settings_color_saved_title">保存した色</string>
+    <string name="title_clear_saved_color">すべて削除</string>
+    <string name="settings_color_delete">削除が完了しました。</string>
+    <string name="settings_color_done_commit">色を変更しました。</string>
+    <string name="settings_color_done_reset">元に戻しました。</string>
+    <string name="cancel">キャンセル</string>
+    <string name="ok">決定</string>
+    <string name="done_clear">完了しました。</string>
+    <string name="confirm_clear_all_settings">
+        <![CDATA[<font color=\"red\">注意：この操作は取り消せません。</font>]]></string>
+    <string name="title_settings_device">端末の設定</string>
+    <string name="title_settings">設定</string>
+    <string name="title_menu">メニュー</string>
+    <string name="title_tools">ツール</string>
+    <string name="message_share">
+        {@string/app_name}
+        \n
+        https://play.google.com/store/apps/details?id=jp.toastkid.calendar
+    </string>
+    <string name="section_title_share">シェア</string>
+    <string name="title_share">このアプリをシェア</string>
+    <string name="title_share_twitter">Twitter でシェア</string>
+
+    <string name="title_gallery">ギャラリー</string>
+</resources>
