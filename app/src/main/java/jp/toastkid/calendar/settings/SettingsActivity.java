@@ -2,23 +2,19 @@ package jp.toastkid.calendar.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.widget.CheckBox;
+import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.advertisement.AdInitializers;
+import jp.toastkid.calendar.databinding.ActivitySettingsBinding;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
@@ -30,38 +26,22 @@ import jp.toastkid.calendar.settings.color.ColorSettingActivity;
  */
 public class SettingsActivity extends BaseActivity {
 
-    @BindView(R.id.settings_toolbar)
-    public Toolbar mToolbar;
+    /** Binding instance. */
+    private ActivitySettingsBinding binding;
 
-    @BindView(R.id.settings_enable_suggest_text)
-    public TextView mEnableSuggestText;
-
-    @BindView(R.id.settings_clear)
-    public TextView clear;
-
-    @BindView(R.id.settings_color_text)
-    public TextView colorText;
-
-    @BindView(R.id.settings_licenses)
-    public TextView license;
-
-    @BindView(R.id.settings_enable_suggest_check)
-    public CheckBox mEnableSuggestCheck;
-
-    @BindView(R.id.ad)
-    public AdView adView;
-
+    /** Preference applier. */
     private PreferenceApplier mPreferenceApplier;
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.activity_settings);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
+        binding.setActivity(this);
 
         mPreferenceApplier = new PreferenceApplier(this);
-        initToolbar(mToolbar);
-        clear.setOnClickListener(v -> new AlertDialog.Builder(this)
+        initToolbar(binding.settingsToolbar);
+        binding.settingsClear.setOnClickListener(v -> new AlertDialog.Builder(this)
                 .setTitle(R.string.title_clear)
                 .setMessage(Html.fromHtml(getString(R.string.confirm_clear_all_settings)))
                 .setCancelable(true)
@@ -70,10 +50,10 @@ public class SettingsActivity extends BaseActivity {
                     mPreferenceApplier.clear();
                     refresh();
                     Toaster.snackShort(
-                            mToolbar, R.string.done_clear, mPreferenceApplier.getColor());
+                            binding.settingsToolbar, R.string.done_clear, mPreferenceApplier.getColor());
                 })
                 .show());
-        license.setOnClickListener(v -> new LicenseViewer(this).invoke());
+        binding.settingsLicenses.setOnClickListener(v -> new LicenseViewer(this).invoke());
 
         ((TextView) findViewById(R.id.settings_app_version)).setText(BuildConfig.VERSION_NAME);
 
@@ -81,7 +61,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void initAdView() {
-        AdInitializers.find(getApplicationContext()).invoke(adView);
+        AdInitializers.find(getApplicationContext()).invoke(binding.ad);
     }
 
     @Override
@@ -92,20 +72,21 @@ public class SettingsActivity extends BaseActivity {
 
     private void refresh() {
         applyColorToToolbar(
-                mToolbar, mPreferenceApplier.getColor(), mPreferenceApplier.getFontColor());
+                binding.settingsToolbar,
+                mPreferenceApplier.getColor(),
+                mPreferenceApplier.getFontColor()
+        );
 
-        mEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
+        binding.settingsEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
     }
 
-    @OnClick(R.id.settings_color)
-    public void color() {
+    public void color(final View view) {
         startActivity(ColorSettingActivity.makeIntent(this));
     }
 
-    @OnClick(R.id.settings_enable_suggest)
-    public void switchSuggest() {
+    public void switchSuggest(final View view) {
         mPreferenceApplier.switchEnableSuggest();
-        mEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
+        binding.settingsEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
     }
 
     @Override

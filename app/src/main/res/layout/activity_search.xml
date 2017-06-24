@@ -1,102 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/soft_background"
-    >
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/search_toolbar"
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:minHeight="?android:actionBarSize"
+        android:layout_height="match_parent"
         android:background="@color/soft_background"
         >
-        <LinearLayout
-            android:orientation="horizontal"
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/search_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:minHeight="?android:actionBarSize"
+            android:background="@color/soft_background"
             >
-            <FrameLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
                 >
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/search_input"
-                    android:layout_width="match_parent"
+                <FrameLayout
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:maxLines="1"
-                    android:hint="@string/title_search"
-                    android:textColorHint="@color/white"
-                    android:textColor="@color/white"
-                    app:theme="@style/EditTextStyle"
-                    android:drawableLeft="@drawable/ic_search_white"
-                    android:inputType="text"
-                    android:imeOptions="actionSearch"
-                    android:background="@drawable/ripple_appwidget"
-                    />
-                <LinearLayout
-                    android:id="@+id/search_input_border"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_gravity="bottom"
-                    android:background="@color/white"
-                    />
-                <ImageView
-                    android:id="@+id/search_clear"
-                    android:layout_width="40dp"
+                    android:layout_weight="7"
+                    >
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/search_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:maxLines="1"
+                        android:hint="@string/title_search"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        app:theme="@style/EditTextStyle"
+                        android:drawableLeft="@drawable/ic_search_white"
+                        android:inputType="text"
+                        android:imeOptions="actionSearch"
+                        android:background="@drawable/ripple_appwidget"
+                        />
+                    <LinearLayout
+                        android:id="@+id/search_input_border"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/white"
+                        />
+                    <ImageView
+                        android:id="@+id/search_clear"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_close"
+                        />
+                </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/search_action_background"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="20dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_close"
-                    />
-            </FrameLayout>
-            <FrameLayout
-                android:id="@+id/search_action_background"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                >
-                <TextView
-                    android:id="@+id/search_action"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/search_action_title"
-                    android:textColor="@color/white"
-                    android:background="@drawable/ripple_appwidget"
-                    />
-            </FrameLayout>
-        </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+                    android:layout_weight="2"
+                    >
+                    <TextView
+                        android:id="@+id/search_action"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/search_action_title"
+                        android:textColor="@color/white"
+                        android:background="@drawable/ripple_appwidget"
+                        />
+                </FrameLayout>
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/fake_shadow_1px"/>
+        <include layout="@layout/fake_shadow_1px"/>
 
-    <Spinner
-        android:id="@+id/search_categories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        android:background="@color/spinner_background"
-        />
-
-    <include layout="@layout/fake_shadow_1px"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <jp.toastkid.calendar.views.NonScrollListView
-            android:id="@+id/search_suggests"
+        <Spinner
+            android:id="@+id/search_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
+            android:spinnerMode="dropdown"
+            android:background="@color/spinner_background"
             />
-    </ScrollView>
-</LinearLayout>
+
+        <include layout="@layout/fake_shadow_1px"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <jp.toastkid.calendar.views.NonScrollListView
+                android:id="@+id/search_suggests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                />
+        </ScrollView>
+    </LinearLayout>
+</layout>

@@ -3,35 +3,28 @@ package jp.toastkid.calendar.search;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.databinding.ActivitySearchBinding;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
@@ -51,36 +44,8 @@ public class SearchActivity extends BaseActivity {
     /** Suggest cache capacity. */
     public static final int SUGGEST_CACHE_CAPACITY = 30;
 
-    /** Toolbar. */
-    @BindView(R.id.search_toolbar)
-    public Toolbar mToolbar;
-
-    /** Search input. */
-    @BindView(R.id.search_input)
-    public AppCompatEditText mSearchInput;
-
-    @BindView(R.id.search_input_border)
-    public View searchBorder;
-
-    /** Search category. */
-    @BindView(R.id.search_categories)
-    public Spinner mSearchCategories;
-
-    /** Do on click action's background. */
-    @BindView(R.id.search_action_background)
-    public View mSearchActionBackground;
-
-    /** Do on click action. */
-    @BindView(R.id.search_action)
-    public TextView mSearchAction;
-
-    /** Control of clear input text. */
-    @BindView(R.id.search_clear)
-    public ImageView mSearchClear;
-
-    /** Suggest list. */
-    @BindView(R.id.search_suggests)
-    public ListView mSearchSuggests;
+    /** View binder. */
+    private ActivitySearchBinding binding;
 
     /** Preference applier. */
     private PreferenceApplier mPreferenceApplier;
@@ -92,15 +57,15 @@ public class SearchActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         mPreferenceApplier = new PreferenceApplier(this);
 
-        SearchCategorySpinnerInitializer.initialize(mSearchCategories);
+        SearchCategorySpinnerInitializer.initialize(binding.searchCategories);
         initSuggests();
         initSearchInput();
-        initToolbar(mToolbar);
+        initToolbar(binding.searchToolbar);
 
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
@@ -111,28 +76,28 @@ public class SearchActivity extends BaseActivity {
             }
         }
 
-        mSearchClear.setOnClickListener(v -> mSearchInput.setText(""));
+        binding.searchClear.setOnClickListener(v -> binding.searchInput.setText(""));
     }
 
     private void initSuggests() {
         mSuggestAdapter = new SuggestAdapter(
                 LayoutInflater.from(this),
-                mSearchInput,
-                suggest -> search(mSearchCategories.getSelectedItem().toString(), suggest)
+                binding.searchInput,
+                suggest -> search(binding.searchCategories.getSelectedItem().toString(), suggest)
                 );
-        mSearchSuggests.setAdapter(mSuggestAdapter);
+        binding.searchSuggests.setAdapter(mSuggestAdapter);
     }
 
     private void initSearchInput() {
-        mSearchInput.setOnEditorActionListener((v, actionId, event) -> {
+        binding.searchInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId != EditorInfo.IME_ACTION_SEARCH) {
                 return false;
             }
-            search(mSearchCategories.getSelectedItem().toString(), v.getText().toString());
+            search(binding.searchCategories.getSelectedItem().toString(), v.getText().toString());
             return true;
         });
 
-        mSearchInput.addTextChangedListener(new TextWatcher() {
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
 
             private final SuggestFetcher mFetcher = new SuggestFetcher();
 
@@ -164,7 +129,7 @@ public class SearchActivity extends BaseActivity {
                 mFetcher.fetchAsync(key, suggests -> {
                     if (suggests == null || suggests.isEmpty()) {
                         Completable.create(e -> {
-                            mSearchSuggests.setVisibility(View.GONE);
+                            binding.searchSuggests.setVisibility(View.GONE);
                             e.onComplete();
                         }).subscribeOn(AndroidSchedulers.mainThread()).subscribe();
                         return;
@@ -187,7 +152,7 @@ public class SearchActivity extends BaseActivity {
      */
     private void replaceSuggests(final List<String> suggests) {
         runOnUiThread(() -> {
-            mSearchSuggests.setVisibility(View.VISIBLE);
+            binding.searchSuggests.setVisibility(View.VISIBLE);
             mSuggestAdapter.replace(suggests);
             mSuggestAdapter.notifyDataSetChanged();
             mSuggestAdapter.notifyDataSetInvalidated();
@@ -197,7 +162,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Inputs.showKeyboard(this, mSearchInput);
+        Inputs.showKeyboard(this, binding.searchInput);
         applyColor();
     }
 
@@ -207,18 +172,22 @@ public class SearchActivity extends BaseActivity {
     private void applyColor() {
         final int bgColor   = mPreferenceApplier.getColor();
         final int fontColor = mPreferenceApplier.getFontColor();
-        applyColorToToolbar(mToolbar, bgColor, fontColor);
-        mSearchInput.setTextColor(fontColor);
-        mSearchInput.setHintTextColor(fontColor);
-        mSearchInput.setHighlightColor(fontColor);
+        applyColorToToolbar(binding.searchToolbar, bgColor, fontColor);
+        binding.searchInput.setTextColor(fontColor);
+        binding.searchInput.setHintTextColor(fontColor);
+        binding.searchInput.setHighlightColor(fontColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(bgColor, 255));
         }
 
-        mSearchActionBackground.setBackgroundColor(ColorUtils.setAlphaComponent(bgColor, 128));
-        mSearchAction.setTextColor(fontColor);
-        mSearchClear.setColorFilter(fontColor);
-        searchBorder.setBackgroundColor(fontColor);
+        binding.searchActionBackground.setBackgroundColor(ColorUtils.setAlphaComponent(bgColor, 128));
+        binding.searchAction.setTextColor(fontColor);
+        binding.searchAction.setOnClickListener(view -> search(
+                binding.searchCategories.getSelectedItem().toString(),
+                binding.searchInput.getText().toString())
+        );
+        binding.searchClear.setColorFilter(fontColor);
+        binding.searchInputBorder.setBackgroundColor(fontColor);
     }
 
     /**
@@ -252,14 +221,6 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected int getTitleId() {
         return R.string.search_action_title;
-    }
-
-    /**
-     * Clicked "Search" action.
-     */
-    @OnClick(R.id.search_action)
-    public void clickSearch() {
-        search(mSearchCategories.getSelectedItem().toString(), mSearchInput.getText().toString());
     }
 
     /**
