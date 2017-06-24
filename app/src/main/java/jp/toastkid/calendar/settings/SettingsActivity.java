@@ -53,7 +53,6 @@ public class SettingsActivity extends BaseActivity {
                             binding.settingsToolbar, R.string.done_clear, mPreferenceApplier.getColor());
                 })
                 .show());
-        binding.settingsLicenses.setOnClickListener(v -> new LicenseViewer(this).invoke());
 
         ((TextView) findViewById(R.id.settings_app_version)).setText(BuildConfig.VERSION_NAME);
 
@@ -87,6 +86,10 @@ public class SettingsActivity extends BaseActivity {
     public void switchSuggest(final View view) {
         mPreferenceApplier.switchEnableSuggest();
         binding.settingsEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
+    }
+
+    public void licenses(final View view) {
+        new LicenseViewer(this).invoke();
     }
 
     @Override
