@@ -66,5 +66,6 @@
     <string name="display">表示</string>
     <string name="image">画像</string>
     <string name="message_done_set_image">選択した画像を背景に設定しました。</string>
+    <string name="format_date_title">{0}月{1}日</string>
 
 </resources>

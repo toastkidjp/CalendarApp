@@ -152,7 +152,11 @@ public class MainActivity extends BaseActivity {
         binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
         binding.appBarMain.content.calendar.setOnDateChangeListener(
                 (view, year, month, dayOfMonth) -> {
-                    final String dateTitle = MessageFormat.format("{0}月{1}日", month + 1, dayOfMonth);
+                    final String dateTitle = MessageFormat.format(
+                            getString(R.string.format_date_title),
+                            month + 1,
+                            dayOfMonth
+                    );
                     new AlertDialog.Builder(this)
                             .setTitle(dateTitle)
                             .setItems(R.array.calendar_menu, (d, index) -> {
@@ -167,6 +171,10 @@ public class MainActivity extends BaseActivity {
                                     sendLog("cal_schdl", bundle);
                                     startActivity(IntentFactory.makeCalendar(view.getDate()));
                                     return;
+                                }
+                                if (index == 2) {
+                                    sendLog("cal_srch", bundle);
+                                    startActivity(SearchActivity.makeIntent(this, dateTitle));
                                 }
                             })
                             .setCancelable(true)

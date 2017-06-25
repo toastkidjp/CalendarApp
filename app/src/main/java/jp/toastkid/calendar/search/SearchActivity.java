@@ -229,8 +229,24 @@ public class SearchActivity extends BaseActivity {
      * @return launcher intent
      */
     public static Intent makeIntent(@NonNull final Context context) {
+        return makeIntent(context, "");
+    }
+
+    /**
+     * Make launcher intent with search query.
+     * @param context
+     * @param query
+     * @return launcher intent
+     */
+    public static Intent makeIntent(
+            @NonNull final Context context,
+            @NonNull final String  query
+            ) {
         final Intent intent = new Intent(context, SearchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        if (query.length() != 0) {
+            intent.putExtra(SearchManager.QUERY, query);
+        }
         return intent;
     }
 
