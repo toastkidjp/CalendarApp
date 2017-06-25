@@ -31,7 +31,7 @@ public class CustomTabsFactory {
                     .setToolbarColor(backgroundColor)
                     .setCloseButtonIcon(decodeResource(context, iconId))
                     .setSecondaryToolbarColor(fontColor)
-                    .setStartAnimations(context, android.R.anim.fade_in, android.R.anim.fade_out)
+                    .setStartAnimations(context, 0, 0)
                     .setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                     .addDefaultShareMenuItem();
     }

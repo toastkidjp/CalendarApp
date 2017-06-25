@@ -192,12 +192,11 @@ public class MainActivity extends BaseActivity {
         applyColorToToolbar(binding.appBarMain.toolbar, bgColor, fontColor);
         navBackground.setBackgroundColor(bgColor);
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
-        ((TextView) navBackground.findViewById(R.id.nav_header_sub)).setTextColor(fontColor);
     }
 
     @Override
     protected @StringRes int getTitleId() {
-        return R.string.title_calendar;
+        return R.string.app_name;
     }
 
 }
