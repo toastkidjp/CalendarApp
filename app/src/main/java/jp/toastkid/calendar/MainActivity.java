@@ -69,30 +69,11 @@ public class MainActivity extends BaseActivity {
 
         initToolbar(binding.appBarMain.toolbar);
 
-        initFab(preferenceApplier, binding.appBarMain.toolbar);
-
         initDrawer(binding.appBarMain.toolbar);
 
         initNavigation();
 
         initCalendarView();
-    }
-
-    /**
-     * Initialize Floating Action Button.
-     * @param preferenceApplier
-     * @param toolbar
-     */
-    private void initFab(
-            final PreferenceApplier preferenceApplier,
-            final Toolbar toolbar
-    ) {
-        binding.appBarMain.fab.setOnClickListener(view -> Toaster.snackShort(
-                toolbar,
-                "Replace with your own action",
-                preferenceApplier.getColor(),
-                preferenceApplier.getFontColor()
-        ));
     }
 
     /**
