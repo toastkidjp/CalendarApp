@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
@@ -161,17 +163,40 @@ public class MainActivity extends BaseActivity {
         binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
         binding.appBarMain.content.calendar.setOnDateChangeListener(
                 (view, year, month, dayOfMonth) -> {
-            final String url = DateArticleUrlFactory.make(month, dayOfMonth);
-            if (url.length() == 0) {
-                return;
-            }
-            CustomTabsFactory.make(
-                    this,
-                    preferenceApplier.getColor(),
-                    preferenceApplier.getFontColor(),
-                    R.drawable.ic_back
-            ).build().launchUrl(this, Uri.parse(url));
+                    new AlertDialog.Builder(this)
+                            .setTitle(MessageFormat.format("{0}月{1}日", month + 1, dayOfMonth))
+                            .setItems(R.array.calendar_menu, (d, index) -> {
+                                if (index == 0) {
+                                    openCalendarArticle(month, dayOfMonth);
+                                    return;
+                                }
+                                if (index == 1) {
+                                    startActivity(IntentFactory.makeCalendar(view.getDate()));
+                                    return;
+                                }
+                            })
+                            .setCancelable(true)
+                            .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
+                            .show();
         });
+    }
+
+    /**
+     * Open calendar wikipedia article.
+     * @param month
+     * @param dayOfMonth
+     */
+    private void openCalendarArticle(final int month, final int dayOfMonth) {
+        final String url = DateArticleUrlFactory.make(month, dayOfMonth);
+        if (url.length() == 0) {
+            return;
+        }
+        CustomTabsFactory.make(
+                this,
+                preferenceApplier.getColor(),
+                preferenceApplier.getFontColor(),
+                R.drawable.ic_back
+        ).build().launchUrl(this, Uri.parse(url));
     }
 
     @Override

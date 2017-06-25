@@ -54,4 +54,17 @@ public class IntentFactory {
         return intent;
     }
 
+    /**
+     * Make launching calendar intent.
+     * @param eventStartMs
+     * @return Intent
+     */
+    @NonNull
+    public static Intent makeCalendar(final long eventStartMs) {
+        final Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("beginTime", eventStartMs);
+        return intent;
+    }
+
 }
