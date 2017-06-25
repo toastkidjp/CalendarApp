@@ -6,16 +6,7 @@
             <item
                 android:id="@+id/nav_search"
                 android:icon="@drawable/ic_search"
-                android:title="@string/search_action_title" />
-            <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="@string/title_gallery"
-                />
-            <item
-                android:id="@+id/nav_gallery_clear"
-                android:icon="@drawable/ic_close_black"
-                android:title="@string/title_bg_delete"
+                android:title="@string/search_action_title"
                 />
         </menu>
     </item>
@@ -26,6 +17,16 @@
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings_black"
                 android:title="@string/title_settings"
+                />
+            <item
+                android:id="@+id/nav_gallery"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/title_gallery"
+                />
+            <item
+                android:id="@+id/nav_gallery_clear"
+                android:icon="@drawable/ic_close_black"
+                android:title="@string/title_bg_delete"
                 />
             <item
                 android:id="@+id/nav_color_settings"
