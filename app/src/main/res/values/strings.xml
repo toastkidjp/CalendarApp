@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">今日は何の日か？</string>
+    <string name="app_name">今日は何の日カレンダー</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -51,9 +51,7 @@
     <string name="title_menu">メニュー</string>
     <string name="title_tools">ツール</string>
     <string name="message_share">
-        {@string/app_name}
-        \n
-        https://play.google.com/store/apps/details?id=jp.toastkid.calendar
+        Android アプリ「{0}」\nhttps://play.google.com/store/apps/details?id=jp.toastkid.calendar
     </string>
     <string name="section_title_share">シェア</string>
     <string name="title_share">このアプリをシェア</string>

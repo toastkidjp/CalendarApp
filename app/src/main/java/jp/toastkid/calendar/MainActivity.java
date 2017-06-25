@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(SettingsIntentFactory.makeLaunch());
                     return true;
                 case R.id.nav_share:
-                    startActivity(IntentFactory.makeShare(getString(R.string.message_share)));
+                    startActivity(IntentFactory.makeShare(makeShareMessage()));
                     return true;
                 case R.id.nav_share_twitter:
                     IntentFactory.makeTwitter(
@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity {
                     ).launchUrl(
                             MainActivity.this,
                             Uri.parse("https://twitter.com/share?text="
-                                    + Uri.encode(getResources().getString(R.string.message_share)))
+                                    + Uri.encode(makeShareMessage()))
                     );
                     return true;
             }
@@ -363,6 +363,15 @@ public class MainActivity extends BaseActivity {
         );
         preferenceApplier.removeBackgroundImagePath();
         applyBackgrounds(bgColor, fontColor);
+    }
+
+    /**
+     * Make share message.
+     * @return string
+     */
+    @NonNull
+    private String makeShareMessage() {
+        return MessageFormat.format(getString(R.string.message_share), getString(R.string.app_name));
     }
 
     @Override
