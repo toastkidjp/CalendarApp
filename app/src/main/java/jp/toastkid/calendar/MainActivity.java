@@ -118,27 +118,35 @@ public class MainActivity extends BaseActivity {
         binding.navView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_gallery:
+                    sendLog("nav_set_img");
                     startActivityForResult(IntentFactory.makePickImage(), IMAGE_READ_REQUEST);
                     return true;
                 case R.id.nav_gallery_clear:
+                    sendLog("nav_rm_img");
                     removeSetImage();
                     return true;
                 case R.id.nav_search:
+                    sendLog("nav_search");
                     startActivity(SearchActivity.makeIntent(MainActivity.this));
                     return true;
                 case R.id.nav_settings:
+                    sendLog("nav_set");
                     startActivity(SettingsActivity.makeIntent(MainActivity.this));
                     return true;
                 case R.id.nav_color_settings:
+                    sendLog("nav_color");
                     startActivity(ColorSettingActivity.makeIntent(MainActivity.this));
                     return true;
                 case R.id.nav_settings_device:
+                    sendLog("nav_dvc_set");
                     startActivity(SettingsIntentFactory.makeLaunch());
                     return true;
                 case R.id.nav_share:
+                    sendLog("nav_shr");
                     startActivity(IntentFactory.makeShare(makeShareMessage()));
                     return true;
                 case R.id.nav_share_twitter:
+                    sendLog("nav_twttr");
                     IntentFactory.makeTwitter(
                             MainActivity.this,
                             preferenceApplier.getColor(),
@@ -163,19 +171,25 @@ public class MainActivity extends BaseActivity {
         binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
         binding.appBarMain.content.calendar.setOnDateChangeListener(
                 (view, year, month, dayOfMonth) -> {
+                    final String dateTitle = MessageFormat.format("{0}月{1}日", month + 1, dayOfMonth);
                     new AlertDialog.Builder(this)
-                            .setTitle(MessageFormat.format("{0}月{1}日", month + 1, dayOfMonth))
+                            .setTitle(dateTitle)
                             .setItems(R.array.calendar_menu, (d, index) -> {
+                                final Bundle bundle = new Bundle();
+                                bundle.putString("date", dateTitle);
                                 if (index == 0) {
+                                    sendLog("cal_wkp", bundle);
                                     openCalendarArticle(month, dayOfMonth);
                                     return;
                                 }
                                 if (index == 1) {
+                                    sendLog("cal_schdl", bundle);
                                     startActivity(IntentFactory.makeCalendar(view.getDate()));
                                     return;
                                 }
                             })
                             .setCancelable(true)
+                            .setOnCancelListener(v -> sendLog("cal_x"))
                             .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
                             .show();
         });
@@ -280,6 +294,12 @@ public class MainActivity extends BaseActivity {
 
             try {
                 final BitmapDrawable background = readBitmapDrawable(uri);
+
+                final Bundle bundle = new Bundle();
+                bundle.putInt("width", background.getBitmap().getWidth());
+                bundle.putInt("height", background.getBitmap().getHeight());
+                sendLog("set_img", bundle);
+
                 setBackgroundImage(background);
 
                 final Snackbar snackbar = Snackbar.make(
