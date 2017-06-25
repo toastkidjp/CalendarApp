@@ -17,7 +17,7 @@ public class IntentFactory {
     /**
      * Make sharing message intent.
      * @param message
-     * @return
+     * @return Intent
      */
     @NonNull
     public static Intent makeShare(@NonNull final String message) {
@@ -30,7 +30,7 @@ public class IntentFactory {
 
     /**
      * Make intent of sharing with twitter.
-     * @return
+     * @return CustomTabsIntent
      */
     @NonNull
     public static CustomTabsIntent makeTwitter(
@@ -43,17 +43,9 @@ public class IntentFactory {
     }
 
     /**
-     * Make opening image intent.
-     * @return
+     * Make pick image intent.
+     * @return Intent
      */
-    @NonNull
-    public static Intent makeImage() {
-        final Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setType("image/*");
-        return intent;
-    }
-
     @NonNull
     public static Intent makePickImage() {
         final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
