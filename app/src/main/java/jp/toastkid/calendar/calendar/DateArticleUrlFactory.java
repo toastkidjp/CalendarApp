@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import jp.toastkid.calendar.R;
 
@@ -31,6 +32,9 @@ class DateArticleUrlFactory {
         }
         if (dayOfMonth <= 0 || dayOfMonth >= 31) {
             return "";
+        }
+        if (Locale.getDefault().getLanguage().equals(Locale.JAPAN.getLanguage())) {
+            return MessageFormat.format(context.getString(FORMAT_ID), month + 1, dayOfMonth);
         }
         return MessageFormat.format(context.getString(FORMAT_ID), Month.get(month), dayOfMonth);
     }

@@ -25,6 +25,12 @@ class DateTitleFactory {
      * @return date title
      */
     static String makeDateTitle(final Context context, final int month, final int dayOfMonth) {
+        if (month < 0 || month >= 12) {
+            return "";
+        }
+        if (dayOfMonth <= 0 || dayOfMonth >= 31) {
+            return "";
+        }
         if (Locale.getDefault().getLanguage().equals(Locale.JAPAN.getLanguage())) {
             return MessageFormat.format(context.getString(FORMAT_ID), month + 1, dayOfMonth);
         }
