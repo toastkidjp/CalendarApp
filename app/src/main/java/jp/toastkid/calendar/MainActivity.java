@@ -1,5 +1,6 @@
 package jp.toastkid.calendar;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
+import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
 import jp.toastkid.calendar.libs.IntentFactory;
 import jp.toastkid.calendar.libs.SettingsIntentFactory;
@@ -37,26 +39,24 @@ public class MainActivity extends BaseActivity {
     /** Preference Applier. */
     private PreferenceApplier preferenceApplier;
 
-    /** Activity's toolbar. */
-    private Toolbar toolbar;
-
     /** Navigation's background. */
     private View navBackground;
+
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         preferenceApplier = new PreferenceApplier(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolbar(binding.appBarMain.toolbar);
 
-        initToolbar(toolbar);
+        initFab(preferenceApplier, binding.appBarMain.toolbar);
 
-        initFab(preferenceApplier, toolbar);
-
-        initDrawer(toolbar);
+        initDrawer(binding.appBarMain.toolbar);
 
         initNavigation();
 
@@ -72,8 +72,7 @@ public class MainActivity extends BaseActivity {
             final PreferenceApplier preferenceApplier,
             final Toolbar toolbar
     ) {
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Toaster.snackShort(
+        binding.appBarMain.fab.setOnClickListener(view -> Toaster.snackShort(
                 toolbar,
                 "Replace with your own action",
                 preferenceApplier.getColor(),
@@ -86,15 +85,14 @@ public class MainActivity extends BaseActivity {
      * @param toolbar
      */
     private void initDrawer(final Toolbar toolbar) {
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
-                drawer,
+                binding.drawerLayout,
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         );
-        drawer.addDrawerListener(toggle);
+        binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
@@ -102,8 +100,7 @@ public class MainActivity extends BaseActivity {
      * Initialize navigation.
      */
     private void initNavigation() {
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(item -> {
+        binding.navView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_gallery:
                     startActivity(IntentFactory.makeImage());
@@ -138,16 +135,16 @@ public class MainActivity extends BaseActivity {
             }
             return true;
         });
-        navBackground = navigationView.getHeaderView(0).findViewById(R.id.nav_header_background);
+        navBackground = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_background);
     }
 
     /**
      * Initialize calendar view.
      */
     private void initCalendarView() {
-        final CalendarView calView = (CalendarView) findViewById(R.id.main_calendar);
-        calView.setDate(System.currentTimeMillis());
-        calView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+        binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
+        binding.appBarMain.content.calendar.setOnDateChangeListener(
+                (view, year, month, dayOfMonth) -> {
             final String url = DateArticleUrlFactory.make(month, dayOfMonth);
             if (url.length() == 0) {
                 return;
@@ -163,9 +160,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
             return;
         }
         super.onBackPressed();
@@ -193,7 +189,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         final int bgColor   = preferenceApplier.getColor();
         final int fontColor = preferenceApplier.getFontColor();
-        applyColorToToolbar(toolbar, bgColor, fontColor);
+        applyColorToToolbar(binding.appBarMain.toolbar, bgColor, fontColor);
         navBackground.setBackgroundColor(bgColor);
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
         ((TextView) navBackground.findViewById(R.id.nav_header_sub)).setTextColor(fontColor);
