@@ -59,5 +59,13 @@
     <string name="title_share">このアプリをシェア</string>
     <string name="title_share_twitter">Twitter でシェア</string>
 
-    <string name="title_gallery">ギャラリー</string>
+    <string name="title_gallery">背景画像を設定</string>
+    <string name="title_bg_delete">背景画像を削除</string>
+    <string name="message_failed_read_image">画像の読み込みに失敗しました。</string>
+    <string name="message_success_image_removal">画像を削除しました。</string>
+    <string name="message_failed_image_removal">画像削除に失敗しました。</string>
+    <string name="message_cannot_found_image">画像が設定されていません。</string>
+    <string name="display">表示</string>
+    <string name="image">画像</string>
+    <string name="message_done_set_image">選択した画像を背景に設定しました。</string>
 </resources>

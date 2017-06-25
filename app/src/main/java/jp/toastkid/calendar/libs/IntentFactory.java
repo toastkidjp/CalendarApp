@@ -53,4 +53,13 @@ public class IntentFactory {
         intent.setType("image/*");
         return intent;
     }
+
+    @NonNull
+    public static Intent makePickImage() {
+        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        return intent;
+    }
+
 }
