@@ -1,4 +1,4 @@
-package jp.toastkid.calendar;
+package jp.toastkid.calendar.calendar;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 
+import jp.toastkid.calendar.BaseActivity;
+import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
 import jp.toastkid.calendar.libs.IntentFactory;
@@ -152,11 +153,7 @@ public class MainActivity extends BaseActivity {
         binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
         binding.appBarMain.content.calendar.setOnDateChangeListener(
                 (view, year, month, dayOfMonth) -> {
-                    final String dateTitle = MessageFormat.format(
-                            getString(R.string.format_date_title),
-                            month + 1,
-                            dayOfMonth
-                    );
+                    final String dateTitle = DateTitleFactory.makeDateTitle(this, month, dayOfMonth);
                     new AlertDialog.Builder(this)
                             .setTitle(dateTitle)
                             .setItems(R.array.calendar_menu, (d, index) -> {
@@ -190,7 +187,7 @@ public class MainActivity extends BaseActivity {
      * @param dayOfMonth
      */
     private void openCalendarArticle(final int month, final int dayOfMonth) {
-        final String url = DateArticleUrlFactory.make(month, dayOfMonth);
+        final String url = DateArticleUrlFactory.make(this, month, dayOfMonth);
         if (url.length() == 0) {
             return;
         }

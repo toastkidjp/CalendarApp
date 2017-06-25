@@ -59,4 +59,7 @@ dependencies {
     def leakcanaryVersion = '1.5.1'
     debugCompile   'com.squareup.leakcanary:leakcanary-android:'       + leakcanaryVersion
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + leakcanaryVersion
+
+    testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.3.2"
 }
