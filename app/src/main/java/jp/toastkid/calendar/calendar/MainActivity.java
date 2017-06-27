@@ -280,6 +280,15 @@ public class MainActivity extends BaseActivity {
 
             try {
                 final BitmapDrawable background = readBitmapDrawable(uri);
+                if (background == null) {
+                    Toaster.snackShort(
+                            binding.navView,
+                            getString(R.string.message_failed_read_image),
+                            preferenceApplier.getColor(),
+                            preferenceApplier.getFontColor()
+                            );
+                    return;
+                }
 
                 final Bundle bundle = new Bundle();
                 bundle.putInt("width", background.getBitmap().getWidth());
@@ -322,12 +331,15 @@ public class MainActivity extends BaseActivity {
      * @return {@link BitmapDrawable}
      * @throws IOException
      */
-    @NonNull
+    @Nullable
     private BitmapDrawable readBitmapDrawable(final Uri uri) throws IOException {
         final ParcelFileDescriptor parcelFileDescriptor
                 = getContentResolver().openFileDescriptor(uri, "r");
         final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
         final Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        if (image == null) {
+            return null;
+        }
         parcelFileDescriptor.close();
         final File output = new File(getFilesDir(), new File(uri.toString()).getName());
         image.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(output));
