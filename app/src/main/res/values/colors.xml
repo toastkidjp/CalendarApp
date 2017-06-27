@@ -12,6 +12,7 @@
     <color name="c6">#80111111</color>
     <color name="initial_background">#66006600</color>
     <color name="filter_white">#88FFFFFF</color>
+    <color name="filter_white_bb">#CCFFFFFF</color>
 
     <color name="ripple">#FFE0E0E0</color>
     <color name="pre4_ripple">#FFAAAAAA</color>

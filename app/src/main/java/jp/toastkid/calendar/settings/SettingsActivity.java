@@ -3,6 +3,7 @@ package jp.toastkid.calendar.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -10,11 +11,16 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.databinding.ActivitySettingsBinding;
+import jp.toastkid.calendar.libs.ImageLoader;
+import jp.toastkid.calendar.libs.Logger;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
@@ -67,6 +73,10 @@ public class SettingsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         refresh();
+        ImageLoader.setImageToImageView(
+                binding.settingBackground,
+                mPreferenceApplier.getBackgroundImagePath()
+        );
     }
 
     private void refresh() {

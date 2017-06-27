@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ripple_soft"
+    android:background="@color/filter_white_bb"
     >
     <LinearLayout
         android:orientation="horizontal"
@@ -11,12 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="15dp"
+        android:background="@drawable/ripple_transparent"
         >
         <ImageView
             android:id="@+id/search_suggest_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_search_black"

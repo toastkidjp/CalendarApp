@@ -91,14 +91,26 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             >
-            <jp.toastkid.calendar.views.NonScrollListView
-                android:id="@+id/search_suggests"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                />
+                android:layout_height="match_parent"
+                >
+                <ImageView
+                    android:id="@+id/search_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    />
+                <jp.toastkid.calendar.views.NonScrollListView
+                    android:id="@+id/search_suggests"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/filter_white_bb"
+                    />
+            </FrameLayout>
         </ScrollView>
     </LinearLayout>
 </layout>

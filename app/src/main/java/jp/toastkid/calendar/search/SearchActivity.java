@@ -25,6 +25,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivitySearchBinding;
+import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
@@ -164,6 +165,11 @@ public class SearchActivity extends BaseActivity {
         super.onResume();
         Inputs.showKeyboard(this, binding.searchInput);
         applyColor();
+
+        ImageLoader.setImageToImageView(
+                binding.searchBackground,
+                mPreferenceApplier.getBackgroundImagePath()
+        );
     }
 
     /**

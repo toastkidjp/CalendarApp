@@ -2,12 +2,9 @@ package jp.toastkid.calendar.calendar;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -33,6 +28,7 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
+import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.IntentFactory;
 import jp.toastkid.calendar.libs.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
@@ -250,8 +246,12 @@ public class MainActivity extends BaseActivity {
         }
 
         try {
-            setBackgroundImage(readBitmapDrawable(
-                    Uri.parse(new File(backgroundImagePath).toURI().toString())));
+            setBackgroundImage(
+                    ImageLoader.readBitmapDrawable(
+                            this,
+                            Uri.parse(new File(backgroundImagePath).toURI().toString())
+                    )
+            );
         } catch (IOException e) {
             e.printStackTrace();
             Toaster.snackShort(
@@ -279,7 +279,7 @@ public class MainActivity extends BaseActivity {
             final Uri uri = data.getData();
 
             try {
-                final BitmapDrawable background = readBitmapDrawable(uri);
+                final BitmapDrawable background = ImageLoader.readBitmapDrawable(this, uri);
                 if (background == null) {
                     Toaster.snackShort(
                             binding.navView,
@@ -323,28 +323,6 @@ public class MainActivity extends BaseActivity {
     private void setBackgroundImage(@Nullable final BitmapDrawable background) {
         ((ImageView) navBackground.findViewById(R.id.background)).setImageDrawable(background);
         binding.appBarMain.content.image.setImageDrawable(background);
-    }
-
-    /**
-     * Read uri image content.
-     * @param uri Image path uri
-     * @return {@link BitmapDrawable}
-     * @throws IOException
-     */
-    @Nullable
-    private BitmapDrawable readBitmapDrawable(final Uri uri) throws IOException {
-        final ParcelFileDescriptor parcelFileDescriptor
-                = getContentResolver().openFileDescriptor(uri, "r");
-        final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        final Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        if (image == null) {
-            return null;
-        }
-        parcelFileDescriptor.close();
-        final File output = new File(getFilesDir(), new File(uri.toString()).getName());
-        image.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(output));
-        preferenceApplier.setBackgroundImagePath(output.getPath());
-        return new BitmapDrawable(getResources(), image);
     }
 
     /**
