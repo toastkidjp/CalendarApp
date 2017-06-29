@@ -76,5 +76,9 @@
     <string name="production_banner_unit_id">ca-app-pub-5751262573448755/4022975429</string>
 
     <string name="copyright">(c) @toastkidjp</string>
+    <string name="clear_all">Clear All</string>
+    <string name="add_background_image">Add Background Image</string>
+    <string name="message_change_background_image">It has changed background image.</string>
+    <string name="title_background_image_setting">Background Image Setting</string>
 
 </resources>

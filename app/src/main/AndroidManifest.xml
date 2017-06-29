@@ -41,6 +41,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="screenSize"
             />
+        <activity
+            android:name=".settings.background.BackgroundSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenSize"
+            />
     </application>
 
 </manifest>

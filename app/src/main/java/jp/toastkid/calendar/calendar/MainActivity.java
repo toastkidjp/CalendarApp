@@ -35,6 +35,7 @@ import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchActivity;
 import jp.toastkid.calendar.settings.SettingsActivity;
+import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
 /**
@@ -43,9 +44,6 @@ import jp.toastkid.calendar.settings.color.ColorSettingActivity;
  * @author toastkidjp
  */
 public class MainActivity extends BaseActivity {
-
-    /** Request code. */
-    private static final int IMAGE_READ_REQUEST = 136;
 
     /** Preference Applier. */
     private PreferenceApplier preferenceApplier;
@@ -96,12 +94,8 @@ public class MainActivity extends BaseActivity {
         binding.navView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_gallery:
-                    sendLog("nav_set_img");
-                    startActivityForResult(IntentFactory.makePickImage(), IMAGE_READ_REQUEST);
-                    return true;
-                case R.id.nav_gallery_clear:
-                    sendLog("nav_rm_img");
-                    removeSetImage();
+                    sendLog("nav_bg_set");
+                    startActivity(BackgroundSettingActivity.makeIntent(this));
                     return true;
                 case R.id.nav_search:
                     sendLog("nav_search");
@@ -260,60 +254,10 @@ public class MainActivity extends BaseActivity {
                     bgColor,
                     fontColor
             );
+            setBackgroundImage(null);
             navBackground.setBackgroundColor(bgColor);
         }
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
-    }
-
-    @Override
-    protected void onActivityResult(
-            final int requestCode,
-            final int resultCode,
-            final Intent data
-    ) {
-
-        if (requestCode == IMAGE_READ_REQUEST && resultCode == RESULT_OK) {
-            if (data == null) {
-                return;
-            }
-            final Uri uri = data.getData();
-
-            try {
-                final BitmapDrawable background = ImageLoader.readBitmapDrawable(this, uri);
-                if (background == null) {
-                    Toaster.snackShort(
-                            binding.navView,
-                            getString(R.string.message_failed_read_image),
-                            preferenceApplier.getColor(),
-                            preferenceApplier.getFontColor()
-                            );
-                    return;
-                }
-
-                final Bundle bundle = new Bundle();
-                bundle.putInt("width", background.getBitmap().getWidth());
-                bundle.putInt("height", background.getBitmap().getHeight());
-                sendLog("set_img", bundle);
-
-                setBackgroundImage(background);
-
-                final Snackbar snackbar = Snackbar.make(
-                        binding.navView, R.string.message_done_set_image, Snackbar.LENGTH_LONG);
-                snackbar.setAction(R.string.display, v -> {
-                    final View imageView = new View(this);
-                    imageView.setBackground(background);
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.image)
-                            .setMessage(uri.toString())
-                            .setView(imageView)
-                            .show();
-                });
-                snackbar.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -323,42 +267,6 @@ public class MainActivity extends BaseActivity {
     private void setBackgroundImage(@Nullable final BitmapDrawable background) {
         ((ImageView) navBackground.findViewById(R.id.background)).setImageDrawable(background);
         binding.appBarMain.content.image.setImageDrawable(background);
-    }
-
-    /**
-     * Remove set image.
-     */
-    private void removeSetImage() {
-        final String backgroundImagePath = preferenceApplier.getBackgroundImagePath();
-        final int bgColor = preferenceApplier.getColor();
-        final int fontColor = preferenceApplier.getFontColor();
-        if (backgroundImagePath.length() == 0) {
-            Toaster.snackShort(
-                    binding.drawerLayout,
-                    getString(R.string.message_cannot_found_image),
-                    bgColor,
-                    fontColor
-            );
-            return;
-        }
-        final boolean successRemove = new File(backgroundImagePath).delete();
-        if (!successRemove) {
-            Toaster.snackShort(
-                    binding.drawerLayout,
-                    getString(R.string.message_failed_image_removal),
-                    bgColor,
-                    fontColor
-            );
-            return;
-        }
-        Toaster.snackShort(
-                binding.drawerLayout,
-                getString(R.string.message_success_image_removal),
-                bgColor,
-                fontColor
-        );
-        preferenceApplier.removeBackgroundImagePath();
-        applyBackgrounds(bgColor, fontColor);
     }
 
     /**

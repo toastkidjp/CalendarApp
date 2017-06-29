@@ -41,6 +41,20 @@ public class ImageLoader {
             final Context context,
             final Uri uri
     ) throws IOException {
+        final Bitmap image = loadBitmap(context, uri);
+        if (image == null) return null;
+        return new BitmapDrawable(context.getResources(), image);
+    }
+
+    /**
+     *
+     * @param context
+     * @param uri
+     * @return
+     * @throws IOException
+     */
+    @Nullable
+    public static Bitmap loadBitmap(final Context context, final Uri uri) throws IOException {
         final ParcelFileDescriptor parcelFileDescriptor
                 = context.getContentResolver().openFileDescriptor(uri, "r");
         final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
@@ -49,10 +63,7 @@ public class ImageLoader {
             return null;
         }
         parcelFileDescriptor.close();
-        final File output = new File(context.getFilesDir(), new File(uri.toString()).getName());
-        image.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(output));
-        new PreferenceApplier(context).setBackgroundImagePath(output.getPath());
-        return new BitmapDrawable(context.getResources(), image);
+        return image;
     }
 
     /**
