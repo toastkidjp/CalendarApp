@@ -9,10 +9,18 @@ import android.widget.ImageView;
 import jp.toastkid.calendar.R;
 
 /**
+ * Dialog wrapper.
+ *
  * @author toastkidjp
  */
 class ImageDialog {
 
+    /**
+     * Show dialog with image.
+     * @param context
+     * @param uri
+     * @param background
+     */
     static void show(final Context context, final Uri uri, final BitmapDrawable background) {
         final ImageView imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

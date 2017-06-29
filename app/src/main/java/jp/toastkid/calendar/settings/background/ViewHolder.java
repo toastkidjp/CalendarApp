@@ -13,28 +13,42 @@ import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
+ * Extended of {@link RecyclerView.ViewHolder}.
+ *
  * @author toastkidjp
  */
+class ViewHolder extends RecyclerView.ViewHolder {
 
-class ImagesViewHolder extends RecyclerView.ViewHolder {
-
+    /** Binding object. */
     private SavedImageBinding binding;
 
+    /** Preferences wrapper. */
     private PreferenceApplier preferenceApplier;
 
-    private Runnable notifyDataSetChanged;
+    /** Action on removed. */
+    private Runnable onRemoved;
 
-    ImagesViewHolder(
+    /**
+     *
+     * @param binding
+     * @param preferenceApplier
+     * @param onRemoved
+     */
+    ViewHolder(
             final SavedImageBinding binding,
             final PreferenceApplier preferenceApplier,
-            final Runnable notifyDataSetChanged
+            final Runnable onRemoved
     ) {
         super(binding.getRoot());
         this.binding = binding;
         this.preferenceApplier = preferenceApplier;
-        this.notifyDataSetChanged = notifyDataSetChanged;
+        this.onRemoved = onRemoved;
     }
 
+    /**
+     * Apply file content.
+     * @param f
+     */
     void applyContent(final File f) {
         ImageLoader.setImageToImageView(this.binding.image, f.getPath());
         this.binding.text.setText(f.getName());
@@ -51,7 +65,8 @@ class ImagesViewHolder extends RecyclerView.ViewHolder {
         this.binding.getRoot().setOnLongClickListener(v -> {
             final Uri uri = Uri.parse(f.toURI().toString());
             try {
-                ImageDialog.show(v.getContext(), uri, ImageLoader.readBitmapDrawable(v.getContext(), uri));
+                ImageDialog.show(
+                        v.getContext(), uri, ImageLoader.readBitmapDrawable(v.getContext(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -61,6 +76,8 @@ class ImagesViewHolder extends RecyclerView.ViewHolder {
 
     /**
      * Remove set image.
+     *
+     * @param file
      */
     private void removeSetImage(final File file) {
         final int bgColor   = preferenceApplier.getColor();
@@ -90,6 +107,6 @@ class ImagesViewHolder extends RecyclerView.ViewHolder {
                 bgColor,
                 fontColor
         );
-        notifyDataSetChanged.run();
+        onRemoved.run();
     }
 }

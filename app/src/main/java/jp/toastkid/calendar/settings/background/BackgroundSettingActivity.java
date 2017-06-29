@@ -12,12 +12,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,7 +22,6 @@ import java.io.IOException;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityBackgroundSettingBinding;
-import jp.toastkid.calendar.databinding.SavedImageBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.IntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
@@ -49,7 +44,7 @@ public class BackgroundSettingActivity extends BaseActivity {
     private PreferenceApplier preferenceApplier;
 
     /** Adapter. */
-    private ImagesViewAdapter adapter;
+    private Adapter adapter;
 
     /** Wrapper of FilesDir. */
     private Storeroom storeroom;
@@ -66,7 +61,7 @@ public class BackgroundSettingActivity extends BaseActivity {
         storeroom = new Storeroom(this);
 
         binding.imagesView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
-        adapter = new ImagesViewAdapter(preferenceApplier, storeroom);
+        adapter = new Adapter(preferenceApplier, storeroom);
         binding.imagesView.setAdapter(adapter);
     }
 

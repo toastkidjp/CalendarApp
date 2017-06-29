@@ -10,35 +10,41 @@ import jp.toastkid.calendar.databinding.SavedImageBinding;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
+ * RecyclerView's adapter.
+ *
  * @author toastkidjp
  */
-class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
+class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
+    /** Preferences wrapper. */
     private PreferenceApplier preferenceApplier;
 
+    /** FilesDir wrapper. */
     private Storeroom storeroom;
 
-    ImagesViewAdapter(
-            final PreferenceApplier preferenceApplier,
-            final Storeroom storeroom
-            ) {
+    /**
+     *
+     * @param preferenceApplier
+     * @param storeroom
+     */
+    Adapter(final PreferenceApplier preferenceApplier, final Storeroom storeroom) {
         this.preferenceApplier = preferenceApplier;
         this.storeroom = storeroom;
     }
 
     @Override
-    public ImagesViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final SavedImageBinding itemBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.saved_image,
                 parent,
                 false
         );
-        return new ImagesViewHolder(itemBinding, preferenceApplier, this::notifyDataSetChanged);
+        return new ViewHolder(itemBinding, preferenceApplier, this::notifyDataSetChanged);
     }
 
     @Override
-    public void onBindViewHolder(final ImagesViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.applyContent(storeroom.get(position));
     }
 
