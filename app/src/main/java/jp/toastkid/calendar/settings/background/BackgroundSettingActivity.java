@@ -47,11 +47,17 @@ public class BackgroundSettingActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_background_setting);
         initToolbar(binding.toolbar);
         binding.toolbar.inflateMenu(R.menu.background_setting_menu);
+
         preferenceApplier = new PreferenceApplier(this);
 
         storeroom = new Storeroom(this);
 
-        binding.imagesView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
+        initImagesView();
+    }
+
+    private void initImagesView() {
+        binding.imagesView.setLayoutManager(
+                new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
         adapter = new Adapter(preferenceApplier, storeroom);
         binding.imagesView.setAdapter(adapter);
     }

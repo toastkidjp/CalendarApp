@@ -12,10 +12,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
  * Image file loader.

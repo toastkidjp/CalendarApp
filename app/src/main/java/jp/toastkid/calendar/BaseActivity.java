@@ -12,8 +12,6 @@ import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import static android.os.Bundle.EMPTY;
-
 /**
  * @author toastkidjp
  */
