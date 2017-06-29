@@ -3,26 +3,17 @@ package jp.toastkid.calendar.settings.background;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.view.MenuItem;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityBackgroundSettingBinding;
-import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.IntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
@@ -111,44 +102,9 @@ public class BackgroundSettingActivity extends BaseActivity {
     ) {
 
         if (requestCode == IMAGE_READ_REQUEST && resultCode == RESULT_OK) {
-            if (data == null) {
-                return;
-            }
-            final Uri uri = data.getData();
-
-            try {
-                final Bitmap image = ImageLoader.loadBitmap(this, uri);
-
-                if (image == null) {
-                    Toaster.snackShort(
-                            binding.toolbar,
-                            getString(R.string.message_failed_read_image),
-                            preferenceApplier.getColor(),
-                            preferenceApplier.getFontColor()
-                    );
-                    return;
-                }
-
-                final File output = storeroom.assignMewFile(uri);
-                new PreferenceApplier(this).setBackgroundImagePath(output.getPath());
-                image.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(output));
-
-                final BitmapDrawable background = new BitmapDrawable(getResources(), image);
-
-                final Bundle bundle = new Bundle();
-                bundle.putInt("width", background.getBitmap().getWidth());
-                bundle.putInt("height", background.getBitmap().getHeight());
-                sendLog("set_img", bundle);
-
-                adapter.notifyDataSetChanged();
-
-                final Snackbar snackbar = Snackbar.make(
-                        binding.toolbar, R.string.message_done_set_image, Snackbar.LENGTH_LONG);
-                snackbar.setAction(R.string.display, v -> ImageDialog.show(this, uri, background));
-                snackbar.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new LoadedAction(data, binding.toolbar, preferenceApplier, adapter::notifyDataSetChanged)
+                    .invoke();
+            sendLog("set_img");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -168,5 +124,4 @@ public class BackgroundSettingActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
-
 }
