@@ -66,7 +66,7 @@ public class BackgroundSettingActivity extends BaseActivity {
         storeroom = new Storeroom(this);
 
         binding.imagesView.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
-        adapter = new ImagesViewAdapter();
+        adapter = new ImagesViewAdapter(preferenceApplier, storeroom);
         binding.imagesView.setAdapter(adapter);
     }
 
@@ -74,30 +74,6 @@ public class BackgroundSettingActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         applyColorToToolbar(binding.toolbar, preferenceApplier.getColor(), preferenceApplier.getFontColor());
-    }
-
-    private class ImagesViewAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
-
-        @Override
-        public ImagesViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            final SavedImageBinding itemBinding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.getContext()),
-                    R.layout.saved_image,
-                    parent,
-                    false
-            );
-            return new ImagesViewHolder(itemBinding, preferenceApplier, adapter::notifyDataSetChanged);
-        }
-
-        @Override
-        public void onBindViewHolder(final ImagesViewHolder holder, final int position) {
-            holder.applyContent(storeroom.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return storeroom.getCount();
-        }
     }
 
     @Override
