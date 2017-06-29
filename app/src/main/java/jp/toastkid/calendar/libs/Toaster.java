@@ -49,6 +49,23 @@ public class Toaster {
      * Show simple snackbar on short time.
      *
      * @param view
+     * @param messageId
+     * @param color
+     * @param textColor
+     */
+    public static void snackShort(
+            @NonNull final View view,
+            @StringRes final int messageId,
+            @ColorInt final int color,
+            @ColorInt final int textColor
+    ) {
+        snackShort(view, view.getContext().getString(messageId), color, textColor);
+    }
+
+    /**
+     * Show simple snackbar on short time.
+     *
+     * @param view
      * @param message
      * @param color
      */

@@ -86,7 +86,7 @@ public class BackgroundSettingActivity extends BaseActivity {
                     parent,
                     false
             );
-            return new ImagesViewHolder(itemBinding);
+            return new ImagesViewHolder(itemBinding, preferenceApplier, adapter::notifyDataSetChanged);
         }
 
         @Override
@@ -98,41 +98,6 @@ public class BackgroundSettingActivity extends BaseActivity {
         public int getItemCount() {
             return storeroom.getCount();
         }
-    }
-
-    private class ImagesViewHolder extends RecyclerView.ViewHolder {
-
-        private SavedImageBinding binding;
-
-        ImagesViewHolder(SavedImageBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void applyContent(final File f) {
-            ImageLoader.setImageToImageView(this.binding.image, f.getPath());
-            this.binding.text.setText(f.getName());
-            this.binding.remove.setOnClickListener(v -> removeSetImage(f));
-            this.binding.getRoot().setOnClickListener(v -> {
-                preferenceApplier.setBackgroundImagePath(f.getPath());
-                Toaster.snackShort(
-                        binding.image,
-                        getString(R.string.message_change_background_image),
-                        preferenceApplier.getColor(),
-                        preferenceApplier.getFontColor()
-                );
-            });
-            this.binding.getRoot().setOnLongClickListener(v -> {
-                final Uri uri = Uri.parse(f.toURI().toString());
-                try {
-                    showImageDialog(uri, ImageLoader.readBitmapDrawable(v.getContext(), uri));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            });
-        }
-
     }
 
     @Override
@@ -166,41 +131,6 @@ public class BackgroundSettingActivity extends BaseActivity {
         }
         return super.clickMenu(item);
     }
-
-    /**
-     * Remove set image.
-     */
-    private void removeSetImage(final File file) {
-        final int bgColor   = preferenceApplier.getColor();
-        final int fontColor = preferenceApplier.getFontColor();
-        if (file == null || !file.exists()) {
-            Toaster.snackShort(
-                    binding.toolbar,
-                    getString(R.string.message_cannot_found_image),
-                    bgColor,
-                    fontColor
-            );
-            return;
-        }
-        final boolean successRemove = file.delete();
-        if (!successRemove) {
-            Toaster.snackShort(
-                    binding.toolbar,
-                    getString(R.string.message_failed_image_removal),
-                    bgColor,
-                    fontColor
-            );
-            return;
-        }
-        Toaster.snackShort(
-                binding.toolbar,
-                getString(R.string.message_success_image_removal),
-                bgColor,
-                fontColor
-        );
-        adapter.notifyDataSetChanged();
-    }
-
 
     @Override
     protected void onActivityResult(
@@ -243,25 +173,13 @@ public class BackgroundSettingActivity extends BaseActivity {
 
                 final Snackbar snackbar = Snackbar.make(
                         binding.toolbar, R.string.message_done_set_image, Snackbar.LENGTH_LONG);
-                snackbar.setAction(R.string.display, v -> showImageDialog(uri, background));
+                snackbar.setAction(R.string.display, v -> ImageDialog.show(this, uri, background));
                 snackbar.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void showImageDialog(final Uri uri, final BitmapDrawable background) {
-        final ImageView imageView = new ImageView(this);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setAdjustViewBounds(true);
-        imageView.setImageDrawable(background);
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.image)
-                .setMessage(uri.toString())
-                .setView(imageView)
-                .show();
     }
 
     @Override
