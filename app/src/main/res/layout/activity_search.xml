@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="@string/search_action_title"
+                        android:text="@string/title_search_action"
                         android:textColor="@color/white"
                         android:background="@drawable/ripple_appwidget"
                         />

@@ -110,6 +110,15 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_search");
                     startActivity(SearchActivity.makeIntent(MainActivity.this));
                     return true;
+                case R.id.nav_tweet:
+                    sendLog("nav_twt");
+                    IntentFactory.makeTwitter(
+                            MainActivity.this,
+                            preferenceApplier.getColor(),
+                            preferenceApplier.getFontColor(),
+                            R.drawable.ic_back
+                    ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
+                    return true;
                 case R.id.nav_settings:
                     sendLog("nav_set");
                     startActivity(SettingsActivity.makeIntent(MainActivity.this));
@@ -122,12 +131,24 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_dvc_set");
                     startActivity(SettingsIntentFactory.makeLaunch());
                     return true;
+                case R.id.nav_settings_wifi:
+                    sendLog("nav_wifi_set");
+                    startActivity(SettingsIntentFactory.wifi());
+                    return true;
+                case R.id.nav_settings_wireless:
+                    sendLog("nav_wrls_set");
+                    startActivity(SettingsIntentFactory.wireless());
+                    return true;
+                case R.id.nav_settings_all_apps:
+                    sendLog("nav_allapps_set");
+                    startActivity(SettingsIntentFactory.allApps());
+                    return true;
                 case R.id.nav_share:
                     sendLog("nav_shr");
                     startActivity(IntentFactory.makeShare(makeShareMessage()));
                     return true;
                 case R.id.nav_share_twitter:
-                    sendLog("nav_twttr");
+                    sendLog("nav_shr_twt");
                     IntentFactory.makeTwitter(
                             MainActivity.this,
                             preferenceApplier.getColor(),

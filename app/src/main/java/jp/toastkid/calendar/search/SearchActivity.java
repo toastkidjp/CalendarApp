@@ -226,7 +226,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected int getTitleId() {
-        return R.string.search_action_title;
+        return R.string.title_search_action;
     }
 
     /**

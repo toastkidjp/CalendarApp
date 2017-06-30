@@ -6,12 +6,17 @@
             <item
                 android:id="@+id/nav_search"
                 android:icon="@drawable/ic_search"
-                android:title="@string/search_action_title"
+                android:title="@string/title_search_action"
+                />
+            <item
+                android:id="@+id/nav_tweet"
+                android:icon="@drawable/ic_tweet_black"
+                android:title="@string/title_tweet_action"
                 />
         </menu>
     </item>
 
-    <item android:title="@string/title_settings">
+    <item android:title="@string/title_section_settings_this_app">
         <menu>
             <item
                 android:id="@+id/nav_settings"
@@ -33,10 +38,30 @@
                 android:icon="@drawable/ic_palette"
                 android:title="@string/title_settings_color"
                 />
+        </menu>
+    </item>
+
+    <item android:title="@string/title_section_device_settings">
+        <menu>
             <item
                 android:id="@+id/nav_settings_device"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/title_settings_device"
+                />
+            <item
+                android:id="@+id/nav_settings_wifi"
+                android:icon="@drawable/ic_wifi_black"
+                android:title="@string/title_settings_wifi"
+                />
+            <item
+                android:id="@+id/nav_settings_wireless"
+                android:icon="@drawable/ic_network_black"
+                android:title="@string/title_settings_wireless"
+                />
+            <item
+                android:id="@+id/nav_settings_all_apps"
+                android:icon="@drawable/ic_android_app"
+                android:title="@string/title_settings_all_apps"
                 />
         </menu>
     </item>

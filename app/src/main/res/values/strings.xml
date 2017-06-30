@@ -23,7 +23,7 @@
     <string name="cancel">キャンセル</string>
     <string name="ok">決定</string>
 
-    <string name="search_action_title">検索</string>
+    <string name="title_search_action">検索</string>
     <string name="action_settings">設定</string>
     <string name="title_calendar">カレンダー</string>
     <string name="title_search">Web 検索</string>
@@ -82,5 +82,11 @@
     <string name="clear_all">背景画像をすべて削除</string>
     <string name="message_change_background_image">背景画像を変更しました。</string>
     <string name="message_reset_bg_image">背景画像を解除しました。</string>
+    <string name="title_settings_wifi">Wi-Fi の設定</string>
+    <string name="title_settings_wireless">無線の設定</string>
+    <string name="title_settings_all_apps">アプリの設定</string>
+    <string name="title_section_settings_this_app">このアプリの設定</string>
+    <string name="title_section_device_settings">端末の設定</string>
+    <string name="title_tweet_action">Tweet する</string>
 
 </resources>
