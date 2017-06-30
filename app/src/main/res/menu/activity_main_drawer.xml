@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="@string/title_tools">
         <menu>
@@ -37,6 +38,12 @@
                 android:id="@+id/nav_color_settings"
                 android:icon="@drawable/ic_palette"
                 android:title="@string/title_settings_color"
+                />
+            <item
+                android:id="@+id/nav_locale"
+                android:icon="@drawable/ic_license"
+                android:title=""
+                app:actionLayout="@layout/radio_locale"
                 />
         </menu>
     </item>

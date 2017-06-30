@@ -88,5 +88,6 @@
     <string name="title_section_settings_this_app">このアプリの設定</string>
     <string name="title_section_device_settings">端末の設定</string>
     <string name="title_tweet_action">Tweet する</string>
+    <string name="title_settings_locale">言語設定</string>
 
 </resources>

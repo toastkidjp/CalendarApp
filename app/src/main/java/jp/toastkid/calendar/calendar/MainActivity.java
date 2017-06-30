@@ -1,10 +1,13 @@
 package jp.toastkid.calendar.calendar;
 
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -16,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
@@ -89,6 +94,12 @@ public class MainActivity extends BaseActivity {
      * Initialize navigation.
      */
     private void initNavigation() {
+        LocaleRadioGroupInitializer.init(
+                (RadioGroup) binding.navView.getMenu().findItem(R.id.nav_locale).getActionView()
+                        .findViewById(R.id.locale),
+                preferenceApplier
+        );
+
         binding.navView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_gallery:

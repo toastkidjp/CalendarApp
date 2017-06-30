@@ -31,6 +31,7 @@
     <string name="title_settings_color">Color Settings</string>
     <string name="title_settings_device">Device Settings</string>
     <string name="title_settings">App Settings</string>
+    <string name="title_settings_locale">Locale Settings</string>
     <string name="title_section_device_settings">Device Settings</string>
     <string name="title_settings_wifi">Wi-Fi Settings</string>
     <string name="title_settings_wireless">Wireless Settings</string>
