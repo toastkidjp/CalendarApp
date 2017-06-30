@@ -93,5 +93,10 @@
     <string name="title_ad">広告を見る</string>
     <string name="title_loading_ad">広告のロード中...</string>
     <string name="thank_you_for_using">いつもお使いくださり、ありがとうございます。</string>
+    <string name="title_about_this_app">このアプリについて</string>
+    <string name="message_introduce_ad">作者を応援するために全面広告を表示</string>
+    <string name="message_about_this_app">
+        日付を押すと、その日に何があったか調べることができます。
+    </string>
 
 </resources>

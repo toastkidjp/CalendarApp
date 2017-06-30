@@ -30,6 +30,7 @@ import java.util.Locale;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
+import jp.toastkid.calendar.interstitial.InterstitialAdActivity;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.IntentFactory;
@@ -170,6 +171,17 @@ public class MainActivity extends BaseActivity {
                             Uri.parse("https://twitter.com/share?text="
                                     + Uri.encode(makeShareMessage()))
                     );
+                    return true;
+                case R.id.nav_about_this_app:
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.title_about_this_app)
+                            .setMessage(R.string.message_about_this_app)
+                            .setCancelable(true)
+                            .setNegativeButton(
+                                    R.string.message_introduce_ad,
+                                    (d, i) -> startActivity(InterstitialAdActivity.makeIntent(this)))
+                            .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
+                            .show();
                     return true;
             }
             return true;

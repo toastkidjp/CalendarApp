@@ -92,5 +92,10 @@
     <string name="title_ad">Ad</string>
     <string name="title_loading_ad">Loading...</string>
     <string name="thank_you_for_using">Thank you for using!</string>
+    <string name="title_about_this_app">About this app</string>
+    <string name="message_introduce_ad">Show AD</string>
+    <string name="message_about_this_app">
+        If you tap any date, you could show historic event of this day.
+    </string>
 
 </resources>
