@@ -33,7 +33,7 @@
     <string name="title_menu">Menu</string>
     <string name="title_tools">Tools</string>
     <string name="title_set_bg">Set Background Image</string>
-    <string name="title_bg_delete">Delete Background Image</string>
+    <string name="title_bg_reset">Reset Background Image</string>
     <string name="section_title_share">Share</string>
     <string name="title_share">Share this app</string>
     <string name="title_share_twitter">Share by Twitter</string>
@@ -80,5 +80,6 @@
     <string name="add_background_image">Add Background Image</string>
     <string name="message_change_background_image">It has changed background image.</string>
     <string name="title_background_image_setting">Background Image Setting</string>
+    <string name="message_reset_bg_image">It has reset background image.</string>
 
 </resources>

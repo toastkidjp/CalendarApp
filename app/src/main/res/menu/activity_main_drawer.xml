@@ -24,6 +24,11 @@
                 android:title="@string/title_set_bg"
                 />
             <item
+                android:id="@+id/nav_reset_bg"
+                android:icon="@drawable/ic_close_black"
+                android:title="@string/title_bg_reset"
+                />
+            <item
                 android:id="@+id/nav_color_settings"
                 android:icon="@drawable/ic_palette"
                 android:title="@string/title_settings_color"

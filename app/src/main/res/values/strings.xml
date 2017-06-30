@@ -33,7 +33,7 @@
     <string name="title_menu">メニュー</string>
     <string name="title_tools">ツール</string>
     <string name="title_set_bg">背景画像を設定</string>
-    <string name="title_bg_delete">背景画像を削除</string>
+    <string name="title_bg_reset">背景画像を解除</string>
     <string name="section_title_share">シェア</string>
     <string name="title_share">このアプリをシェア</string>
     <string name="title_share_twitter">Twitter でシェア</string>
@@ -81,5 +81,6 @@
     <string name="add_background_image">背景画像を追加</string>
     <string name="clear_all">背景画像をすべて削除</string>
     <string name="message_change_background_image">背景画像を変更しました。</string>
+    <string name="message_reset_bg_image">背景画像を解除しました。</string>
 
 </resources>

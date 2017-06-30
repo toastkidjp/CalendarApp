@@ -95,6 +95,17 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_bg_set");
                     startActivity(BackgroundSettingActivity.makeIntent(this));
                     return true;
+                case R.id.nav_reset_bg:
+                    sendLog("nav_bg_reset");
+                    preferenceApplier.removeBackgroundImagePath();
+                    setBackgroundImage(null);
+                    Toaster.snackShort(
+                            binding.drawerLayout,
+                            R.string.message_reset_bg_image,
+                            preferenceApplier.getColor(),
+                            preferenceApplier.getFontColor()
+                    );
+                    return true;
                 case R.id.nav_search:
                     sendLog("nav_search");
                     startActivity(SearchActivity.makeIntent(MainActivity.this));
@@ -232,7 +243,6 @@ public class MainActivity extends BaseActivity {
         final String backgroundImagePath = preferenceApplier.getBackgroundImagePath();
         if (backgroundImagePath.length() == 0) {
             setBackgroundImage(null);
-            navBackground.setBackgroundColor(bgColor);
             ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
             return;
         }
@@ -253,7 +263,6 @@ public class MainActivity extends BaseActivity {
                     fontColor
             );
             setBackgroundImage(null);
-            navBackground.setBackgroundColor(bgColor);
         }
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
     }
@@ -265,6 +274,9 @@ public class MainActivity extends BaseActivity {
     private void setBackgroundImage(@Nullable final BitmapDrawable background) {
         ((ImageView) navBackground.findViewById(R.id.background)).setImageDrawable(background);
         binding.appBarMain.content.image.setImageDrawable(background);
+        if (background == null) {
+            navBackground.setBackgroundColor(preferenceApplier.getColor());
+        }
     }
 
     /**
