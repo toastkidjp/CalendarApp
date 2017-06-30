@@ -10,6 +10,9 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
@@ -61,7 +64,11 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void initAdView() {
-        AdInitializers.find(getApplicationContext()).invoke(binding.ad);
+        final AdView adView = new AdView(getApplicationContext());
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId(getString(R.string.production_banner_unit_id));
+        binding.ad.addView(adView);
+        AdInitializers.find(getApplicationContext()).invoke(adView);
     }
 
     @Override

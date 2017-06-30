@@ -137,14 +137,12 @@
                             android:textSize="16sp"
                             />
                     </LinearLayout>
-                    <com.google.android.gms.ads.AdView
+                    <FrameLayout
                         android:id="@+id/ad"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
-                        ads:adSize="BANNER"
-                        ads:adUnitId="@string/production_banner_unit_id"
                         />
                 </LinearLayout>
 
