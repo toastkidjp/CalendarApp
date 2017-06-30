@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -116,13 +117,12 @@ class LoadedAction {
      * @param image
      */
     private void informDone(final Context context, final Bitmap image) {
-        final Snackbar snackbar = Snackbar.make(
-                parent, R.string.message_done_set_image, Snackbar.LENGTH_LONG);
-        snackbar.setAction(
-                R.string.display,
-                v -> ImageDialog.show(context, uri, new BitmapDrawable(context.getResources(), image))
+        Toaster.snackLong(
+                parent, R.string.message_done_set_image, R.string.display,
+                v -> ImageDialog.show(context, uri, new BitmapDrawable(context.getResources(), image)),
+                preferenceApplier.getColor(),
+                preferenceApplier.getFontColor()
         );
-        snackbar.show();
     }
 
 }

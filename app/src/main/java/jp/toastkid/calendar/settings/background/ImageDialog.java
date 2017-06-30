@@ -30,6 +30,8 @@ class ImageDialog {
                 .setTitle(R.string.image)
                 .setMessage(uri.toString())
                 .setView(imageView)
+                .setCancelable(true)
+                .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
                 .show();
     }
 }

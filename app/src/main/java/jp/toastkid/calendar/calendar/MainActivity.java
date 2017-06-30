@@ -294,6 +294,7 @@ public class MainActivity extends BaseActivity {
                     bgColor,
                     fontColor
             );
+            preferenceApplier.removeBackgroundImagePath();
             setBackgroundImage(null);
         }
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
