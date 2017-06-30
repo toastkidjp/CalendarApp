@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import jp.toastkid.calendar.interstitial.InterstitialAdActivity;
 
 /**
  * @author toastkidjp
@@ -40,8 +43,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean clickMenu(final MenuItem item) {
-        if (item.getItemId() == R.id.settings_toolbar_menu_exit) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.settings_toolbar_menu_exit) {
             finish();
+            return true;
+        }
+        if (itemId == R.id.toolbar_ad) {
+            startActivity(InterstitialAdActivity.makeIntent(this));
+            return true;
         }
         return true;
     }

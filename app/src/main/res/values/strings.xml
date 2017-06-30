@@ -89,5 +89,9 @@
     <string name="title_section_device_settings">端末の設定</string>
     <string name="title_tweet_action">Tweet する</string>
     <string name="title_settings_locale">言語設定</string>
+    <string name="production_interstitial_ad_id">ca-app-pub-5751262573448755/4067211023</string>
+    <string name="title_ad">広告を見る</string>
+    <string name="title_loading_ad">広告のロード中...</string>
+    <string name="thank_you_for_using">いつもお使いくださり、ありがとうございます。</string>
 
 </resources>

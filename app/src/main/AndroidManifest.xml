@@ -46,6 +46,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="screenSize"
             />
+        <activity
+            android:name=".interstitial.InterstitialAdActivity"
+            android:label="@string/title_loading_ad"
+            android:configChanges="screenSize"
+            />
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import jp.toastkid.calendar.BuildConfig;
@@ -35,5 +36,13 @@ class ProductionAdInitializer implements AdInitializer {
             throw new IllegalStateException();
         }
         adView.loadAd(new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void invoke(@NonNull final InterstitialAd interstitialAd) {
+        if (BuildConfig.DEBUG) {
+            throw new IllegalStateException();
+        }
+        interstitialAd.loadAd(new AdRequest.Builder().build());
     }
 }

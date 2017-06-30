@@ -88,5 +88,9 @@
     <string name="title_background_image_setting">Background Image Setting</string>
     <string name="message_reset_bg_image">It has reset background image.</string>
     <string name="title_tweet_action">Tweet</string>
+    <string name="production_interstitial_ad_id">ca-app-pub-5751262573448755/4067211023</string>
+    <string name="title_ad">Ad</string>
+    <string name="title_loading_ad">Loading...</string>
+    <string name="thank_you_for_using">Thank you for using!</string>
 
 </resources>
