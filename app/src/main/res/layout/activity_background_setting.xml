@@ -13,10 +13,23 @@
             android:layout_height="56dp"
             android:minHeight="?android:actionBarSize"
             />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/images_view"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/images_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+            <include
+                android:id="@+id/ad_area"
+                layout="@layout/ad_banner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                />
+
+        </FrameLayout>
     </LinearLayout>
 </layout>

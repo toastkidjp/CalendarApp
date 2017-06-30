@@ -17,6 +17,7 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.advertisement.AdInitializers;
+import jp.toastkid.calendar.advertisement.AdViewFactory;
 import jp.toastkid.calendar.databinding.ActivitySettingsBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
@@ -60,15 +61,7 @@ public class SettingsActivity extends BaseActivity {
 
         ((TextView) findViewById(R.id.settings_app_version)).setText(BuildConfig.VERSION_NAME);
 
-        initAdView();
-    }
-
-    private void initAdView() {
-        final AdView adView = new AdView(getApplicationContext());
-        adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId(getString(R.string.production_banner_unit_id));
-        binding.ad.addView(adView);
-        AdInitializers.find(getApplicationContext()).invoke(adView);
+        AdViewFactory.make(getApplicationContext(), binding.adArea.ad);
     }
 
     @Override
@@ -120,4 +113,5 @@ public class SettingsActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
     }
+
 }
