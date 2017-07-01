@@ -66,6 +66,7 @@ public class IntentFactory {
         final Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("beginTime", eventStartMs);
+        intent.putExtra("endTime",   eventStartMs);
         return intent;
     }
 
