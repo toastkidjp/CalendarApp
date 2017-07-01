@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.calendar;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -43,6 +44,9 @@ import jp.toastkid.calendar.settings.color.ColorSettingActivity;
  */
 public class MainActivity extends BaseActivity {
 
+    /** Layout ID. */
+    private static final int LAYOUT_ID = R.layout.activity_main;
+
     /** Navigation's background. */
     private View navBackground;
 
@@ -55,8 +59,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView(LAYOUT_ID);
+        binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
 
         initToolbar(binding.appBarMain.toolbar);
 
@@ -88,6 +92,7 @@ public class MainActivity extends BaseActivity {
      */
     private void initNavigation() {
         LocaleRadioGroupInitializer.init(
+                this::restart,
                 (RadioGroup) binding.navView.getMenu().findItem(R.id.nav_locale).getActionView()
                         .findViewById(R.id.locale)
         );
@@ -173,6 +178,18 @@ public class MainActivity extends BaseActivity {
             return true;
         });
         navBackground = binding.navView.getHeaderView(0).findViewById(R.id.nav_header_background);
+    }
+
+    /**
+     * Restart this activity.
+     */
+    private void restart() {
+        final Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 
     /**
