@@ -19,9 +19,8 @@ class LocaleRadioGroupInitializer {
      * Initialize Locale selector.
      *
      * @param radioGroup
-     * @param pair
      */
-    static void init(final RadioGroup radioGroup, final ColorPair pair) {
+    static void init(final RadioGroup radioGroup) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             radioGroup.setVisibility(View.GONE);
             return;
@@ -31,11 +30,7 @@ class LocaleRadioGroupInitializer {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 LocaleWrapper.setLocale(radioGroup.getResources().getConfiguration(), newLocale);
             }
-            Toaster.snackShort(
-                    radioGroup,
-                    "New locale: " + newLocale.getLanguage(),
-                    pair
-            );
+            Toaster.tShort(radioGroup.getContext(), "New locale: " + newLocale.getLanguage());
         });
     }
 

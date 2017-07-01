@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.search;
 
+import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -7,8 +8,8 @@ import android.net.Uri;
  */
 class UrlFactory {
 
-    Uri make(final String category, final String query) {
-        return Uri.parse(SearchCategory.findByCategory(category).make(query));
+    Uri make(final Context context, final String category, final String query) {
+        return Uri.parse(SearchCategory.findByCategory(category).make(context, query));
     }
 
 }

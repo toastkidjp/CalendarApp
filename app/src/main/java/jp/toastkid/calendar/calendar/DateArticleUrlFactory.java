@@ -35,10 +35,8 @@ class DateArticleUrlFactory {
             return "";
         }
         if (LocaleWrapper.isJa(context.getResources().getConfiguration())) {
-            Logger.i("JA " + context.getString(FORMAT_ID));
             return MessageFormat.format(context.getString(FORMAT_ID), month + 1, dayOfMonth);
         }
-        Logger.i("EN " + context.getString(FORMAT_ID));
         return MessageFormat.format(context.getString(FORMAT_ID), Month.get(month), dayOfMonth);
     }
 }

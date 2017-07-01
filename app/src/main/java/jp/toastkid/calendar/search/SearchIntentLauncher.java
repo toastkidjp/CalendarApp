@@ -66,7 +66,7 @@ class SearchIntentLauncher {
                         PendingIntentFactory.makeColorSettingsIntent(context)
                 )
                 .build();
-        intent.launchUrl(context, new UrlFactory().make(category, query));
+        intent.launchUrl(context, new UrlFactory().make(context, category, query));
     }
 
 }

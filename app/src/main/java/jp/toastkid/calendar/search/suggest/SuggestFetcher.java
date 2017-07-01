@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.search.suggest;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -29,10 +30,14 @@ public class SuggestFetcher {
     /** HTTP client. */
     private OkHttpClient mClient;
 
+    /** Context. */
+    private Context context;
+
     /**
      * Initialize HTTP client.
      */
-    public SuggestFetcher() {
+    public SuggestFetcher(final Context context) {
+        this.context = context;
         mClient = new OkHttpClient.Builder()
                 .connectTimeout(3L, TimeUnit.SECONDS)
                 .readTimeout(3L, TimeUnit.SECONDS)

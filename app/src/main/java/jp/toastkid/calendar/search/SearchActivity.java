@@ -96,7 +96,7 @@ public class SearchActivity extends BaseActivity {
 
         binding.searchInput.addTextChangedListener(new TextWatcher() {
 
-            private final SuggestFetcher mFetcher = new SuggestFetcher();
+            private final SuggestFetcher mFetcher = new SuggestFetcher(SearchActivity.this);
 
             private final Map<String, List<String>> mCache = new HashMap<>(SUGGEST_CACHE_CAPACITY);
 

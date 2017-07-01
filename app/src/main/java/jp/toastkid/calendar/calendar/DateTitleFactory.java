@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.libs.Logger;
 
 /**
  * Date title factory.

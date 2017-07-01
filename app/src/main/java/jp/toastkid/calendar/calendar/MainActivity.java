@@ -89,8 +89,7 @@ public class MainActivity extends BaseActivity {
     private void initNavigation() {
         LocaleRadioGroupInitializer.init(
                 (RadioGroup) binding.navView.getMenu().findItem(R.id.nav_locale).getActionView()
-                        .findViewById(R.id.locale),
-                colorPair()
+                        .findViewById(R.id.locale)
         );
 
         binding.navView.setNavigationItemSelectedListener(item -> {

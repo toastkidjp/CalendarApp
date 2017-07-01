@@ -34,6 +34,18 @@ public class Toaster {
     }
 
     /**
+     * Short toasting.
+     * @param context
+     * @param message
+     */
+    public static void tShort(
+            @NonNull final Context context,
+            @NonNull final String message
+    ) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
      * Show simple snackbar on short time.
      *
      * @param view
