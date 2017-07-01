@@ -19,7 +19,7 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivitySettingsColorBinding;
 import jp.toastkid.calendar.libs.Toaster;
-import jp.toastkid.calendar.libs.preference.PreferenceApplier;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * Color setting activity.
@@ -34,8 +34,6 @@ public class ColorSettingActivity extends BaseActivity {
 
     private ActivitySettingsColorBinding binding;
 
-    private PreferenceApplier mPreferenceApplier;
-
     private OrmaRecyclerViewAdapter<SavedColor, SavedColorHolder> adapter;
 
     @Override
@@ -45,13 +43,13 @@ public class ColorSettingActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings_color);
         binding.setActivity(this);
 
-        mPreferenceApplier = new PreferenceApplier(this);
+        final ColorPair colorPair = colorPair();
 
-        initialFontColor = mPreferenceApplier.getFontColor();
-        binding.settingsColorPrev.setTextColor(initialFontColor);
-
-        initialBgColor = mPreferenceApplier.getColor();
+        initialBgColor = colorPair.bgColor();
         binding.settingsColorPrev.setBackgroundColor(initialBgColor);
+
+        initialFontColor = colorPair.fontColor();
+        binding.settingsColorPrev.setTextColor(initialFontColor);
 
         initPalette();
         initToolbar(binding.settingsColorToolbar);
@@ -79,7 +77,7 @@ public class ColorSettingActivity extends BaseActivity {
     private void setPreviousColor() {
         binding.backgroundPalette.setColor(initialBgColor);
         binding.fontPalette.setColor(initialFontColor);
-        applyColorToToolbar(binding.settingsColorToolbar, initialBgColor, initialFontColor);
+        applyColorToToolbar(binding.settingsColorToolbar);
     }
 
     private void initSavedColors() {
@@ -109,7 +107,7 @@ public class ColorSettingActivity extends BaseActivity {
             adapter.removeItemAsMaybe(color)
                     .subscribeOn(Schedulers.io())
                     .subscribe();
-            Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_delete, mPreferenceApplier.getColor());
+            Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_delete, colorPair());
         });
     }
 
@@ -120,10 +118,8 @@ public class ColorSettingActivity extends BaseActivity {
     }
 
     private void refresh() {
-        final int bgColor   = mPreferenceApplier.getColor();
-        final int fontColor = mPreferenceApplier.getFontColor();
-        applyColorToToolbar(binding.settingsColorToolbar, bgColor, fontColor);
-        Colors.setBgAndText(binding.settingsColorOk, bgColor, fontColor);
+        applyColorToToolbar(binding.settingsColorToolbar);
+        Colors.setBgAndText(binding.settingsColorOk, colorPair());
     }
 
     public void ok(final View view) {
@@ -144,9 +140,9 @@ public class ColorSettingActivity extends BaseActivity {
     }
 
     private void commitNewColor(final int bgColor, final int fontColor) {
-        mPreferenceApplier.setColor(bgColor);
+        getPreferenceApplier().setColor(bgColor);
 
-        mPreferenceApplier.setFontColor(fontColor);
+        getPreferenceApplier().setFontColor(fontColor);
 
         refresh();
         Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_commit, bgColor);

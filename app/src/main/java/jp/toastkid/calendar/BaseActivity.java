@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
+import jp.toastkid.calendar.libs.preference.ColorPair;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
  * @author toastkidjp
@@ -22,11 +24,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     /** Firebase analytics log sender. */
     private FirebaseAnalytics sender;
 
+    /** Preference Applier. */
+    private PreferenceApplier preferenceApplier;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sender = FirebaseAnalytics.getInstance(this);
         sendLog("launch");
+        preferenceApplier = new PreferenceApplier(this);
     }
 
     /**
@@ -57,15 +63,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Apply color to Toolbar.
      * @param toolbar Toolbar
-     * @param bgColor Toolbar's background color
-     * @param fontColor Toolbar's font color
      */
-    protected void applyColorToToolbar(final Toolbar toolbar, final int bgColor, final int fontColor) {
-        toolbar.setTitleTextColor(fontColor);
-        toolbar.setBackgroundColor(bgColor);
+    protected void applyColorToToolbar(final Toolbar toolbar) {
+        final ColorPair pair = preferenceApplier.colorPair();
+        toolbar.setBackgroundColor(pair.bgColor());
+        toolbar.setTitleTextColor(pair.fontColor());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(bgColor, 255));
+            getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(pair.bgColor(), 255));
         }
     }
 
@@ -87,6 +92,30 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
         sender.logEvent(key, bundle);
+    }
+
+    protected final ColorPair colorPair() {
+        return preferenceApplier.colorPair();
+    }
+
+    protected final String getBackgroundImagePath() {
+        return preferenceApplier.getBackgroundImagePath();
+    }
+
+    protected final void removeBackgroundImagePath() {
+        preferenceApplier.removeBackgroundImagePath();
+    }
+
+    protected final void clearPreferences() {
+        preferenceApplier.clear();
+    }
+
+    /**
+     * FIXME: remove it
+     * @return {@link PreferenceApplier}
+     */
+    protected final PreferenceApplier getPreferenceApplier() {
+        return preferenceApplier;
     }
 
     protected abstract @StringRes int getTitleId();

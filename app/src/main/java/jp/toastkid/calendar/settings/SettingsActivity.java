@@ -10,13 +10,9 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.advertisement.AdViewFactory;
 import jp.toastkid.calendar.databinding.ActivitySettingsBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
@@ -34,9 +30,6 @@ public class SettingsActivity extends BaseActivity {
     /** Binding instance. */
     private ActivitySettingsBinding binding;
 
-    /** Preference applier. */
-    private PreferenceApplier mPreferenceApplier;
-
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
@@ -44,7 +37,6 @@ public class SettingsActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         binding.setActivity(this);
 
-        mPreferenceApplier = new PreferenceApplier(this);
         initToolbar(binding.settingsToolbar);
         binding.settingsClear.setOnClickListener(v -> new AlertDialog.Builder(this)
                 .setTitle(R.string.title_clear)
@@ -52,10 +44,9 @@ public class SettingsActivity extends BaseActivity {
                 .setCancelable(true)
                 .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
                 .setPositiveButton(R.string.ok,      (d, i) -> {
-                    mPreferenceApplier.clear();
+                    clearPreferences();
                     refresh();
-                    Toaster.snackShort(
-                            binding.settingsToolbar, R.string.done_clear, mPreferenceApplier.getColor());
+                    Toaster.snackShort(binding.settingsToolbar, R.string.done_clear, colorPair());
                 })
                 .show());
 
@@ -68,20 +59,13 @@ public class SettingsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         refresh();
-        ImageLoader.setImageToImageView(
-                binding.settingBackground,
-                mPreferenceApplier.getBackgroundImagePath()
-        );
+        ImageLoader.setImageToImageView(binding.settingBackground, getBackgroundImagePath());
     }
 
     private void refresh() {
-        applyColorToToolbar(
-                binding.settingsToolbar,
-                mPreferenceApplier.getColor(),
-                mPreferenceApplier.getFontColor()
-        );
+        applyColorToToolbar(binding.settingsToolbar);
 
-        binding.settingsEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
+        binding.settingsEnableSuggestCheck.setChecked(getPreferenceApplier().isEnableSuggest());
     }
 
     public void color(final View view) {
@@ -89,8 +73,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     public void switchSuggest(final View view) {
-        mPreferenceApplier.switchEnableSuggest();
-        binding.settingsEnableSuggestCheck.setChecked(mPreferenceApplier.isEnableSuggest());
+        final PreferenceApplier applier = getPreferenceApplier();
+        applier.switchEnableSuggest();
+        binding.settingsEnableSuggestCheck.setChecked(applier.isEnableSuggest());
     }
 
     public void licenses(final View view) {

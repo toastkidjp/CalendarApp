@@ -28,7 +28,7 @@ import jp.toastkid.calendar.databinding.ActivitySearchBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
-import jp.toastkid.calendar.libs.preference.PreferenceApplier;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.search.suggest.SuggestAdapter;
 import jp.toastkid.calendar.search.suggest.SuggestFetcher;
 
@@ -48,9 +48,6 @@ public class SearchActivity extends BaseActivity {
     /** View binder. */
     private ActivitySearchBinding binding;
 
-    /** Preference applier. */
-    private PreferenceApplier mPreferenceApplier;
-
     /** Suggest Adapter. */
     private SuggestAdapter mSuggestAdapter;
 
@@ -61,7 +58,6 @@ public class SearchActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        mPreferenceApplier = new PreferenceApplier(this);
 
         SearchCategorySpinnerInitializer.initialize(binding.searchCategories);
         initSuggests();
@@ -112,7 +108,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (mPreferenceApplier.isDisableSuggest()) {
+                if (getPreferenceApplier().isDisableSuggest()) {
                     mSuggestAdapter.clear();
                     return;
                 }
@@ -166,19 +162,17 @@ public class SearchActivity extends BaseActivity {
         Inputs.showKeyboard(this, binding.searchInput);
         applyColor();
 
-        ImageLoader.setImageToImageView(
-                binding.searchBackground,
-                mPreferenceApplier.getBackgroundImagePath()
-        );
+        ImageLoader.setImageToImageView(binding.searchBackground, getBackgroundImagePath());
     }
 
     /**
      * Apply color to views.
      */
     private void applyColor() {
-        final int bgColor   = mPreferenceApplier.getColor();
-        final int fontColor = mPreferenceApplier.getFontColor();
-        applyColorToToolbar(binding.searchToolbar, bgColor, fontColor);
+        final ColorPair colorPair = colorPair();
+        final int bgColor   = colorPair.bgColor();
+        final int fontColor = colorPair.fontColor();
+        applyColorToToolbar(binding.searchToolbar);
         binding.searchInput.setTextColor(fontColor);
         binding.searchInput.setHintTextColor(fontColor);
         binding.searchInput.setHighlightColor(fontColor);
@@ -216,9 +210,10 @@ public class SearchActivity extends BaseActivity {
         bundle.putString("query", query);
         sendLog("search", bundle);
 
+        final ColorPair colorPair = colorPair();
         new SearchIntentLauncher(this)
-                .setBackgroundColor(mPreferenceApplier.getColor())
-                .setFontColor(mPreferenceApplier.getFontColor())
+                .setBackgroundColor(colorPair.bgColor())
+                .setFontColor(colorPair.fontColor())
                 .setCategory(category)
                 .setQuery(query)
                 .invoke();

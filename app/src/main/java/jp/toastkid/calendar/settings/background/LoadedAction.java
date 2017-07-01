@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +16,7 @@ import java.io.IOException;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
@@ -35,9 +34,9 @@ class LoadedAction {
     @NonNull
     private final View parent;
 
-    /** Preferences wrapper. */
+    /** Color pair. */
     @NonNull
-    private final PreferenceApplier preferenceApplier;
+    private final ColorPair colorPair;
 
     /** On loaded action. */
     @NonNull
@@ -47,18 +46,18 @@ class LoadedAction {
      *
      * @param data
      * @param parent
-     * @param preferenceApplier
+     * @param colorPair
      * @param onLoadedAction
      */
     LoadedAction(
             @NonNull final Intent data,
             @NonNull final View parent,
-            @NonNull final PreferenceApplier preferenceApplier,
+            @NonNull final ColorPair colorPair,
             @NonNull final Runnable onLoadedAction
                  ) {
-        this.uri = data.getData();
-        this.parent = parent;
-        this.preferenceApplier = preferenceApplier;
+        this.uri            = data.getData();
+        this.parent         = parent;
+        this.colorPair      = colorPair;
         this.onLoadedAction = onLoadedAction;
     }
 
@@ -103,12 +102,7 @@ class LoadedAction {
      * Inform failed.
      */
     private void informFailed() {
-        Toaster.snackShort(
-                parent,
-                R.string.message_failed_read_image,
-                preferenceApplier.getColor(),
-                preferenceApplier.getFontColor()
-        );
+        Toaster.snackShort(parent, R.string.message_failed_read_image, colorPair);
     }
 
     /**
@@ -120,8 +114,7 @@ class LoadedAction {
         Toaster.snackLong(
                 parent, R.string.message_done_set_image, R.string.display,
                 v -> ImageDialog.show(context, uri, new BitmapDrawable(context.getResources(), image)),
-                preferenceApplier.getColor(),
-                preferenceApplier.getFontColor()
+                colorPair
         );
     }
 

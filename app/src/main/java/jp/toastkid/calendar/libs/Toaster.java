@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * Simple toasting utilities.
@@ -44,7 +45,7 @@ public class Toaster {
             @StringRes final int messageId,
             @ColorInt final int color
     ) {
-        snackShort(view, view.getContext().getString(messageId), color, Color.WHITE);
+        snackShort(view, view.getContext().getString(messageId), new ColorPair(color, Color.WHITE));
     }
 
     /**
@@ -59,7 +60,7 @@ public class Toaster {
             @NonNull final String message,
             @ColorInt final int color
     ) {
-        snackShort(view, message, color, Color.WHITE);
+        snackShort(view, message, new ColorPair(color, Color.WHITE));
     }
 
     /**
@@ -67,16 +68,14 @@ public class Toaster {
      *
      * @param view
      * @param messageId
-     * @param color
-     * @param textColor
+     * @param pair
      */
     public static void snackShort(
             @NonNull final View view,
             @StringRes final int messageId,
-            @ColorInt final int color,
-            @ColorInt final int textColor
+            @NonNull final ColorPair pair
     ) {
-        snackShort(view, view.getContext().getString(messageId), color, textColor);
+        snackShort(view, view.getContext().getString(messageId), pair);
     }
 
     /**
@@ -84,20 +83,19 @@ public class Toaster {
      *
      * @param view
      * @param message
-     * @param color
+     * @param pair
      */
     public static void snackShort(
             @NonNull final View view,
             @NonNull final String message,
-            @ColorInt final int color,
-            @ColorInt final int textColor
+            @NonNull final ColorPair pair
             ) {
         final Snackbar snackbar
                 = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
         final View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(color);
+        snackbarView.setBackgroundColor(pair.bgColor());
         ((TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text))
-                .setTextColor(textColor);
+                .setTextColor(pair.fontColor());
         snackbar.show();
     }
 
@@ -107,26 +105,24 @@ public class Toaster {
      * @param messageId
      * @param actionTextId
      * @param action
-     * @param color
-     * @param textColor
+     * @param pair
      */
     public static void snackLong(
             @NonNull final View view,
             @StringRes final int messageId,
             @StringRes final int actionTextId,
             @NonNull final View.OnClickListener action,
-            @ColorInt final int color,
-            @ColorInt final int textColor
+            @NonNull final ColorPair pair
     ) {
         final Snackbar snackbar
                 = Snackbar.make(view, messageId, Snackbar.LENGTH_LONG);
         snackbar.setAction(actionTextId, action);
         final View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(color);
+        snackbarView.setBackgroundColor(pair.bgColor());
         ((TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text))
-                .setTextColor(textColor);
+                .setTextColor(pair.fontColor());
         ((TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_action))
-                .setTextColor(textColor);
+                .setTextColor(pair.fontColor());
         snackbar.show();
     }
 }

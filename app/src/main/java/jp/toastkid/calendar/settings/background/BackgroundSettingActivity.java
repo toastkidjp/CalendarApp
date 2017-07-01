@@ -32,9 +32,6 @@ public class BackgroundSettingActivity extends BaseActivity {
     /** Data Binding object. */
     private ActivityBackgroundSettingBinding binding;
 
-    /** Preference wrapper. */
-    private PreferenceApplier preferenceApplier;
-
     /** Adapter. */
     private Adapter adapter;
 
@@ -49,8 +46,6 @@ public class BackgroundSettingActivity extends BaseActivity {
         initToolbar(binding.toolbar);
         binding.toolbar.inflateMenu(R.menu.background_setting_menu);
 
-        preferenceApplier = new PreferenceApplier(this);
-
         storeroom = new Storeroom(this);
 
         initImagesView();
@@ -60,14 +55,14 @@ public class BackgroundSettingActivity extends BaseActivity {
     private void initImagesView() {
         binding.imagesView.setLayoutManager(
                 new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false));
-        adapter = new Adapter(preferenceApplier, storeroom);
+        adapter = new Adapter(getPreferenceApplier(), storeroom);
         binding.imagesView.setAdapter(adapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        applyColorToToolbar(binding.toolbar, preferenceApplier.getColor(), preferenceApplier.getFontColor());
+        applyColorToToolbar(binding.toolbar);
     }
 
     @Override
@@ -89,8 +84,7 @@ public class BackgroundSettingActivity extends BaseActivity {
                         Toaster.snackShort(
                                 binding.toolbar,
                                 getString(R.string.message_success_image_removal),
-                                preferenceApplier.getColor(),
-                                preferenceApplier.getFontColor()
+                                colorPair()
                         );
                         adapter.notifyDataSetChanged();
                         d.dismiss();
@@ -110,7 +104,7 @@ public class BackgroundSettingActivity extends BaseActivity {
     ) {
 
         if (requestCode == IMAGE_READ_REQUEST && resultCode == RESULT_OK) {
-            new LoadedAction(data, binding.toolbar, preferenceApplier, adapter::notifyDataSetChanged)
+            new LoadedAction(data, binding.toolbar, colorPair(), adapter::notifyDataSetChanged)
                     .invoke();
             sendLog("set_img");
         }

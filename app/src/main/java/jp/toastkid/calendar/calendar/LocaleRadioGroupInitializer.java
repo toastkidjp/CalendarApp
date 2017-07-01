@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
@@ -19,9 +20,9 @@ class LocaleRadioGroupInitializer {
      * Initialize Locale selector.
      *
      * @param radioGroup
-     * @param preferenceApplier
+     * @param pair
      */
-    static void init(final RadioGroup radioGroup, final PreferenceApplier preferenceApplier) {
+    static void init(final RadioGroup radioGroup, final ColorPair pair) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             radioGroup.setVisibility(View.GONE);
             return;
@@ -34,8 +35,7 @@ class LocaleRadioGroupInitializer {
             Toaster.snackShort(
                     radioGroup,
                     "New locale: " + newLocale.getLanguage(),
-                    preferenceApplier.getColor(),
-                    preferenceApplier.getFontColor()
+                    pair
             );
         });
     }

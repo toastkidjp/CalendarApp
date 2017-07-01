@@ -13,6 +13,7 @@ import android.widget.TextView;
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * @author toastkidjp
@@ -21,11 +22,10 @@ class Colors {
 
     static void setBgAndText(
             final TextView tv,
-            @ColorInt final int bgColor,
-            @ColorInt final int fontColor
-    ) {
-        tv.setBackgroundColor(bgColor);
-        tv.setTextColor(fontColor);
+            @NonNull final ColorPair pair
+            ) {
+        tv.setBackgroundColor(pair.bgColor());
+        tv.setTextColor(pair.fontColor());
     }
 
     static void setSaved(final TextView tv, final SavedColor color) {

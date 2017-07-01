@@ -58,8 +58,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
             Toaster.snackShort(
                     binding.image,
                     R.string.message_change_background_image,
-                    preferenceApplier.getColor(),
-                    preferenceApplier.getFontColor()
+                    preferenceApplier.colorPair()
             );
         });
         this.binding.getRoot().setOnLongClickListener(v -> {
@@ -80,14 +79,11 @@ class ViewHolder extends RecyclerView.ViewHolder {
      * @param file
      */
     private void removeSetImage(final File file) {
-        final int bgColor   = preferenceApplier.getColor();
-        final int fontColor = preferenceApplier.getFontColor();
         if (file == null || !file.exists()) {
             Toaster.snackShort(
                     binding.text,
                     R.string.message_cannot_found_image,
-                    bgColor,
-                    fontColor
+                    preferenceApplier.colorPair()
             );
             return;
         }
@@ -96,16 +92,14 @@ class ViewHolder extends RecyclerView.ViewHolder {
             Toaster.snackShort(
                     binding.text,
                     R.string.message_failed_image_removal,
-                    bgColor,
-                    fontColor
+                    preferenceApplier.colorPair()
             );
             return;
         }
         Toaster.snackShort(
                 binding.text,
                 R.string.message_success_image_removal,
-                bgColor,
-                fontColor
+                preferenceApplier.colorPair()
         );
         onRemoved.run();
     }

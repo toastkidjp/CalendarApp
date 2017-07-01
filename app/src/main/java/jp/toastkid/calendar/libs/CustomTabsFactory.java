@@ -8,10 +8,20 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 
+import jp.toastkid.calendar.libs.preference.ColorPair;
+
 /**
  * @author toastkidjp
  */
 public class CustomTabsFactory {
+
+    @NonNull
+    public static CustomTabsIntent.Builder make(
+            @NonNull final Context context,
+            @NonNull final ColorPair pair,
+            @DrawableRes final int iconId) {
+        return make(context, pair.bgColor(), pair.fontColor(), iconId);
+    }
 
     /**
      *

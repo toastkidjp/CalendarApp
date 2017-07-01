@@ -44,9 +44,6 @@ import jp.toastkid.calendar.settings.color.ColorSettingActivity;
  */
 public class MainActivity extends BaseActivity {
 
-    /** Preference Applier. */
-    private PreferenceApplier preferenceApplier;
-
     /** Navigation's background. */
     private View navBackground;
 
@@ -61,8 +58,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        preferenceApplier = new PreferenceApplier(this);
 
         initToolbar(binding.appBarMain.toolbar);
 
@@ -96,7 +91,7 @@ public class MainActivity extends BaseActivity {
         LocaleRadioGroupInitializer.init(
                 (RadioGroup) binding.navView.getMenu().findItem(R.id.nav_locale).getActionView()
                         .findViewById(R.id.locale),
-                preferenceApplier
+                colorPair()
         );
 
         binding.navView.setNavigationItemSelectedListener(item -> {
@@ -107,13 +102,12 @@ public class MainActivity extends BaseActivity {
                     return true;
                 case R.id.nav_reset_bg:
                     sendLog("nav_bg_reset");
-                    preferenceApplier.removeBackgroundImagePath();
+                    removeBackgroundImagePath();
                     setBackgroundImage(null);
                     Toaster.snackShort(
                             binding.drawerLayout,
                             R.string.message_reset_bg_image,
-                            preferenceApplier.getColor(),
-                            preferenceApplier.getFontColor()
+                            colorPair()
                     );
                     return true;
                 case R.id.nav_search:
@@ -124,8 +118,7 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_twt");
                     IntentFactory.makeTwitter(
                             MainActivity.this,
-                            preferenceApplier.getColor(),
-                            preferenceApplier.getFontColor(),
+                            colorPair(),
                             R.drawable.ic_back
                     ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
                     return true;
@@ -161,8 +154,7 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_shr_twt");
                     IntentFactory.makeTwitter(
                             MainActivity.this,
-                            preferenceApplier.getColor(),
-                            preferenceApplier.getFontColor(),
+                            colorPair(),
                             R.drawable.ic_back
                     ).launchUrl(
                             MainActivity.this,
@@ -172,7 +164,7 @@ public class MainActivity extends BaseActivity {
                     return true;
                 case R.id.nav_about_this_app:
                     if (aboutThisApp == null) {
-                        aboutThisApp = new AboutThisApp(this, preferenceApplier);
+                        aboutThisApp = new AboutThisApp(this, colorPair());
                     }
                     aboutThisApp.invoke();
                     return true;
@@ -227,12 +219,10 @@ public class MainActivity extends BaseActivity {
         if (url.length() == 0) {
             return;
         }
-        CustomTabsFactory.make(
-                this,
-                preferenceApplier.getColor(),
-                preferenceApplier.getFontColor(),
-                R.drawable.ic_back
-        ).build().launchUrl(this, Uri.parse(url));
+        CustomTabsFactory
+                .make(this, colorPair(), R.drawable.ic_back)
+                .build()
+                .launchUrl(this, Uri.parse(url));
     }
 
     @Override
@@ -264,23 +254,21 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        final int bgColor   = preferenceApplier.getColor();
-        final int fontColor = preferenceApplier.getFontColor();
-        applyColorToToolbar(binding.appBarMain.toolbar, bgColor, fontColor);
+        applyColorToToolbar(binding.appBarMain.toolbar);
 
-        applyBackgrounds(bgColor, fontColor);
+        applyBackgrounds();
     }
 
     /**
      * Apply background appearance.
-     * @param bgColor
-     * @param fontColor
      */
-    private void applyBackgrounds(@ColorInt final int bgColor, @ColorInt final int fontColor) {
-        final String backgroundImagePath = preferenceApplier.getBackgroundImagePath();
+    private void applyBackgrounds() {
+        final String backgroundImagePath = getBackgroundImagePath();
+        final int fontColor = colorPair().fontColor();
         if (backgroundImagePath.length() == 0) {
             setBackgroundImage(null);
-            ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
+            ((TextView) navBackground.findViewById(R.id.nav_header_main))
+                    .setTextColor(fontColor);
             return;
         }
 
@@ -296,10 +284,9 @@ public class MainActivity extends BaseActivity {
             Toaster.snackShort(
                     navBackground,
                     getString(R.string.message_failed_read_image),
-                    bgColor,
-                    fontColor
+                    colorPair()
             );
-            preferenceApplier.removeBackgroundImagePath();
+            removeBackgroundImagePath();
             setBackgroundImage(null);
         }
         ((TextView) navBackground.findViewById(R.id.nav_header_main)).setTextColor(fontColor);
@@ -313,7 +300,7 @@ public class MainActivity extends BaseActivity {
         ((ImageView) navBackground.findViewById(R.id.background)).setImageDrawable(background);
         binding.appBarMain.content.image.setImageDrawable(background);
         if (background == null) {
-            navBackground.setBackgroundColor(preferenceApplier.getColor());
+            navBackground.setBackgroundColor(colorPair().bgColor());
         }
     }
 

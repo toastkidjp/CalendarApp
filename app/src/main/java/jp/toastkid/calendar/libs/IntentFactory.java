@@ -7,6 +7,8 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 
+import jp.toastkid.calendar.libs.preference.ColorPair;
+
 /**
  * Common {@link android.content.Intent} factory.
  *
@@ -35,11 +37,10 @@ public class IntentFactory {
     @NonNull
     public static CustomTabsIntent makeTwitter(
             @NonNull final Context context,
-            @ColorInt final int bgColor,
-            @ColorInt final int fontColor,
+            @NonNull final ColorPair pair,
             @DrawableRes final int iconId
     ) {
-        return CustomTabsFactory.make(context, bgColor, fontColor, iconId).build();
+        return CustomTabsFactory.make(context, pair.bgColor(), pair.fontColor(), iconId).build();
     }
 
     /**

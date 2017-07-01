@@ -13,6 +13,7 @@ import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.advertisement.NativeAdFactory;
 import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
@@ -37,12 +38,9 @@ class AboutThisApp {
     /**
      *
      * @param context AppCompat context
-     * @param preferenceApplier
+     * @param pair
      */
-    AboutThisApp(
-            @NonNull final Context context,
-            @NonNull final PreferenceApplier preferenceApplier
-    ) {
+    AboutThisApp(@NonNull final Context context, @NonNull final ColorPair pair) {
         this.context = context;
         adInitializer = AdInitializers.find(context.getApplicationContext());
         nativeAd = NativeAdFactory.make(context.getApplicationContext());
@@ -53,8 +51,7 @@ class AboutThisApp {
                 Toaster.snackShort(
                         nativeAd,
                         R.string.message_done_load_ad,
-                        preferenceApplier.getColor(),
-                        preferenceApplier.getFontColor()
+                        pair
                 );
             }
 
@@ -64,8 +61,7 @@ class AboutThisApp {
                 Toaster.snackShort(
                         nativeAd,
                         R.string.message_failed_ad_loading,
-                        preferenceApplier.getColor(),
-                        preferenceApplier.getFontColor()
+                        pair
                 );
             }
         });

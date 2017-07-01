@@ -42,6 +42,10 @@ public class PreferenceApplier {
         preferences.edit().putInt(Key.FONT_COLOR.name(), color).apply();
     }
 
+    public ColorPair colorPair() {
+        return new ColorPair(getColor(), getFontColor());
+    }
+
     public boolean isEnableSuggest() {
         return preferences.getBoolean(Key.ENABLE_SUGGEST.name(), true);
     }
