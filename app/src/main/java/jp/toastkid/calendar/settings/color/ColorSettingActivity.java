@@ -6,8 +6,10 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -53,6 +55,7 @@ public class ColorSettingActivity extends BaseActivity {
 
         initPalette();
         initToolbar(binding.settingsColorToolbar);
+        binding.settingsColorToolbar.inflateMenu(R.menu.color_setting_toolbar_menu);
         initSavedColors();
     }
 
@@ -87,7 +90,7 @@ public class ColorSettingActivity extends BaseActivity {
         binding.savedColors.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.clearSavedColor.setOnClickListener(v ->
-                Colors.showClearColorsDialog(
+                SavedColors.showClearColorsDialog(
                         this,
                         binding.settingsColorToolbar,
                         (SavedColor_Relation) adapter.getRelation()
@@ -101,7 +104,7 @@ public class ColorSettingActivity extends BaseActivity {
      * @param color  {@link SavedColor} object
      */
     private void bindView(final SavedColorHolder holder, final SavedColor color) {
-        Colors.setSaved(holder.textView, color);
+        SavedColors.setSaved(holder.textView, color);
         holder.textView.setOnClickListener(v -> commitNewColor(color.bgColor, color.fontColor));
         holder.remove.setOnClickListener(v -> {
             adapter.removeItemAsMaybe(color)
@@ -119,7 +122,7 @@ public class ColorSettingActivity extends BaseActivity {
 
     private void refresh() {
         applyColorToToolbar(binding.settingsColorToolbar);
-        Colors.setBgAndText(binding.settingsColorOk, colorPair());
+        SavedColors.setBgAndText(binding.settingsColorOk, colorPair());
     }
 
     public void ok(final View view) {
@@ -133,10 +136,8 @@ public class ColorSettingActivity extends BaseActivity {
         bundle.putString("font", Integer.toHexString(fontColor));
         sendLog("color_set", bundle);
 
-        final SavedColor savedColor = new SavedColor();
-        savedColor.bgColor   = bgColor;
-        savedColor.fontColor = fontColor;
-        adapter.addItemAsSingle(savedColor).subscribeOn(Schedulers.io()).subscribe();
+        adapter.addItemAsSingle(SavedColors.makeSavedColor(bgColor, fontColor))
+                .subscribeOn(Schedulers.io()).subscribe();
     }
 
     private void commitNewColor(final int bgColor, final int fontColor) {
@@ -156,6 +157,26 @@ public class ColorSettingActivity extends BaseActivity {
     @Override
     protected int getTitleId() {
         return R.string.title_settings_color;
+    }
+
+    @Override
+    protected boolean clickMenu(MenuItem item) {
+        if (item.getItemId() == R.id.color_settings_toolbar_menu_add_recommend) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.title_add_recommended_colors)
+                    .setMessage(R.string.message_add_recommended_colors)
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.ok, (d, i) -> {
+                        SavedColors.insertDefaultColors(this);
+                        Toaster.snackShort(
+                                binding.settingsColorToolbar, R.string.done_addition, colorPair());
+                        d.dismiss();
+                    })
+                    .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
+                    .show();
+            return true;
+        }
+        return super.clickMenu(item);
     }
 
     /**

@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
+import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
@@ -18,7 +19,7 @@ import jp.toastkid.calendar.libs.preference.ColorPair;
 /**
  * @author toastkidjp
  */
-class Colors {
+public class SavedColors {
 
     static void setBgAndText(
             final TextView tv,
@@ -34,7 +35,7 @@ class Colors {
     }
 
     @NonNull
-    public static SavedColor makeSavedColor(
+    static SavedColor makeSavedColor(
             @ColorInt final int bgColor,
             @ColorInt final int fontColor
     ) {
@@ -75,4 +76,19 @@ class Colors {
                     d.dismiss();
                 });
     }
+
+    /**
+     * Insert default colors.
+     * @param context
+     */
+    public static void insertDefaultColors(@NonNull final Context context) {
+
+        Completable.create(e -> {
+            DbInitter.get(context).relationOfSavedColor()
+                    .inserter()
+                    .executeAllAsObservable(DefaultColors.make(context))
+                    .subscribe();
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
 }

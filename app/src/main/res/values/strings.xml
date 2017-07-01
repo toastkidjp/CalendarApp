@@ -101,5 +101,8 @@
     <string name="unit_id_native_large_ad">ca-app-pub-5751262573448755/2699725828</string>
     <string name="message_done_load_ad">広告のロードが完了しました。</string>
     <string name="message_failed_ad_loading">広告のロードに失敗しました。</string>
+    <string name="title_add_recommended_colors">おすすめの色を追加</string>
+    <string name="done_addition">追加しました。</string>
+    <string name="message_add_recommended_colors">おすすめの色を追加します。</string>
 
 </resources>

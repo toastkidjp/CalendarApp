@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
+import java.io.File;
+
 import jp.toastkid.calendar.R;
 
 /**
@@ -68,6 +70,15 @@ public class PreferenceApplier {
 
     public void removeBackgroundImagePath() {
         preferences.edit().remove(Key.BG_IMAGE.name()).apply();
+    }
+
+    public boolean isFirstLaunch() {
+        File firstLaunch = new File(context.getFilesDir(), "firstLaunch");
+        if (firstLaunch.exists()) {
+            return false;
+        }
+        context.getFilesDir().mkdirs();
+        return true;
     }
 
     public void clear() {

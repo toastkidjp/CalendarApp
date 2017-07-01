@@ -100,5 +100,8 @@
     <string name="unit_id_native_large_ad">ca-app-pub-5751262573448755/2699725828</string>
     <string name="message_done_load_ad">It has done loading AD!</string>
     <string name="message_failed_ad_loading">It failed to load AD...</string>
+    <string name="title_add_recommended_colors">Add recommended colors</string>
+    <string name="done_addition">It has done addition!</string>
+    <string name="message_add_recommended_colors">Would you like to add recommended colors?</string>
 
 </resources>
