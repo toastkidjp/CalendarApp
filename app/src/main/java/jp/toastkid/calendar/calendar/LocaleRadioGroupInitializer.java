@@ -9,7 +9,6 @@ import java.util.Locale;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.ColorPair;
-import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
  * @author toastkidjp
@@ -30,7 +29,7 @@ class LocaleRadioGroupInitializer {
         radioGroup.setOnCheckedChangeListener((group, id) -> {
             final Locale newLocale = id == R.id.ja ? Locale.JAPAN : Locale.ENGLISH;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                radioGroup.getResources().getConfiguration().setLocale(newLocale);
+                LocaleWrapper.setLocale(radioGroup.getResources().getConfiguration(), newLocale);
             }
             Toaster.snackShort(
                     radioGroup,
@@ -39,4 +38,5 @@ class LocaleRadioGroupInitializer {
             );
         });
     }
+
 }

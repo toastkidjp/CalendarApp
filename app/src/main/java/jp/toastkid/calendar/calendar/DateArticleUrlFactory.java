@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.libs.Logger;
 
 /**
  * Factory of Wikipedia article's url.
@@ -33,9 +34,11 @@ class DateArticleUrlFactory {
         if (dayOfMonth <= 0 || dayOfMonth >= 31) {
             return "";
         }
-        if (Locale.getDefault().getLanguage().equals(Locale.JAPAN.getLanguage())) {
+        if (LocaleWrapper.isJa(context.getResources().getConfiguration())) {
+            Logger.i("JA " + context.getString(FORMAT_ID));
             return MessageFormat.format(context.getString(FORMAT_ID), month + 1, dayOfMonth);
         }
+        Logger.i("EN " + context.getString(FORMAT_ID));
         return MessageFormat.format(context.getString(FORMAT_ID), Month.get(month), dayOfMonth);
     }
 }

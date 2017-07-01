@@ -31,7 +31,8 @@ class DateTitleFactory {
         if (dayOfMonth <= 0 || dayOfMonth >= 31) {
             return "";
         }
-        if (Locale.getDefault().getLanguage().equals(Locale.JAPAN.getLanguage())) {
+
+        if (LocaleWrapper.isJa(context.getResources().getConfiguration())) {
             return MessageFormat.format(context.getString(FORMAT_ID), month + 1, dayOfMonth);
         }
         return MessageFormat.format(context.getString(FORMAT_ID), Month.get(month), dayOfMonth);
