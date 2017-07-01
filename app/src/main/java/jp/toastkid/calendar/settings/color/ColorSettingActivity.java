@@ -74,13 +74,7 @@ public class ColorSettingActivity extends BaseActivity {
             binding.settingsColorOk.setTextColor(c);
         });
 
-        setPreviousColor();
-    }
-
-    private void setPreviousColor() {
-        binding.backgroundPalette.setColor(initialBgColor);
-        binding.fontPalette.setColor(initialFontColor);
-        applyColorToToolbar(binding.settingsColorToolbar);
+        refresh();
     }
 
     private void initSavedColors() {
@@ -146,12 +140,20 @@ public class ColorSettingActivity extends BaseActivity {
         getPreferenceApplier().setFontColor(fontColor);
 
         refresh();
-        Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_commit, bgColor);
+
+        binding.backgroundPalette.setColor(bgColor);
+        binding.fontPalette.setColor(fontColor);
+
+        Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_commit, colorPair());
     }
 
     public void reset(final View view) {
-        setPreviousColor();
-        Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_reset, binding.backgroundPalette.getColor());
+        getPreferenceApplier().setColor(initialBgColor);
+
+        getPreferenceApplier().setFontColor(initialFontColor);
+
+        refresh();
+        Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_reset, colorPair());
     }
 
     @Override

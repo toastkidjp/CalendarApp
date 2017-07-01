@@ -73,11 +73,11 @@ public class PreferenceApplier {
     }
 
     public boolean isFirstLaunch() {
-        File firstLaunch = new File(context.getFilesDir(), "firstLaunch");
+        final File firstLaunch = new File(context.getFilesDir(), "firstLaunch");
         if (firstLaunch.exists()) {
             return false;
         }
-        context.getFilesDir().mkdirs();
+        firstLaunch.mkdirs();
         return true;
     }
 
