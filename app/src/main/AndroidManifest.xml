@@ -47,7 +47,7 @@
             android:configChanges="screenSize"
             />
         <activity
-            android:name=".interstitial.InterstitialAdActivity"
+            android:name=".advertisement.activity.InterstitialAdActivity"
             android:label="@string/title_loading_ad"
             android:configChanges="screenSize"
             />

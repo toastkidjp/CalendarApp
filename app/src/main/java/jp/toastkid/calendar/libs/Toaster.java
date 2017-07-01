@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.libs;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -7,6 +8,10 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
 
 /**
  * Simple toasting utilities.
@@ -14,6 +19,18 @@ import android.widget.TextView;
  * @author toastkidjp
  */
 public class Toaster {
+
+    /**
+     * Short toasting.
+     * @param context
+     * @param messageId
+     */
+    public static void tShort(
+            @NonNull final Context context,
+            @StringRes final int messageId
+    ) {
+        Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * Show simple snackbar on short time.

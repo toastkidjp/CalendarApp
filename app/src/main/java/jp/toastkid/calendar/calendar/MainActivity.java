@@ -1,13 +1,10 @@
 package jp.toastkid.calendar.calendar;
 
-import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -25,12 +22,10 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Locale;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
-import jp.toastkid.calendar.interstitial.InterstitialAdActivity;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.IntentFactory;
@@ -57,6 +52,9 @@ public class MainActivity extends BaseActivity {
 
     /** Data binding object. */
     private ActivityMainBinding binding;
+
+    /** About this app. */
+    private AboutThisApp aboutThisApp;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -173,15 +171,10 @@ public class MainActivity extends BaseActivity {
                     );
                     return true;
                 case R.id.nav_about_this_app:
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.title_about_this_app)
-                            .setMessage(R.string.message_about_this_app)
-                            .setCancelable(true)
-                            .setNegativeButton(
-                                    R.string.message_introduce_ad,
-                                    (d, i) -> startActivity(InterstitialAdActivity.makeIntent(this)))
-                            .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
-                            .show();
+                    if (aboutThisApp == null) {
+                        aboutThisApp = new AboutThisApp(this, preferenceApplier);
+                    }
+                    aboutThisApp.invoke();
                     return true;
             }
             return true;
@@ -331,6 +324,12 @@ public class MainActivity extends BaseActivity {
     @NonNull
     private String makeShareMessage() {
         return MessageFormat.format(getString(R.string.message_share), getString(R.string.app_name));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        aboutThisApp.dispose();
     }
 
     @Override

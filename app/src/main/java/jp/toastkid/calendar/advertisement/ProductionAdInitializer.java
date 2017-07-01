@@ -7,6 +7,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
@@ -35,7 +36,7 @@ class ProductionAdInitializer implements AdInitializer {
         if (BuildConfig.DEBUG) {
             throw new IllegalStateException();
         }
-        adView.loadAd(new AdRequest.Builder().build());
+        adView.loadAd(makeRequest());
     }
 
     @Override
@@ -43,6 +44,19 @@ class ProductionAdInitializer implements AdInitializer {
         if (BuildConfig.DEBUG) {
             throw new IllegalStateException();
         }
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.loadAd(makeRequest());
+    }
+
+    @Override
+    public void invoke(@NonNull final NativeExpressAdView interstitialAd) {
+        if (BuildConfig.DEBUG) {
+            throw new IllegalStateException();
+        }
+        interstitialAd.loadAd(makeRequest());
+    }
+
+    @NonNull
+    private AdRequest makeRequest() {
+        return new AdRequest.Builder().build();
     }
 }

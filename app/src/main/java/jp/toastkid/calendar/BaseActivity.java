@@ -10,10 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import jp.toastkid.calendar.interstitial.InterstitialAdActivity;
+import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
 
 /**
  * @author toastkidjp

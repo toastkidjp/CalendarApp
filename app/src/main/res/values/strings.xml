@@ -89,14 +89,17 @@
     <string name="title_section_device_settings">端末の設定</string>
     <string name="title_tweet_action">Tweet する</string>
     <string name="title_settings_locale">言語設定</string>
-    <string name="production_interstitial_ad_id">ca-app-pub-5751262573448755/4067211023</string>
+    <string name="unit_id_interstitial">ca-app-pub-5751262573448755/4067211023</string>
     <string name="title_ad">広告を見る</string>
     <string name="title_loading_ad">広告のロード中...</string>
     <string name="thank_you_for_using">いつもお使いくださり、ありがとうございます。</string>
     <string name="title_about_this_app">このアプリについて</string>
-    <string name="message_introduce_ad">作者を応援するために全面広告を表示</string>
+    <string name="message_introduce_ad">全面広告を表示</string>
     <string name="message_about_this_app">
         日付を押すと、その日に何があったか調べることができます。
     </string>
+    <string name="unit_id_native_large_ad">ca-app-pub-5751262573448755/2699725828</string>
+    <string name="message_done_load_ad">広告のロードが完了しました。</string>
+    <string name="message_failed_ad_loading">広告のロードに失敗しました。</string>
 
 </resources>
