@@ -4,9 +4,9 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
-    byte verMajor  = 1;
+    byte verMajor  = 0;
     byte verMiddle = 0;
-    byte verMinor  = 0;
+    byte verMinor  = 7;
 
     defaultConfig {
         applicationId "jp.toastkid.calendar"
@@ -16,7 +16,7 @@ android {
             throw new IllegalStateException("Middle and Minor version value is allowed under 100.")
         }
         versionCode ((verMajor * 10000) + (verMiddle * 100) + verMinor)
-        versionName verMajor + "." + verMiddle + "." + verMinor
+        versionName "${verMajor}.${verMiddle}.${verMinor}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,14 +40,14 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     def supportLibVersion = '25.3.1'
-    compile 'com.android.support:appcompat-v7:' + supportLibVersion
-    compile 'com.android.support:design:'       + supportLibVersion
-    compile 'com.android.support:customtabs:'   + supportLibVersion
-    compile 'com.android.support:cardview-v7:'  + supportLibVersion
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:customtabs:${supportLibVersion}"
+    compile "com.android.support:cardview-v7:${supportLibVersion}"
 
     def firebaseVersion = '10.2.1'
-    compile 'com.google.firebase:firebase-core:' + firebaseVersion
-    compile 'com.google.firebase:firebase-ads:'  + firebaseVersion
+    compile "com.google.firebase:firebase-core:${firebaseVersion}"
+    compile "com.google.firebase:firebase-ads:${firebaseVersion}"
     compile "com.google.firebase:firebase-crash:${firebaseVersion}"
 
     compile 'com.larswerkman:HoloColorPicker:1.5'
@@ -59,8 +59,8 @@ dependencies {
     annotationProcessor 'com.github.gfx.android.orma:orma-processor:4.2.5'
 
     def leakcanaryVersion = '1.5.1'
-    debugCompile   'com.squareup.leakcanary:leakcanary-android:'       + leakcanaryVersion
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:' + leakcanaryVersion
+    debugCompile   "com.squareup.leakcanary:leakcanary-android:${leakcanaryVersion}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanaryVersion}"
 
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.3.2"
