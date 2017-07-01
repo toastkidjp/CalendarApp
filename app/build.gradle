@@ -4,9 +4,9 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
-    byte verMajor  = 0;
+    byte verMajor  = 1;
     byte verMiddle = 0;
-    byte verMinor  = 7;
+    byte verMinor  = 0;
 
     defaultConfig {
         applicationId "jp.toastkid.calendar"
@@ -48,6 +48,7 @@ dependencies {
     def firebaseVersion = '10.2.1'
     compile 'com.google.firebase:firebase-core:' + firebaseVersion
     compile 'com.google.firebase:firebase-ads:'  + firebaseVersion
+    compile "com.google.firebase:firebase-crash:${firebaseVersion}"
 
     compile 'com.larswerkman:HoloColorPicker:1.5'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
