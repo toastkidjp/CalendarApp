@@ -178,6 +178,12 @@ public class ColorSettingActivity extends BaseActivity {
                     .show();
             return true;
         }
+        if (item.getItemId() == R.id.color_settings_toolbar_menu_add_random) {
+            SavedColors.insertRandomColor(this);
+            Toaster.snackShort(
+                    binding.settingsColorToolbar, R.string.done_addition, colorPair());
+            return true;
+        }
         return super.clickMenu(item);
     }
 

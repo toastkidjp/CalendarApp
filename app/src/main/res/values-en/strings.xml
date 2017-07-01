@@ -103,5 +103,6 @@
     <string name="title_add_recommended_colors">Add recommended colors</string>
     <string name="done_addition">It has done addition!</string>
     <string name="message_add_recommended_colors">Would you like to add recommended colors?</string>
+    <string name="title_add_random">Random</string>
 
 </resources>

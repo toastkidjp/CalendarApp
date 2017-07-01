@@ -104,5 +104,6 @@
     <string name="title_add_recommended_colors">おすすめの色を追加</string>
     <string name="done_addition">追加しました。</string>
     <string name="message_add_recommended_colors">おすすめの色を追加します。</string>
+    <string name="title_add_random">ランダム</string>
 
 </resources>

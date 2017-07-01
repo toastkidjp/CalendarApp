@@ -2,6 +2,7 @@ package jp.toastkid.calendar.settings.color;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Random;
 
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
@@ -87,6 +90,29 @@ public class SavedColors {
             DbInitter.get(context).relationOfSavedColor()
                     .inserter()
                     .executeAllAsObservable(DefaultColors.make(context))
+                    .subscribe();
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    public static void insertRandomColor(@NonNull final Context context) {
+
+        final Random random = new Random();
+        @ColorInt final int bg = Color.argb(
+                random.nextInt(255),
+                random.nextInt(255),
+                random.nextInt(255),
+                random.nextInt(255)
+        );
+        @ColorInt final int font = Color.argb(
+                random.nextInt(255),
+                random.nextInt(255),
+                random.nextInt(255),
+                random.nextInt(255)
+        );
+        Completable.create(e -> {
+            DbInitter.get(context).relationOfSavedColor()
+                    .inserter()
+                    .executeAsSingle(makeSavedColor(bg, font))
                     .subscribe();
         }).subscribeOn(Schedulers.io()).subscribe();
     }
