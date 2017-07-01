@@ -2,6 +2,7 @@ package jp.toastkid.calendar.libs;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -65,6 +66,18 @@ public class IntentFactory {
         final Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("beginTime", eventStartMs);
+        return intent;
+    }
+
+    /**
+     * Make launching Google Play intent.
+     * @param packageName
+     * @return Google play intent.
+     */
+    @NonNull
+    public static Intent googlePlay(@NonNull final String packageName) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + packageName));
         return intent;
     }
 

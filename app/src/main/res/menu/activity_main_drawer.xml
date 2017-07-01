@@ -79,6 +79,12 @@
         android:title="@string/title_about_this_app"
         />
 
+    <item
+        android:id="@+id/nav_google_play"
+        android:icon="@drawable/ic_store_black"
+        android:title="@string/title_go_google_play"
+        />
+
     <item android:title="@string/section_title_share">
         <menu>
             <item

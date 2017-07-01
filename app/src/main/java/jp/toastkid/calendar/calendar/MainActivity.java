@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import jp.toastkid.calendar.BaseActivity;
+import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.CustomTabsFactory;
@@ -165,6 +166,9 @@ public class MainActivity extends BaseActivity {
                         aboutThisApp = new AboutThisApp(this, colorPair());
                     }
                     aboutThisApp.invoke();
+                    return true;
+                case R.id.nav_google_play:
+                    startActivity(IntentFactory.googlePlay(BuildConfig.APPLICATION_ID));
                     return true;
             }
             return true;
