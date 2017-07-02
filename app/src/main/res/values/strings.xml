@@ -96,7 +96,7 @@
     <string name="title_about_this_app">このアプリについて</string>
     <string name="message_introduce_ad">全面広告を表示</string>
     <string name="message_about_this_app">
-        日付を押すと、その日に何があったか調べることができます。
+        日付を押すと、その日に何があったか調べることができるアプリです。
     </string>
     <string name="unit_id_native_large_ad">ca-app-pub-5751262573448755/2699725828</string>
     <string name="message_done_load_ad">広告のロードが完了しました。</string>
@@ -106,5 +106,6 @@
     <string name="message_add_recommended_colors">おすすめの色を追加します。</string>
     <string name="title_add_random">ランダム</string>
     <string name="title_go_google_play">Google Play で見る</string>
+    <string name="section_title_about_this_app">このアプリの情報</string>
 
 </resources>

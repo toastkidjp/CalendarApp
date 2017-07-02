@@ -1,4 +1,4 @@
-package jp.toastkid.calendar.settings;
+package jp.toastkid.calendar.libs;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -18,9 +18,11 @@ import okio.Okio;
  *
  * @author toastkidjp
  */
-class LicenseViewer {
+public class LicenseViewer {
 
-    public static final String DIRECTORY_OF_LICENSES = "licenses";
+    /** Directory name. */
+    private static final String DIRECTORY_OF_LICENSES = "licenses";
+
     /** For using get assets and show dialog.  */
     private Context mContext;
 
@@ -28,14 +30,14 @@ class LicenseViewer {
      * Initialize with context.
      * @param context
      */
-    LicenseViewer(@NonNull final Context context) {
+    public LicenseViewer(@NonNull final Context context) {
         mContext = context;
     }
 
     /**
      * Invoke viewer.
      */
-    void invoke() {
+    public void invoke() {
         try {
             final AssetManager assets = mContext.getAssets();
             final String[] licenseFiles = assets.list(DIRECTORY_OF_LICENSES);

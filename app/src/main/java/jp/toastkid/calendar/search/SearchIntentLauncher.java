@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.libs.CustomTabsFactory;
-import jp.toastkid.calendar.libs.PendingIntentFactory;
+import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
+import jp.toastkid.calendar.libs.intent.PendingIntentFactory;
 
 /**
  * Search intent launcher.

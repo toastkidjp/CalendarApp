@@ -26,11 +26,12 @@ import java.text.MessageFormat;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.about.AboutThisAppActivity;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
-import jp.toastkid.calendar.libs.CustomTabsFactory;
+import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
-import jp.toastkid.calendar.libs.IntentFactory;
-import jp.toastkid.calendar.libs.SettingsIntentFactory;
+import jp.toastkid.calendar.libs.intent.IntentFactory;
+import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.search.SearchActivity;
 import jp.toastkid.calendar.settings.SettingsActivity;
@@ -52,9 +53,6 @@ public class MainActivity extends BaseActivity {
 
     /** Data binding object. */
     private ActivityMainBinding binding;
-
-    /** About this app. */
-    private AboutThisApp aboutThisApp;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -166,10 +164,7 @@ public class MainActivity extends BaseActivity {
                     );
                     return true;
                 case R.id.nav_about_this_app:
-                    if (aboutThisApp == null) {
-                        aboutThisApp = new AboutThisApp(this, colorPair());
-                    }
-                    aboutThisApp.invoke();
+                    startActivity(AboutThisAppActivity.makeIntent(this));
                     return true;
                 case R.id.nav_google_play:
                     startActivity(IntentFactory.googlePlay(BuildConfig.APPLICATION_ID));
@@ -329,14 +324,6 @@ public class MainActivity extends BaseActivity {
     @NonNull
     private String makeShareMessage() {
         return MessageFormat.format(getString(R.string.message_share), getString(R.string.app_name));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (aboutThisApp != null) {
-            aboutThisApp.dispose();
-        }
     }
 
     @Override

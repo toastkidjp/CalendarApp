@@ -39,18 +39,19 @@
         <activity
             android:name=".settings.color.ColorSettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="screenSize"
+            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name=".settings.background.BackgroundSettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="screenSize"
+            android:configChanges="orientation|screenSize"
             />
         <activity
-            android:name=".advertisement.activity.InterstitialAdActivity"
-            android:label="@string/title_loading_ad"
-            android:configChanges="screenSize"
+            android:name=".about.AboutThisAppActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
             />
+
     </application>
 
 </manifest>

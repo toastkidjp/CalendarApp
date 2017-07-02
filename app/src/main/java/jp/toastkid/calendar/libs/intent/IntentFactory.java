@@ -1,9 +1,8 @@
-package jp.toastkid.calendar.libs;
+package jp.toastkid.calendar.libs.intent;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
