@@ -77,9 +77,6 @@ class AboutThisApp {
                     .setMessage(R.string.message_about_this_app)
                     .setView(nativeAd)
                     .setCancelable(true)
-                    .setNegativeButton(
-                            R.string.message_introduce_ad,
-                            (d, i) -> context.startActivity(InterstitialAdActivity.makeIntent(context)))
                     .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
                     .create();
         }
