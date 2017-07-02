@@ -1,4 +1,4 @@
-package jp.toastkid.calendar.libs;
+package jp.toastkid.calendar.libs.intent;
 
 import android.app.PendingIntent;
 import android.content.Context;
