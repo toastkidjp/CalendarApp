@@ -12,6 +12,7 @@ import android.support.v4.graphics.ColorUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -63,6 +64,10 @@ public class SearchActivity extends BaseActivity {
         initSuggests();
         initSearchInput();
         initToolbar(binding.searchToolbar);
+
+        binding.searchToolbar.inflateMenu(R.menu.search_menu);
+        binding.searchToolbar.getMenu().findItem(R.id.suggest_check)
+                .setChecked(getPreferenceApplier().isEnableSuggest());
 
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
@@ -222,6 +227,16 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected int getTitleId() {
         return R.string.title_search_action;
+    }
+
+    @Override
+    protected boolean clickMenu(final MenuItem item) {
+        if (item.getItemId() == R.id.suggest_check) {
+            getPreferenceApplier().switchEnableSuggest();
+            item.setChecked(getPreferenceApplier().isEnableSuggest());
+            return true;
+        }
+        return super.clickMenu(item);
     }
 
     /**
