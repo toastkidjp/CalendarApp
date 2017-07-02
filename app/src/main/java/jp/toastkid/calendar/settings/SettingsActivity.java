@@ -50,8 +50,6 @@ public class SettingsActivity extends BaseActivity {
                 })
                 .show());
 
-        ((TextView) findViewById(R.id.settings_app_version)).setText(BuildConfig.VERSION_NAME);
-
         AdViewFactory.make(getApplicationContext(), binding.adArea.ad);
     }
 
@@ -76,10 +74,6 @@ public class SettingsActivity extends BaseActivity {
         final PreferenceApplier applier = getPreferenceApplier();
         applier.switchEnableSuggest();
         binding.settingsEnableSuggestCheck.setChecked(applier.isEnableSuggest());
-    }
-
-    public void licenses(final View view) {
-        new LicenseViewer(this).invoke();
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.advertisement.activity.InterstitialAdActivity;
 import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**

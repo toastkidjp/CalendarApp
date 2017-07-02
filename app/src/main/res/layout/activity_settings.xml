@@ -106,62 +106,6 @@
 
                     <include layout="@layout/primary_dark_divider"
                         android:layout_width="match_parent" android:layout_height="3dp" />
-
-                    <include layout="@layout/primary_dark_divider"
-                        android:layout_width="match_parent" android:layout_height="3dp" />
-
-                    <TextView
-                        android:id="@+id/settings_licenses"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/settings_item_height"
-                        android:paddingLeft="@dimen/settings_item_left_margin"
-                        android:drawableLeft="@drawable/ic_license"
-                        android:gravity="center_vertical"
-                        android:text="@string/title_licenses"
-                        android:textSize="16sp"
-                        android:background="@drawable/ripple_transparent"
-                        android:onClick="@{activity.licenses}"
-                        />
-
-                    <include layout="@layout/primary_dark_divider" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/settings_item_height"
-                        android:background="@drawable/ripple_transparent"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/settings_item_left_margin"
-                            android:layout_gravity="center_vertical|left"
-                            android:text="@string/title_app_version"
-                            android:textSize="16sp"
-                            />
-                        <TextView
-                            android:id="@+id/settings_app_version"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/settings_item_left_margin"
-                            android:layout_gravity="center_vertical|right"
-                            android:textSize="16sp"
-                            />
-                    </FrameLayout>
-
-                    <include layout="@layout/primary_dark_divider" />
-
-                    <include layout="@layout/primary_dark_divider" />
-                    <include layout="@layout/primary_dark_divider" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:background="@color/soft_background"
-                        android:text="@string/copyright"
-                        />
-
-                    <include layout="@layout/primary_dark_divider" />
                 </LinearLayout>
 
             </FrameLayout>
