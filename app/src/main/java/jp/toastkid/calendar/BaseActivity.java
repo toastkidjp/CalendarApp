@@ -1,12 +1,15 @@
 package jp.toastkid.calendar;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -63,6 +66,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         final ColorPair pair = preferenceApplier.colorPair();
         toolbar.setBackgroundColor(pair.bgColor());
         toolbar.setTitleTextColor(pair.fontColor());
+        toolbar.setSubtitleTextColor(pair.fontColor());
+        DrawableCompat.setTint(toolbar.getNavigationIcon(), pair.fontColor());
+        DrawableCompat.setTint(toolbar.getOverflowIcon(), pair.fontColor());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(pair.bgColor(), 255));
