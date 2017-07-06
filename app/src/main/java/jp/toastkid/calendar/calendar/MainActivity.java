@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -27,12 +30,14 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
+import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchActivity;
 import jp.toastkid.calendar.settings.SettingsActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
@@ -54,6 +59,9 @@ public class MainActivity extends BaseActivity {
     /** Data binding object. */
     private ActivityMainBinding binding;
 
+    /** Interstitial AD. */
+    private InterstitialAd interstitialAd;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,27 @@ public class MainActivity extends BaseActivity {
         initNavigation();
 
         initCalendarView();
+
+        initInterstitialAd();
+    }
+
+    private void initInterstitialAd() {
+        if (interstitialAd == null) {
+            interstitialAd = new InterstitialAd(getApplicationContext());
+        }
+        interstitialAd.setAdUnitId(getString(R.string.unit_id_interstitial));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Toaster.snackShort(
+                        binding.appBarMain.toolbar,
+                        R.string.thank_you_for_using,
+                        colorPair()
+                );
+            }
+        });
+        AdInitializers.find(this).invoke(interstitialAd);
     }
 
     /**
@@ -96,6 +125,7 @@ public class MainActivity extends BaseActivity {
         );
 
         binding.navView.setNavigationItemSelectedListener(item -> {
+            attemptToShowingAd();
             switch (item.getItemId()) {
                 case R.id.nav_gallery:
                     sendLog("nav_bg_set");
@@ -275,6 +305,19 @@ public class MainActivity extends BaseActivity {
         applyColorToToolbar(binding.appBarMain.toolbar);
 
         applyBackgrounds();
+    }
+
+    private void attemptToShowingAd() {
+        final PreferenceApplier preferenceApplier = getPreferenceApplier();
+        if (interstitialAd.isLoaded() && preferenceApplier.allowShowingAd()) {
+            Toaster.snackShort(
+                    binding.appBarMain.toolbar,
+                    R.string.message_please_view_ad,
+                    colorPair()
+            );
+            interstitialAd.show();
+            preferenceApplier.updateLastAd();
+        }
     }
 
     /**

@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.Locale;
 
 import jp.toastkid.calendar.R;
 
@@ -16,7 +18,7 @@ import jp.toastkid.calendar.R;
 public class PreferenceApplier {
 
     private enum Key {
-        BG_COLOR, FONT_COLOR, ENABLE_SUGGEST, BG_IMAGE;
+        BG_COLOR, FONT_COLOR, ENABLE_SUGGEST, BG_IMAGE, LAST_AD_DATE;
     }
 
     private SharedPreferences preferences;
@@ -79,6 +81,17 @@ public class PreferenceApplier {
         }
         firstLaunch.mkdirs();
         return true;
+    }
+
+    public void updateLastAd() {
+        preferences.edit()
+                .putInt(Key.LAST_AD_DATE.name(), Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR))
+                .apply();
+    }
+
+    public boolean allowShowingAd() {
+        final int today = Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR);
+        return today != preferences.getInt(Key.LAST_AD_DATE.name(), -1);
     }
 
     public void clear() {
