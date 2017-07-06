@@ -32,11 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SettingsActivity"
-            android:theme="@style/AppTheme.Translucent"
-            android:configChanges="orientation|screenSize"
-            />
-        <activity
             android:name=".settings.color.ColorSettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"

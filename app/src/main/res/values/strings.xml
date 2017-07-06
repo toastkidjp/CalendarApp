@@ -107,5 +107,7 @@
     <string name="title_add_random">ランダム</string>
     <string name="title_go_google_play">Google Play で見る</string>
     <string name="section_title_about_this_app">このアプリの情報</string>
-
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="link_privacy_policy">https://tmblr.co/ZDG7Be2NVdctY</string>
+    <string name="message_please_view_ad">インタースティシャル広告をご覧ください。</string>
 </resources>

@@ -12,12 +12,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,14 +31,15 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
+import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
-import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
+import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
-import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchActivity;
-import jp.toastkid.calendar.settings.SettingsActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -54,6 +59,9 @@ public class MainActivity extends BaseActivity {
     /** Data binding object. */
     private ActivityMainBinding binding;
 
+    /** Interstitial AD. */
+    private InterstitialAd interstitialAd;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,27 @@ public class MainActivity extends BaseActivity {
         initNavigation();
 
         initCalendarView();
+
+        initInterstitialAd();
+    }
+
+    private void initInterstitialAd() {
+        if (interstitialAd == null) {
+            interstitialAd = new InterstitialAd(getApplicationContext());
+        }
+        interstitialAd.setAdUnitId(getString(R.string.unit_id_interstitial));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Toaster.snackShort(
+                        binding.appBarMain.toolbar,
+                        R.string.thank_you_for_using,
+                        colorPair()
+                );
+            }
+        });
+        AdInitializers.find(this).invoke(interstitialAd);
     }
 
     /**
@@ -96,6 +125,7 @@ public class MainActivity extends BaseActivity {
         );
 
         binding.navView.setNavigationItemSelectedListener(item -> {
+            attemptToShowingAd();
             switch (item.getItemId()) {
                 case R.id.nav_gallery:
                     sendLog("nav_bg_set");
@@ -122,10 +152,6 @@ public class MainActivity extends BaseActivity {
                             colorPair(),
                             R.drawable.ic_back
                     ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
-                    return true;
-                case R.id.nav_settings:
-                    sendLog("nav_set");
-                    startActivity(SettingsActivity.makeIntent(MainActivity.this));
                     return true;
                 case R.id.nav_color_settings:
                     sendLog("nav_color");
@@ -164,10 +190,32 @@ public class MainActivity extends BaseActivity {
                     );
                     return true;
                 case R.id.nav_about_this_app:
+                    sendLog("nav_about");
                     startActivity(AboutThisAppActivity.makeIntent(this));
                     return true;
                 case R.id.nav_google_play:
+                    sendLog("nav_gplay");
                     startActivity(IntentFactory.googlePlay(BuildConfig.APPLICATION_ID));
+                    return true;
+                case R.id.nav_privacy_policy:
+                    sendLog("nav_prvcy_plcy");
+                    CustomTabsFactory.make(this, colorPair(), R.drawable.ic_back)
+                            .build()
+                            .launchUrl(this, Uri.parse(getString(R.string.link_privacy_policy)));
+                    return true;
+                case R.id.nav_clear_settings:
+                    sendLog("nav_clr_set");
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.title_clear)
+                            .setMessage(Html.fromHtml(getString(R.string.confirm_clear_all_settings)))
+                            .setCancelable(true)
+                            .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
+                            .setPositiveButton(R.string.ok,     (d, i) -> {
+                                clearPreferences();
+                                refresh();
+                                Toaster.snackShort(binding.drawerLayout, R.string.done_clear, colorPair());
+                            })
+                            .show();
                     return true;
             }
             return true;
@@ -267,9 +315,26 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refresh();
+    }
+
+    private void refresh() {
         applyColorToToolbar(binding.appBarMain.toolbar);
 
         applyBackgrounds();
+    }
+
+    private void attemptToShowingAd() {
+        final PreferenceApplier preferenceApplier = getPreferenceApplier();
+        if (interstitialAd.isLoaded() && preferenceApplier.allowShowingAd()) {
+            Toaster.snackShort(
+                    binding.appBarMain.toolbar,
+                    R.string.message_please_view_ad,
+                    colorPair()
+            );
+            interstitialAd.show();
+            preferenceApplier.updateLastAd();
+        }
     }
 
     /**
