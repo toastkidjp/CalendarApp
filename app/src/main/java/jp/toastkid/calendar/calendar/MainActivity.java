@@ -169,6 +169,11 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_google_play:
                     startActivity(IntentFactory.googlePlay(BuildConfig.APPLICATION_ID));
                     return true;
+                case R.id.nav_privacy_policy:
+                    CustomTabsFactory.make(this, colorPair(), R.drawable.ic_back)
+                            .build()
+                            .launchUrl(this, Uri.parse(getString(R.string.link_privacy_policy)));
+                    return true;
             }
             return true;
         });
