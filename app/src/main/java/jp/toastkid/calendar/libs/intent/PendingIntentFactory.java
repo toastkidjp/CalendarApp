@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import jp.toastkid.calendar.search.SearchActivity;
-import jp.toastkid.calendar.settings.SettingsActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
 /**
@@ -23,16 +22,6 @@ public class PendingIntentFactory {
     public static PendingIntent makeSearchIntent(final Context context) {
         final Intent intent = SearchActivity.makeIntent(context);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    /**
-     * Make launch settings intent.
-     * @param context
-     * @return {@link SettingsActivity}'s pending intent
-     */
-    public static PendingIntent makeSettingsIntent(final Context context) {
-        final Intent intent = SettingsActivity.makeIntent(context);
-        return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**

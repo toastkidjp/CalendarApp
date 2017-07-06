@@ -13,10 +13,9 @@ import android.view.MenuItem;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.advertisement.AdViewFactory;
 import jp.toastkid.calendar.databinding.ActivityBackgroundSettingBinding;
-import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.intent.IntentFactory;
 
 /**
  * Background settings.
@@ -48,7 +47,6 @@ public class BackgroundSettingActivity extends BaseActivity {
         storeroom = new Storeroom(this);
 
         initImagesView();
-        AdViewFactory.make(getApplicationContext(), binding.adArea.ad);
     }
 
     private void initImagesView() {

@@ -58,10 +58,6 @@ class SearchIntentLauncher {
                         PendingIntentFactory.makeSearchIntent(context)
                 )
                 .addMenuItem(
-                        context.getString(R.string.title_settings),
-                        PendingIntentFactory.makeSettingsIntent(context)
-                )
-                .addMenuItem(
                         context.getString(R.string.title_settings_color),
                         PendingIntentFactory.makeColorSettingsIntent(context)
                 )

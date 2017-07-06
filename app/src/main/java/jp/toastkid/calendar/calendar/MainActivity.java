@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,14 +33,13 @@ import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
 import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
-import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.ImageLoader;
+import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
-import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchActivity;
-import jp.toastkid.calendar.settings.SettingsActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -153,10 +153,6 @@ public class MainActivity extends BaseActivity {
                             R.drawable.ic_back
                     ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
                     return true;
-                case R.id.nav_settings:
-                    sendLog("nav_set");
-                    startActivity(SettingsActivity.makeIntent(MainActivity.this));
-                    return true;
                 case R.id.nav_color_settings:
                     sendLog("nav_color");
                     startActivity(ColorSettingActivity.makeIntent(MainActivity.this));
@@ -194,15 +190,32 @@ public class MainActivity extends BaseActivity {
                     );
                     return true;
                 case R.id.nav_about_this_app:
+                    sendLog("nav_about");
                     startActivity(AboutThisAppActivity.makeIntent(this));
                     return true;
                 case R.id.nav_google_play:
+                    sendLog("nav_gplay");
                     startActivity(IntentFactory.googlePlay(BuildConfig.APPLICATION_ID));
                     return true;
                 case R.id.nav_privacy_policy:
+                    sendLog("nav_prvcy_plcy");
                     CustomTabsFactory.make(this, colorPair(), R.drawable.ic_back)
                             .build()
                             .launchUrl(this, Uri.parse(getString(R.string.link_privacy_policy)));
+                    return true;
+                case R.id.nav_clear_settings:
+                    sendLog("nav_clr_set");
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.title_clear)
+                            .setMessage(Html.fromHtml(getString(R.string.confirm_clear_all_settings)))
+                            .setCancelable(true)
+                            .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
+                            .setPositiveButton(R.string.ok,     (d, i) -> {
+                                clearPreferences();
+                                refresh();
+                                Toaster.snackShort(binding.drawerLayout, R.string.done_clear, colorPair());
+                            })
+                            .show();
                     return true;
             }
             return true;
@@ -302,6 +315,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        refresh();
+    }
+
+    private void refresh() {
         applyColorToToolbar(binding.appBarMain.toolbar);
 
         applyBackgrounds();
