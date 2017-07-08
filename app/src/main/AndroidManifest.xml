@@ -46,7 +46,24 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
-
+        <receiver android:name=".appwidget.search.Provider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider" />
+        </receiver>
+        <receiver
+            android:name=".appwidget.search.Receiver"
+            android:label="@string/app_widget_name_search" >
+            <intent-filter>
+                <action android:name="UPDATE_WIDGET" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider" />
+        </receiver>
     </application>
 
 </manifest>

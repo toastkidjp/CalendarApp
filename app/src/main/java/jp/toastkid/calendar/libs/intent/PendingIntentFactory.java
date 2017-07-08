@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import jp.toastkid.calendar.calendar.MainActivity;
 import jp.toastkid.calendar.search.SearchActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -34,4 +35,17 @@ public class PendingIntentFactory {
         return PendingIntent.getActivity(context, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    /**
+     * Make launch main activity.
+     * @param context
+     * @return
+     */
+    public static PendingIntent main(final Context context) {
+        return PendingIntent.getActivity(
+                context,
+                3,
+                MainActivity.makeIntent(context),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
 }

@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.calendar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,6 +33,7 @@ import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
 import jp.toastkid.calendar.advertisement.AdInitializers;
+import jp.toastkid.calendar.appwidget.search.Updater;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
@@ -213,6 +215,7 @@ public class MainActivity extends BaseActivity {
                             .setPositiveButton(R.string.ok,     (d, i) -> {
                                 clearPreferences();
                                 refresh();
+                                Updater.update(this);
                                 Toaster.snackShort(binding.drawerLayout, R.string.done_clear, colorPair());
                             })
                             .show();
@@ -396,4 +399,14 @@ public class MainActivity extends BaseActivity {
         return R.string.app_name;
     }
 
+    /**
+     * Make launcher intent.
+     * @param context
+     * @return
+     */
+    public static Intent makeIntent(final Context context) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 }
