@@ -74,6 +74,11 @@
                 android:title="@string/title_settings_wireless"
                 />
             <item
+                android:id="@+id/nav_settings_date_and_time"
+                android:icon="@drawable/ic_time"
+                android:title="@string/title_settings_date_and_time"
+                />
+            <item
                 android:id="@+id/nav_settings_all_apps"
                 android:icon="@drawable/ic_android_app"
                 android:title="@string/title_settings_all_apps"

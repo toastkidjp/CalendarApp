@@ -49,4 +49,14 @@ public class SettingsIntentFactory {
         intent.setAction(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS);
         return intent;
     }
+
+    /**
+     * Make launch Date and Time settings intent.
+     * @return {@link Intent}
+     */
+    public static Intent dateAndTime() {
+        final Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_DATE_SETTINGS);
+        return intent;
+    }
 }

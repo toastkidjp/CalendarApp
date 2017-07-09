@@ -115,4 +115,5 @@
     <string name="subtext_notification">その日何があった？</string>
     <string name="message_set_daily_alarm">毎朝8時の通知をセットしました。</string>
     <string name="message_clear_daily_alarm">通知設定を解除しました。</string>
+    <string name="title_settings_date_and_time">日付・時刻の設定</string>
 </resources>

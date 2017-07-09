@@ -202,6 +202,10 @@ public class MainActivity extends BaseActivity {
                     sendLog("nav_allapps_set");
                     startActivity(SettingsIntentFactory.allApps());
                     return true;
+                case R.id.nav_settings_date_and_time:
+                    sendLog("nav_dat");
+                    startActivity(SettingsIntentFactory.dateAndTime());
+                    return true;
                 case R.id.nav_share:
                     sendLog("nav_shr");
                     startActivity(IntentFactory.makeShare(makeShareMessage()));
