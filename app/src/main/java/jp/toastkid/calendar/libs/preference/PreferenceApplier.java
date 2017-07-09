@@ -18,7 +18,7 @@ import jp.toastkid.calendar.R;
 public class PreferenceApplier {
 
     private enum Key {
-        BG_COLOR, FONT_COLOR, ENABLE_SUGGEST, BG_IMAGE, LAST_AD_DATE;
+        BG_COLOR, FONT_COLOR, ENABLE_SUGGEST, BG_IMAGE, LAST_AD_DATE, USE_DAILY_ALARM;
     }
 
     private SharedPreferences preferences;
@@ -92,6 +92,18 @@ public class PreferenceApplier {
     public boolean allowShowingAd() {
         final int today = Calendar.getInstance(Locale.getDefault()).get(Calendar.DAY_OF_YEAR);
         return today != preferences.getInt(Key.LAST_AD_DATE.name(), -1);
+    }
+
+    public void useDailyAlarm() {
+        preferences.edit().putBoolean(Key.USE_DAILY_ALARM.name(), true).apply();
+    }
+
+    public void notUseDailyAlarm() {
+        preferences.edit().putBoolean(Key.USE_DAILY_ALARM.name(), false).apply();
+    }
+
+    public boolean doesUseDailyAlarm() {
+        return preferences.getBoolean(Key.USE_DAILY_ALARM.name(), false);
     }
 
     public void clear() {

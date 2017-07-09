@@ -110,4 +110,8 @@
     <string name="link_privacy_policy">https://tmblr.co/ZDG7Be2NVdctY</string>
     <string name="message_please_view_ad">Please could you bear to see interstitial ad...</string>
     <string name="app_widget_name_search">Web Search App-Widget</string>
+    <string name="title_daily_notification">Daily notification at 8:00 a.m.</string>
+    <string name="subtext_notification">Do you know what happened this day?</string>
+    <string name="message_set_daily_alarm">It has set daily alarm.</string>
+    <string name="message_clear_daily_alarm">It has canceled daily alarm.</string>
 </resources>

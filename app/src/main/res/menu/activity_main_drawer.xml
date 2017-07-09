@@ -35,6 +35,14 @@
                 android:title="@string/title_settings_color"
                 />
             <item
+                android:id="@+id/nav_use_daily_alarm"
+                android:icon="@drawable/ic_alarms"
+                android:title="@string/title_daily_notification"
+                android:checkable="true"
+                app:actionLayout="@layout/daily_notification_switch"
+                app:showAsAction="always"
+                />
+            <item
                 android:id="@+id/nav_locale"
                 android:icon="@drawable/ic_license"
                 android:title=""
