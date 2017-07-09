@@ -43,6 +43,9 @@ public class SearchActivity extends BaseActivity {
     /** Key of extra. */
     private static final String EXTRA_KEY_FINISH_SOON = "finish_soon";
 
+    /** Layout ID. */
+    private static final int LAYOUT_ID = R.layout.activity_search;
+
     /** Suggest cache capacity. */
     public static final int SUGGEST_CACHE_CAPACITY = 30;
 
@@ -55,8 +58,8 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        setContentView(LAYOUT_ID);
+        binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
@@ -191,6 +194,7 @@ public class SearchActivity extends BaseActivity {
                 binding.searchCategories.getSelectedItem().toString(),
                 binding.searchInput.getText().toString())
         );
+        binding.searchIcon.setColorFilter(fontColor);
         binding.searchClear.setColorFilter(fontColor);
         binding.searchInputBorder.setBackgroundColor(fontColor);
     }
