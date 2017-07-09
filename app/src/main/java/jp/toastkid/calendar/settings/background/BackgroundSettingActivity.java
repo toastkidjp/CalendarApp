@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Html;
 import android.view.MenuItem;
+import android.view.View;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
@@ -27,6 +28,9 @@ public class BackgroundSettingActivity extends BaseActivity {
     /** Request code. */
     private static final int IMAGE_READ_REQUEST = 136;
 
+    /** Layout ID. */
+    private static final int LAYOUT_ID = R.layout.activity_background_setting;
+
     /** Data Binding object. */
     private ActivityBackgroundSettingBinding binding;
 
@@ -39,8 +43,9 @@ public class BackgroundSettingActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_background_setting);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_background_setting);
+        setContentView(LAYOUT_ID);
+        binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
+        binding.setActivity(this);
         initToolbar(binding.toolbar);
         binding.toolbar.inflateMenu(R.menu.background_setting_menu);
 
@@ -64,33 +69,34 @@ public class BackgroundSettingActivity extends BaseActivity {
 
     @Override
     protected boolean clickMenu(final MenuItem item) {
-        int itemId = item.getItemId();
+        final int itemId = item.getItemId();
         if (itemId == R.id.background_settings_toolbar_menu_add) {
-            sendLog("set_bg_img");
-            startActivityForResult(IntentFactory.makePickImage(), IMAGE_READ_REQUEST);
+            launchAdding(binding.fab);
             return true;
         }
         if (itemId == R.id.background_settings_toolbar_menu_clear) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.clear_all)
-                    .setMessage(Html.fromHtml(getString(R.string.confirm_clear_all_settings)))
-                    .setCancelable(true)
-                    .setPositiveButton(R.string.ok, (d, i) -> {
-                        sendLog("clear_bg_img");
-                        storeroom.clean();
-                        Toaster.snackShort(
-                                binding.toolbar,
-                                getString(R.string.message_success_image_removal),
-                                colorPair()
-                        );
-                        adapter.notifyDataSetChanged();
-                        d.dismiss();
-                    })
-                    .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
-                    .show();
+            clearImages();
             return true;
         }
         return super.clickMenu(item);
+    }
+
+    public void launchAdding(final View v) {
+        sendLog("set_bg_img");
+        startActivityForResult(IntentFactory.makePickImage(), IMAGE_READ_REQUEST);
+    }
+
+    private void clearImages() {
+        new ClearImages(this, () -> {
+            sendLog("clear_bg_img");
+            storeroom.clean();
+            Toaster.snackShort(
+                    binding.fabParent,
+                    getString(R.string.message_success_image_removal),
+                    colorPair()
+            );
+            adapter.notifyDataSetChanged();
+        }).invoke();
     }
 
     @Override
@@ -101,7 +107,7 @@ public class BackgroundSettingActivity extends BaseActivity {
     ) {
 
         if (requestCode == IMAGE_READ_REQUEST && resultCode == RESULT_OK) {
-            new LoadedAction(data, binding.toolbar, colorPair(), adapter::notifyDataSetChanged)
+            new LoadedAction(data, binding.fabParent, colorPair(), adapter::notifyDataSetChanged)
                     .invoke();
             sendLog("set_img");
         }
@@ -123,4 +129,5 @@ public class BackgroundSettingActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return intent;
     }
+
 }
