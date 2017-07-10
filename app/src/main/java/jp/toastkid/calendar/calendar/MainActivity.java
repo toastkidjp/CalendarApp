@@ -37,6 +37,7 @@ import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.appwidget.search.Updater;
 import jp.toastkid.calendar.calendar.alarm.DailyAlarm;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
+import jp.toastkid.calendar.launcher.LauncherActivity;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
@@ -181,6 +182,10 @@ public class MainActivity extends BaseActivity {
                             colorPair(),
                             R.drawable.ic_back
                     ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
+                    return true;
+                case R.id.nav_launcher:
+                    sendLog("nav_lnchr");
+                    startActivity(LauncherActivity.makeIntent(this));
                     return true;
                 case R.id.nav_color_settings:
                     sendLog("nav_color");

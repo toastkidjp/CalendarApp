@@ -14,6 +14,11 @@
                 android:icon="@drawable/ic_tweet_black"
                 android:title="@string/title_tweet_action"
                 />
+            <item
+                android:id="@+id/nav_launcher"
+                android:icon="@drawable/ic_launch_black"
+                android:title="@string/title_apps_launcher"
+                />
         </menu>
     </item>
 

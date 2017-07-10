@@ -116,4 +116,7 @@
     <string name="message_set_daily_alarm">毎朝8時の通知をセットしました。</string>
     <string name="message_clear_daily_alarm">通知設定を解除しました。</string>
     <string name="title_settings_date_and_time">日付・時刻の設定</string>
+    <string name="title_apps_launcher">アプリを起動</string>
+    <string name="message_failed_launching">このアプリは起動できません。</string>
+    <string name="date_format">yyyy/MM/dd(E) HH:mm:ss</string>
 </resources>

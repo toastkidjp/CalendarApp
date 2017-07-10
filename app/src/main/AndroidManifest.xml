@@ -46,6 +46,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
+        <activity
+            android:name=".launcher.LauncherActivity"
+            android:theme="@style/AppTheme.Translucent"
+            android:configChanges="orientation|screenSize"
+            />
         <receiver android:name=".appwidget.search.Provider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
