@@ -109,8 +109,9 @@ public class SuggestAdapter extends BaseAdapter {
      * Item clicked action.
      * @param suggest
      */
-    private void onItemClicked(final String suggest) {
+    private void onItemClicked(@NonNull final String suggest) {
         mSearchInput.setText(suggest);
+        mSearchInput.setSelection(suggest.length());
         try {
             mSuggestConsumer.accept(suggest);
         } catch (final Exception e) {

@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.calendar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +17,7 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -32,7 +34,10 @@ import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
 import jp.toastkid.calendar.advertisement.AdInitializers;
+import jp.toastkid.calendar.appwidget.search.Updater;
+import jp.toastkid.calendar.calendar.alarm.DailyAlarm;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
+import jp.toastkid.calendar.launcher.LauncherActivity;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
@@ -52,6 +57,12 @@ public class MainActivity extends BaseActivity {
 
     /** Layout ID. */
     private static final int LAYOUT_ID = R.layout.activity_main;
+
+    /** For using daily alarm. */
+    private static final String KEY_EXTRA_MONTH = "month";
+
+    /** For using daily alarm. */
+    private static final String KEY_EXTRA_DOM = "dom";
 
     /** Navigation's background. */
     private View navBackground;
@@ -77,6 +88,16 @@ public class MainActivity extends BaseActivity {
         initCalendarView();
 
         initInterstitialAd();
+
+        final Intent calledIntent = getIntent();
+        if (calledIntent == null || !calledIntent.hasExtra(KEY_EXTRA_MONTH)) {
+            return;
+        }
+        new CalendarArticleLinker(
+                this,
+                calledIntent.getIntExtra(KEY_EXTRA_MONTH, -1),
+                calledIntent.getIntExtra(KEY_EXTRA_DOM,   -1)
+        ).invoke();
     }
 
     private void initInterstitialAd() {
@@ -124,6 +145,15 @@ public class MainActivity extends BaseActivity {
                         .findViewById(R.id.locale)
         );
 
+        final DailyAlarm dailyAlarm = new DailyAlarm(this);
+        final boolean useDailyAlarm = getPreferenceApplier().doesUseDailyAlarm();
+        if (useDailyAlarm) {
+            dailyAlarm.reset();
+        }
+        final MenuItem alarmMenu = binding.navView.getMenu().findItem(R.id.nav_use_daily_alarm);
+        final CheckBox checkBox = (CheckBox) alarmMenu.getActionView();
+        checkBox.setChecked(useDailyAlarm);
+
         binding.navView.setNavigationItemSelectedListener(item -> {
             attemptToShowingAd();
             switch (item.getItemId()) {
@@ -153,6 +183,10 @@ public class MainActivity extends BaseActivity {
                             R.drawable.ic_back
                     ).launchUrl(MainActivity.this, Uri.parse("https://twitter.com/share"));
                     return true;
+                case R.id.nav_launcher:
+                    sendLog("nav_lnchr");
+                    startActivity(LauncherActivity.makeIntent(this));
+                    return true;
                 case R.id.nav_color_settings:
                     sendLog("nav_color");
                     startActivity(ColorSettingActivity.makeIntent(MainActivity.this));
@@ -172,6 +206,10 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_settings_all_apps:
                     sendLog("nav_allapps_set");
                     startActivity(SettingsIntentFactory.allApps());
+                    return true;
+                case R.id.nav_settings_date_and_time:
+                    sendLog("nav_dat");
+                    startActivity(SettingsIntentFactory.dateAndTime());
                     return true;
                 case R.id.nav_share:
                     sendLog("nav_shr");
@@ -203,6 +241,30 @@ public class MainActivity extends BaseActivity {
                             .build()
                             .launchUrl(this, Uri.parse(getString(R.string.link_privacy_policy)));
                     return true;
+                case R.id.nav_use_daily_alarm:
+                    final boolean newState = !getPreferenceApplier().doesUseDailyAlarm();
+                    checkBox.setChecked(newState);
+                    if (newState) {
+                        getPreferenceApplier().useDailyAlarm();
+                        dailyAlarm.reset();
+                        Toaster.snackShort(
+                                binding.drawerLayout,
+                                R.string.message_set_daily_alarm,
+                                colorPair()
+                        );
+                        sendLog("nav_daily_set");
+                    } else {
+                        getPreferenceApplier().notUseDailyAlarm();
+                        dailyAlarm.cancel();
+                        Toaster.snackShort(
+                                binding.drawerLayout,
+                                R.string.message_clear_daily_alarm,
+                                colorPair()
+                        );
+                        sendLog("nav_daily_cancel");
+                    }
+
+                    return true;
                 case R.id.nav_clear_settings:
                     sendLog("nav_clr_set");
                     new AlertDialog.Builder(this)
@@ -213,6 +275,7 @@ public class MainActivity extends BaseActivity {
                             .setPositiveButton(R.string.ok,     (d, i) -> {
                                 clearPreferences();
                                 refresh();
+                                Updater.update(this);
                                 Toaster.snackShort(binding.drawerLayout, R.string.done_clear, colorPair());
                             })
                             .show();
@@ -247,10 +310,10 @@ public class MainActivity extends BaseActivity {
                             .setTitle(dateTitle)
                             .setItems(R.array.calendar_menu, (d, index) -> {
                                 final Bundle bundle = new Bundle();
-                                bundle.putString("date", dateTitle);
+                                bundle.putString("daily", dateTitle);
                                 if (index == 0) {
                                     sendLog("cal_wkp", bundle);
-                                    openCalendarArticle(month, dayOfMonth);
+                                    new CalendarArticleLinker(this, month, dayOfMonth).invoke();
                                     return;
                                 }
                                 if (index == 1) {
@@ -268,22 +331,6 @@ public class MainActivity extends BaseActivity {
                             .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
                             .show();
         });
-    }
-
-    /**
-     * Open calendar wikipedia article.
-     * @param month
-     * @param dayOfMonth
-     */
-    private void openCalendarArticle(final int month, final int dayOfMonth) {
-        final String url = DateArticleUrlFactory.make(this, month, dayOfMonth);
-        if (url.length() == 0) {
-            return;
-        }
-        CustomTabsFactory
-                .make(this, colorPair(), R.drawable.ic_back)
-                .build()
-                .launchUrl(this, Uri.parse(url));
     }
 
     @Override
@@ -394,6 +441,29 @@ public class MainActivity extends BaseActivity {
     @Override
     protected @StringRes int getTitleId() {
         return R.string.app_name;
+    }
+
+    /**
+     * Make launcher intent.
+     * @param context
+     * @return
+     */
+    public static Intent makeIntent(final Context context) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
+
+    /**
+     * Make launcher intent.
+     * @param context
+     * @return
+     */
+    public static Intent makeIntent(final Context context, final int month, final int dayOfMonth) {
+        final Intent intent = makeIntent(context);
+        intent.putExtra(KEY_EXTRA_MONTH, month);
+        intent.putExtra(KEY_EXTRA_DOM,   dayOfMonth);
+        return intent;
     }
 
 }

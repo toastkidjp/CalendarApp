@@ -25,16 +25,24 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     >
+                    <ImageView
+                        android:id="@+id/search_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left|center_vertical"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_search_white"
+                        />
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/search_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="35dp"
                         android:maxLines="1"
                         android:hint="@string/title_search"
                         android:textColorHint="@color/white"
                         android:textColor="@color/white"
                         app:theme="@style/EditTextStyle"
-                        android:drawableLeft="@drawable/ic_search_white"
                         android:inputType="text"
                         android:imeOptions="actionSearch"
                         android:background="@drawable/ripple_appwidget"
@@ -53,7 +61,7 @@
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="right"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="8dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/ic_close"
                         />

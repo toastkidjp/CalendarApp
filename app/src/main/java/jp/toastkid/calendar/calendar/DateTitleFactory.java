@@ -3,29 +3,27 @@ package jp.toastkid.calendar.calendar;
 import android.content.Context;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.libs.Logger;
 
 /**
  * Date title factory.
  *
  * @author toastkidjp
  */
-class DateTitleFactory {
+public class DateTitleFactory {
 
     /** Format resource ID. */
     private static final int FORMAT_ID = R.string.format_date_title;
 
     /**
-     * Make date title.
+     * Make daily title.
      * @param context context
      * @param month 0-11
      * @param dayOfMonth 1-31
-     * @return date title
+     * @return daily title
      */
-    static String makeDateTitle(final Context context, final int month, final int dayOfMonth) {
+    public static String makeDateTitle(final Context context, final int month, final int dayOfMonth) {
         if (month < 0 || month >= 12) {
             return "";
         }

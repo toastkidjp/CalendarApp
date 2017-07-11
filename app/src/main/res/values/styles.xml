@@ -19,6 +19,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Border">
+        <item name="android:textColorSecondary">@color/darkgray_scale</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
     <style name="AppTheme.Translucent">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

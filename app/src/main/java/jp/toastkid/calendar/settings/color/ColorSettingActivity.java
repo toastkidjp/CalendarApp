@@ -19,6 +19,7 @@ import com.github.gfx.android.orma.widget.OrmaRecyclerViewAdapter;
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.appwidget.search.Updater;
 import jp.toastkid.calendar.databinding.ActivitySettingsColorBinding;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.ColorPair;
@@ -143,6 +144,7 @@ public class ColorSettingActivity extends BaseActivity {
 
         binding.backgroundPalette.setColor(bgColor);
         binding.fontPalette.setColor(fontColor);
+        Updater.update(this);
 
         Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_commit, colorPair());
     }
@@ -153,6 +155,7 @@ public class ColorSettingActivity extends BaseActivity {
         getPreferenceApplier().setFontColor(initialFontColor);
 
         refresh();
+        Updater.update(this);
         Toaster.snackShort(binding.settingsColorToolbar, R.string.settings_color_done_reset, colorPair());
     }
 

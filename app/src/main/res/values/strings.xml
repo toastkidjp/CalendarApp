@@ -110,4 +110,16 @@
     <string name="privacy_policy">プライバシーポリシー</string>
     <string name="link_privacy_policy">https://tmblr.co/ZDG7Be2NVdctY</string>
     <string name="message_please_view_ad">インタースティシャル広告をご覧ください。</string>
+    <string name="app_widget_name_search">Web 検索ウィジェット</string>
+    <string name="title_daily_notification">毎朝8時に通知</string>
+    <string name="subtext_notification">その日何があった？</string>
+    <string name="message_set_daily_alarm">毎朝8時の通知をセットしました。</string>
+    <string name="message_clear_daily_alarm">通知設定を解除しました。</string>
+    <string name="title_settings_date_and_time">日付・時刻の設定</string>
+    <string name="title_apps_launcher">アプリを起動</string>
+    <string name="message_failed_launching">このアプリは起動できません。</string>
+    <string name="date_format">yyyy/MM/dd(E) HH:mm:ss</string>
+    <string name="title_package_name_filter">パッケージ名でフィルタ</string>
+    <string name="top_mark">↑</string>
+    <string name="bottom_mark">↓</string>
 </resources>

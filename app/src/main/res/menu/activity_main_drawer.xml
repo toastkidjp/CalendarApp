@@ -14,6 +14,11 @@
                 android:icon="@drawable/ic_tweet_black"
                 android:title="@string/title_tweet_action"
                 />
+            <item
+                android:id="@+id/nav_launcher"
+                android:icon="@drawable/ic_launch_black"
+                android:title="@string/title_apps_launcher"
+                />
         </menu>
     </item>
 
@@ -33,6 +38,14 @@
                 android:id="@+id/nav_color_settings"
                 android:icon="@drawable/ic_palette"
                 android:title="@string/title_settings_color"
+                />
+            <item
+                android:id="@+id/nav_use_daily_alarm"
+                android:icon="@drawable/ic_alarms"
+                android:title="@string/title_daily_notification"
+                android:checkable="true"
+                app:actionLayout="@layout/daily_notification_switch"
+                app:showAsAction="always"
                 />
             <item
                 android:id="@+id/nav_locale"
@@ -64,6 +77,11 @@
                 android:id="@+id/nav_settings_wireless"
                 android:icon="@drawable/ic_network_black"
                 android:title="@string/title_settings_wireless"
+                />
+            <item
+                android:id="@+id/nav_settings_date_and_time"
+                android:icon="@drawable/ic_time"
+                android:title="@string/title_settings_date_and_time"
                 />
             <item
                 android:id="@+id/nav_settings_all_apps"

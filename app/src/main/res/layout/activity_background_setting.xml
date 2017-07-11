@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable name="activity"
+            type="jp.toastkid.calendar.settings.background.BackgroundSettingActivity" />
+    </data>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -13,10 +17,29 @@
             android:layout_height="56dp"
             android:minHeight="?android:actionBarSize"
             />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/images_view"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/fab_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/images_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="@dimen/fab_size"
+                android:layout_height="@dimen/fab_size"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/fab_margin_bottom"
+                android:layout_marginRight="@dimen/fab_margin_right"
+                android:background="@color/colorPrimaryDark"
+                android:foreground="@drawable/ripple_transparent"
+                android:src="@drawable/ic_add_white"
+                android:onClick="@{activity.launchAdding}"
+                />
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>
