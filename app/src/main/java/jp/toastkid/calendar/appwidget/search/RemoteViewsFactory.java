@@ -70,6 +70,7 @@ class RemoteViewsFactory {
     ) {
         remoteViews.setInt(R.id.widget_search_border, METHOD_NAME_SET_BACKGROUND_COLOR, fontColor);
         remoteViews.setInt(R.id.widget_search_image,  METHOD_NAME_SET_COLOR_FILTER,     fontColor);
+        remoteViews.setInt(R.id.widget_launcher,      METHOD_NAME_SET_COLOR_FILTER,     fontColor);
         remoteViews.setInt(R.id.widget_calendar,      METHOD_NAME_SET_COLOR_FILTER,     fontColor);
 
         remoteViews.setTextColor(R.id.widget_search_text, fontColor);
@@ -83,6 +84,8 @@ class RemoteViewsFactory {
     private static void setTapActions(final Context context, final RemoteViews remoteViews) {
         remoteViews.setOnClickPendingIntent(
                 R.id.widget_search,   PendingIntentFactory.makeSearchIntent(context));
+        remoteViews.setOnClickPendingIntent(
+                R.id.widget_launcher, PendingIntentFactory.launcher(context));
         remoteViews.setOnClickPendingIntent(
                 R.id.widget_calendar, PendingIntentFactory.main(context));
     }

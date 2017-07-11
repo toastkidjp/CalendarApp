@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import jp.toastkid.calendar.calendar.alarm.DailyCalendarReceiver;
 import jp.toastkid.calendar.calendar.MainActivity;
+import jp.toastkid.calendar.launcher.LauncherActivity;
 import jp.toastkid.calendar.search.SearchActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -77,6 +78,21 @@ public class PendingIntentFactory {
                 context,
                 5,
                 MainActivity.makeIntent(context, month, dayOfMonth),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
+
+    /**
+     * Return Launcher Intent of Launcher Activity.
+     *
+     * @param context
+     * @return
+     */
+    public static PendingIntent launcher(final Context context) {
+        return PendingIntent.getActivity(
+                context,
+                6,
+                LauncherActivity.makeIntent(context),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
     }
