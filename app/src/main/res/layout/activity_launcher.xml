@@ -12,14 +12,35 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:minHeight="?android:actionBarSize"
-            />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/app_items_view"
+            >
+            <EditText
+                android:id="@+id/filter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/title_package_name_filter"
+                android:background="@drawable/ripple_transparent"
+                />
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            >
+            <ImageView
+                android:id="@+id/background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/app_items_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 </layout>

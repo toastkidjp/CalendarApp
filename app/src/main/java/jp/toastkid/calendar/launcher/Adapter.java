@@ -7,12 +7,16 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.AppLauncherItemBinding;
 import jp.toastkid.calendar.libs.Toaster;
@@ -27,6 +31,8 @@ class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     private final View parent;
 
+    private final List<ApplicationInfo> master;
+
     private final List<ApplicationInfo> installedApps;
 
     private final PreferenceApplier preferenceApplier;
@@ -34,11 +40,12 @@ class Adapter extends RecyclerView.Adapter<ViewHolder> {
     private final PackageManager packageManager;
 
     Adapter(final Context context, final View parent) {
-        packageManager = context.getPackageManager();
+        this.packageManager = context.getPackageManager();
         this.context = context;
         this.parent = parent;
-        installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-        preferenceApplier = new PreferenceApplier(context);
+        this.master = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+        this.installedApps = new ArrayList<>(master);
+        this.preferenceApplier = new PreferenceApplier(context);
     }
 
     @Override
@@ -80,6 +87,20 @@ class Adapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
             holder.itemView.setOnClickListener(v -> context.startActivity(intent));
         }
+    }
+
+    void filter(final String str) {
+        installedApps.clear();
+        if (TextUtils.isEmpty(str)) {
+            installedApps.addAll(master);
+            notifyDataSetChanged();
+            return;
+        }
+        Observable.fromIterable(master)
+                .filter(appInfo -> appInfo.packageName.contains(str))
+                .subscribeOn(Schedulers.trampoline())
+                .doOnComplete(this::notifyDataSetChanged)
+                .subscribe(installedApps::add);
     }
 
     @Override

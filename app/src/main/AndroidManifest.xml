@@ -48,7 +48,7 @@
             />
         <activity
             android:name=".launcher.LauncherActivity"
-            android:theme="@style/AppTheme.Translucent"
+            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
         <receiver android:name=".appwidget.search.Provider" >

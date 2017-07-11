@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityLauncherBinding;
+import jp.toastkid.calendar.libs.ImageLoader;
 
 /**
  * App Launcher.
@@ -38,12 +41,29 @@ public class LauncherActivity extends BaseActivity {
 
         final Adapter adapter = new Adapter(this, binding.toolbar);
         binding.appItemsView.setAdapter(adapter);
+        binding.filter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // NOP.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // NOP.
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         applyColorToToolbar(binding.toolbar);
+        ImageLoader.setImageToImageView(binding.background, getBackgroundImagePath());
     }
 
     @Override

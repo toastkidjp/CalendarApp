@@ -119,4 +119,5 @@
     <string name="title_apps_launcher">アプリを起動</string>
     <string name="message_failed_launching">このアプリは起動できません。</string>
     <string name="date_format">yyyy/MM/dd(E) HH:mm:ss</string>
+    <string name="title_package_name_filter">パッケージ名でフィルタ</string>
 </resources>

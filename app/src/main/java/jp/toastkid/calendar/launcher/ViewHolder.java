@@ -2,12 +2,15 @@ package jp.toastkid.calendar.launcher;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.format.DateFormat;
 
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.AppLauncherItemBinding;
 
 /**
+ * View holder.
+ *
  * @author toastkidjp
  */
 class ViewHolder extends RecyclerView.ViewHolder{
@@ -22,9 +25,7 @@ class ViewHolder extends RecyclerView.ViewHolder{
      *
      * @param binding
      */
-    ViewHolder(
-            final AppLauncherItemBinding binding
-    ) {
+    ViewHolder(final AppLauncherItemBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
         format = binding.appInstalled.getContext().getString(R.string.date_format);
@@ -39,18 +40,19 @@ class ViewHolder extends RecyclerView.ViewHolder{
     }
 
     void setTargetSdk(final int targetSdkVersion) {
-        binding.appTargetSdk.setText("Target SDK: " + targetSdkVersion);
+        binding.appTargetSdk.setText(Html.fromHtml("<b>Target SDK</b>: " + targetSdkVersion));
     }
 
     void setPackageName(final String packageName) {
-        binding.appPackageName.setText("Package Name: " + packageName);
+        binding.appPackageName.setText(Html.fromHtml("<b>Package Name</b>: " + packageName));
     }
 
     void setInstalled(final long firstInstallTime) {
-        binding.appInstalled.setText("Installed: " + DateFormat.format(format, firstInstallTime));
+        binding.appInstalled.setText(
+                Html.fromHtml("<b>Installed</b>: " + DateFormat.format(format, firstInstallTime)));
     }
 
     void setVersionInformation(final String versionText) {
-        binding.appVersion.setText("Version: " + versionText);
+        binding.appVersion.setText(Html.fromHtml("<b>Version</b>: " + versionText));
     }
 }
