@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
@@ -37,7 +39,7 @@ public class LauncherActivity extends BaseActivity {
         initToolbar(binding.toolbar);
 
         binding.appItemsView.setLayoutManager(
-                new GridLayoutManager(this, 1, LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         final Adapter adapter = new Adapter(this, binding.toolbar);
         binding.appItemsView.setAdapter(adapter);
@@ -57,6 +59,7 @@ public class LauncherActivity extends BaseActivity {
                 // NOP.
             }
         });
+        binding.toolbar.inflateMenu(R.menu.launcher);
     }
 
     @Override
@@ -64,6 +67,33 @@ public class LauncherActivity extends BaseActivity {
         super.onResume();
         applyColorToToolbar(binding.toolbar);
         ImageLoader.setImageToImageView(binding.background, getBackgroundImagePath());
+    }
+
+    @Override
+    protected boolean clickMenu(final MenuItem item) {
+        final int itemId = item.getItemId();
+
+        final int itemCount = binding.appItemsView.getAdapter().getItemCount();
+
+        if (itemId == R.id.to_top) {
+            if (itemCount > 30) {
+                binding.appItemsView.scrollToPosition(0);
+                return true;
+            }
+            binding.appItemsView.smoothScrollToPosition(0);
+            return true;
+        }
+
+        if (itemId == R.id.to_bottom) {
+            if (itemCount > 30) {
+                binding.appItemsView.scrollToPosition(itemCount - 1);
+                return true;
+            }
+            binding.appItemsView.smoothScrollToPosition(itemCount);
+            return true;
+        }
+
+        return super.clickMenu(item);
     }
 
     @Override
