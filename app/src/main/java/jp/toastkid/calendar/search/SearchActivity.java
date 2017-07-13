@@ -75,7 +75,9 @@ public class SearchActivity extends BaseActivity {
 
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
-            final String category = SearchCategory.WEB.name();
+            final String category = intent.hasExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    ? intent.getStringExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    : SearchCategory.WEB.name();
             search(category, intent.getStringExtra(SearchManager.QUERY));
             if (intent.getBooleanExtra(EXTRA_KEY_FINISH_SOON, false)) {
                 finish();
