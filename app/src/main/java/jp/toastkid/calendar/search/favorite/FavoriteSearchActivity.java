@@ -61,11 +61,11 @@ public class FavoriteSearchActivity extends BaseActivity {
         final String query = favoriteSearch.query;
         holder.setText(query);
 
-        holder.itemView.setOnClickListener(v -> startSearch(category, query));
+        holder.setClickAction(v -> startSearch(category, query));
 
-        holder.removeView.setOnClickListener(v -> {
+        holder.setRemoveAction(v -> {
             adapter.removeItemAsMaybe(favoriteSearch).subscribeOn(Schedulers.io()).subscribe();
-            Toaster.snackShort(holder.imageView, R.string.settings_color_delete, colorPair());
+            Toaster.snackShort(binding.favoriteSearchView, R.string.settings_color_delete, colorPair());
         });
     }
 
@@ -112,8 +112,14 @@ public class FavoriteSearchActivity extends BaseActivity {
 
     private class Adapter extends OrmaRecyclerViewAdapter<FavoriteSearch, FavoriteSearchHolder> {
 
-        Adapter(@NonNull Context context, @NonNull Relation<FavoriteSearch, ?> relation) {
+        private LayoutInflater inflater;
+
+        Adapter(
+                @NonNull final Context context,
+                @NonNull final Relation<FavoriteSearch, ?> relation
+        ) {
             super(context, relation);
+            inflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -121,8 +127,10 @@ public class FavoriteSearchActivity extends BaseActivity {
                 final ViewGroup parent,
                 final int viewType
         ) {
-            final LayoutInflater inflater = LayoutInflater.from(FavoriteSearchActivity.this);
-            return new FavoriteSearchHolder(inflater.inflate(R.layout.favorite_search_item, parent, false));
+            return new FavoriteSearchHolder(
+                    DataBindingUtil
+                            .inflate(inflater, R.layout.favorite_search_item, parent, false)
+            );
         }
 
         @Override
