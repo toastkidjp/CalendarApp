@@ -10,6 +10,11 @@
                 android:title="@string/title_search_action"
                 />
             <item
+                android:id="@+id/nav_favorite_search"
+                android:icon="@drawable/ic_favorite"
+                android:title="@string/title_favorite_search"
+                />
+            <item
                 android:id="@+id/nav_tweet"
                 android:icon="@drawable/ic_tweet_black"
                 android:title="@string/title_tweet_action"

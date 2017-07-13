@@ -123,4 +123,12 @@
 
     <string name="top_mark">↑</string>
     <string name="bottom_mark">↓</string>
+    <string name="title_delete_all">Delete All</string>
+    <string name="title_add">Add</string>
+    <string name="category">Category</string>
+    <string name="word">Word</string>
+    <string name="favorite_search_addition_dialog_empty_message">Please could you input any keyword?</string>
+    <string name="favorite_search_addition_successful_format">It has been insert "{0}" to "Favorite search word".</string>
+    <string name="title_favorite_search">Favorite Search</string>
+    <string name="title_adding_favorite_search">Add Favorite Search</string>
 </resources>

@@ -1,0 +1,40 @@
+package jp.toastkid.calendar.search.favorite;
+
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatDrawableManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import jp.toastkid.calendar.R;
+
+/**
+ * // TODO: 2017/07/13 rewrite with databinding. 
+ * @author toastkidjp
+ */
+class FavoriteSearchHolder extends RecyclerView.ViewHolder {
+
+    final ImageView imageView;
+
+    private final TextView textView;
+
+    final View removeView;
+
+    FavoriteSearchHolder(final View itemView) {
+        super(itemView);
+        imageView  = (ImageView) itemView.findViewById(R.id.favorite_search_image);
+        textView   = (TextView) itemView.findViewById(R.id.favorite_search_text);
+        removeView = itemView.findViewById(R.id.favorite_search_delete);
+    }
+
+    void setImageId(@DrawableRes final int iconId) {
+        imageView.setImageDrawable(
+                AppCompatDrawableManager.get().getDrawable(imageView.getContext(), iconId));
+    }
+
+    void setText(@NonNull final String query) {
+        textView.setText(query);
+    }
+}
