@@ -30,6 +30,7 @@ import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.ColorPair;
+import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.search.suggest.SuggestAdapter;
 import jp.toastkid.calendar.search.suggest.SuggestFetcher;
 
@@ -74,7 +75,9 @@ public class SearchActivity extends BaseActivity {
 
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
-            final String category = SearchCategory.WEB.name();
+            final String category = intent.hasExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    ? intent.getStringExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    : SearchCategory.WEB.name();
             search(category, intent.getStringExtra(SearchManager.QUERY));
             if (intent.getBooleanExtra(EXTRA_KEY_FINISH_SOON, false)) {
                 finish();
@@ -270,4 +273,24 @@ public class SearchActivity extends BaseActivity {
         return intent;
     }
 
+    /**
+     * Make launcher intent.
+     * @param context
+     * @param category
+     * @param query
+     * @param finishSoon
+     * @return launcher intent
+     */
+    public static Intent makeShortcutIntent(
+            @NonNull final Context context,
+            @NonNull final SearchCategory category,
+            @NonNull final String query,
+            final boolean finishSoon
+    ) {
+        final Intent intent = makeIntent(context);
+        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY, category.name());
+        intent.putExtra(SearchManager.QUERY,   query);
+        intent.putExtra(EXTRA_KEY_FINISH_SOON, finishSoon);
+        return intent;
+    }
 }

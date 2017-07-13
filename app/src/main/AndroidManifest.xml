@@ -51,6 +51,16 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
+        <activity
+            android:name=".search.favorite.FavoriteSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenSize"
+            />
+        <service android:name=".search.favorite.AddingFavoriteSearchService">
+            <intent-filter>
+                <action android:name="ADD_ITEM" />
+            </intent-filter>
+        </service>
         <receiver android:name=".appwidget.search.Provider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

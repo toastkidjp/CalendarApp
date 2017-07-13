@@ -18,8 +18,10 @@ public class ExtendedApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LeakCanary.install(this);
-        if (new PreferenceApplier(this).isFirstLaunch()) {
+        final PreferenceApplier preferenceApplier = new PreferenceApplier(this);
+        if (preferenceApplier.isFirstLaunch()) {
             SavedColors.insertDefaultColors(this);
+            preferenceApplier.updateLastAd();
         }
     }
 

@@ -45,6 +45,8 @@ import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchActivity;
+import jp.toastkid.calendar.search.favorite.FavoriteSearch;
+import jp.toastkid.calendar.search.favorite.FavoriteSearchActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -174,6 +176,10 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_search:
                     sendLog("nav_search");
                     startActivity(SearchActivity.makeIntent(MainActivity.this));
+                    return true;
+                case R.id.nav_favorite_search:
+                    sendLog("nav_fav_search");
+                    startActivity(FavoriteSearchActivity.makeIntent(MainActivity.this));
                     return true;
                 case R.id.nav_tweet:
                     sendLog("nav_twt");

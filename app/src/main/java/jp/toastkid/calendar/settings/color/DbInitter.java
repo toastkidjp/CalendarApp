@@ -2,6 +2,8 @@ package jp.toastkid.calendar.settings.color;
 
 import android.content.Context;
 
+import jp.toastkid.calendar.search.favorite.OrmaDatabase;
+
 /**
  * @author toastkidjp
  */

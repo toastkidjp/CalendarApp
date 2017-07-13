@@ -8,6 +8,7 @@ import jp.toastkid.calendar.calendar.alarm.DailyCalendarReceiver;
 import jp.toastkid.calendar.calendar.MainActivity;
 import jp.toastkid.calendar.launcher.LauncherActivity;
 import jp.toastkid.calendar.search.SearchActivity;
+import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
 /**
@@ -95,5 +96,23 @@ public class PendingIntentFactory {
                 LauncherActivity.makeIntent(context),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
+    }
+
+    /**
+     * Make adding favorite search intent.
+     * @param context
+     * @param category
+     * @param query
+     * @return {@link AddingFavoriteSearchService}'s pending intent
+     */
+    public static PendingIntent favoriteSearchAdding(
+            final Context context,
+            final String category,
+            final String query
+    ) {
+        final Intent intent = new Intent(context, AddingFavoriteSearchService.class);
+        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY, category);
+        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_QUERY,    query);
+        return PendingIntent.getService(context, 7, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
