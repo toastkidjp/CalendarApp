@@ -3,10 +3,14 @@ package jp.toastkid.calendar.search.favorite;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +35,7 @@ public class FavoriteSearchActivity extends BaseActivity {
 
     private static final int LAYOUT_ID = R.layout.activity_favorite_search;
 
-    private OrmaRecyclerViewAdapter<FavoriteSearch, FavoriteSearchHolder> adapter;
+    private Adapter adapter;
 
     private ActivityFavoriteSearchBinding binding;
 
@@ -52,6 +56,31 @@ public class FavoriteSearchActivity extends BaseActivity {
         binding.favoriteSearchView.setAdapter(adapter);
         binding.favoriteSearchView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.RIGHT, ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(
+                            final RecyclerView recyclerView,
+                            final RecyclerView.ViewHolder viewHolder,
+                            final RecyclerView.ViewHolder target
+                    ) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        adapter.notifyItemMoved(fromPos, toPos);
+                        return true;
+                    }
+
+                    @Override
+                    public void onSwiped(
+                            final RecyclerView.ViewHolder viewHolder,
+                            final int direction
+                    ) {
+                        if (direction != ItemTouchHelper.RIGHT) {
+                            return;
+                        }
+                        adapter.removeAt(viewHolder.getAdapterPosition());
+                    }
+                }).attachToRecyclerView(binding.favoriteSearchView);
     }
 
     private void bindViews(final FavoriteSearchHolder holder, final FavoriteSearch favoriteSearch) {
@@ -141,6 +170,12 @@ public class FavoriteSearchActivity extends BaseActivity {
         @Override
         public int getItemCount() {
             return adapter.getRelation().count();
+        }
+
+        void removeAt(final int position) {
+            removeItemAsMaybe(adapter.getRelation().get(position))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe();
         }
     }
 
