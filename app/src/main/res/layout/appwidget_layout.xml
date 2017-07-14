@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="30dp"
                 android:gravity="center_vertical"
-                android:text="@string/title_search"
+                android:text="@string/app_widget_search"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 />
