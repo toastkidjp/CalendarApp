@@ -8,14 +8,20 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivityLauncherBinding;
+import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.ImageLoader;
+import jp.toastkid.calendar.libs.Inputs;
 
 /**
  * App Launcher.
@@ -37,13 +43,27 @@ public class LauncherActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
 
         initToolbar(binding.toolbar);
+        binding.toolbar.inflateMenu(R.menu.launcher);
 
         binding.appItemsView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         final Adapter adapter = new Adapter(this, binding.toolbar);
         binding.appItemsView.setAdapter(adapter);
-        binding.filter.addTextChangedListener(new TextWatcher() {
+        binding.appItemsView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                Inputs.hideKeyboard(binding.appItemsView);
+                return true;
+            }
+        });
+
+        initInput(adapter);
+    }
+
+    private void initInput(final Adapter adapter) {
+        final EditText editText = binding.filter;
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // NOP.
@@ -59,13 +79,15 @@ public class LauncherActivity extends BaseActivity {
                 // NOP.
             }
         });
-        binding.toolbar.inflateMenu(R.menu.launcher);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         applyColorToToolbar(binding.toolbar);
+        final int fontColor = colorPair().fontColor();
+        Colors.setTextColor(binding.filter, fontColor);
+        binding.inputBorder.setBackgroundColor(fontColor);
         ImageLoader.setImageToImageView(binding.background, getBackgroundImagePath());
     }
 

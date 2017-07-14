@@ -26,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.ActivitySearchBinding;
+import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
@@ -184,9 +185,7 @@ public class SearchActivity extends BaseActivity {
         final int bgColor   = colorPair.bgColor();
         final int fontColor = colorPair.fontColor();
         applyColorToToolbar(binding.searchToolbar);
-        binding.searchInput.setTextColor(fontColor);
-        binding.searchInput.setHintTextColor(fontColor);
-        binding.searchInput.setHighlightColor(fontColor);
+        Colors.setTextColor(binding.searchInput, fontColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(bgColor, 255));
         }
