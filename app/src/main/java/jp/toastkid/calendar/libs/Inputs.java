@@ -19,6 +19,9 @@ public class Inputs {
     public static void showKeyboard(final Activity activity, final EditText editText) {
         final InputMethodManager inputMethodManager
                 = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (!inputMethodManager.isActive()) {
+            return;
+        }
         inputMethodManager.showSoftInput(editText, 0);
     }
 
@@ -29,6 +32,9 @@ public class Inputs {
     public static void hideKeyboard(final View v) {
         final InputMethodManager manager = (InputMethodManager) v.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (!manager.isActive()) {
+            return;
+        }
         manager.hideSoftInputFromWindow(
                 v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

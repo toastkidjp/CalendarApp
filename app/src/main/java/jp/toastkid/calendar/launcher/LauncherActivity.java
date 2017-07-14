@@ -22,6 +22,7 @@ import jp.toastkid.calendar.databinding.ActivityLauncherBinding;
 import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
+import jp.toastkid.calendar.libs.Logger;
 
 /**
  * App Launcher.
@@ -53,8 +54,12 @@ public class LauncherActivity extends BaseActivity {
         binding.appItemsView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                Inputs.hideKeyboard(binding.appItemsView);
-                return true;
+                if (!binding.filter.hasFocus()) {
+                    return false;
+                }
+                Inputs.hideKeyboard(binding.filter);
+                binding.appItemsView.requestFocus();
+                return false;
             }
         });
 

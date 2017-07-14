@@ -21,8 +21,10 @@
                     android:id="@+id/filter"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:maxLines="1"
                     android:hint="@string/title_package_name_filter"
                     android:background="@drawable/ripple_transparent"
+                    android:inputType="text"
                     />
                 <LinearLayout
                     android:id="@+id/input_border"
