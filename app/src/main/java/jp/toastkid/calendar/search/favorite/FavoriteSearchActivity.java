@@ -52,7 +52,12 @@ public class FavoriteSearchActivity extends BaseActivity {
     }
 
     private void initFavSearchsView() {
-        adapter = new Adapter(this, DbInitter.get(this).relationOfFavoriteSearch());
+        adapter = new Adapter(
+                this,
+                DbInitter.get(this).relationOfFavoriteSearch(),
+                this::startSearch,
+                messageId -> Toaster.snackShort(binding.favoriteSearchView, messageId, colorPair())
+        );
         binding.favoriteSearchView.setAdapter(adapter);
         binding.favoriteSearchView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -81,21 +86,6 @@ public class FavoriteSearchActivity extends BaseActivity {
                         adapter.removeAt(viewHolder.getAdapterPosition());
                     }
                 }).attachToRecyclerView(binding.favoriteSearchView);
-    }
-
-    private void bindViews(final FavoriteSearchHolder holder, final FavoriteSearch favoriteSearch) {
-        final SearchCategory category = SearchCategory.findByCategory(favoriteSearch.category);
-        holder.setImageId(category.getIconId());
-
-        final String query = favoriteSearch.query;
-        holder.setText(query);
-
-        holder.setClickAction(v -> startSearch(category, query));
-
-        holder.setRemoveAction(v -> {
-            adapter.removeItemAsMaybe(favoriteSearch).subscribeOn(Schedulers.io()).subscribe();
-            Toaster.snackShort(binding.favoriteSearchView, R.string.settings_color_delete, colorPair());
-        });
     }
 
     /**
@@ -137,46 +127,6 @@ public class FavoriteSearchActivity extends BaseActivity {
     @Override
     protected int getTitleId() {
         return R.string.title_favorite_search;
-    }
-
-    private class Adapter extends OrmaRecyclerViewAdapter<FavoriteSearch, FavoriteSearchHolder> {
-
-        private LayoutInflater inflater;
-
-        Adapter(
-                @NonNull final Context context,
-                @NonNull final Relation<FavoriteSearch, ?> relation
-        ) {
-            super(context, relation);
-            inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public FavoriteSearchHolder onCreateViewHolder(
-                final ViewGroup parent,
-                final int viewType
-        ) {
-            return new FavoriteSearchHolder(
-                    DataBindingUtil
-                            .inflate(inflater, R.layout.favorite_search_item, parent, false)
-            );
-        }
-
-        @Override
-        public void onBindViewHolder(final FavoriteSearchHolder holder, final int position) {
-            bindViews(holder, adapter.getRelation().get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return adapter.getRelation().count();
-        }
-
-        void removeAt(final int position) {
-            removeItemAsMaybe(adapter.getRelation().get(position))
-                    .subscribeOn(Schedulers.io())
-                    .subscribe();
-        }
     }
 
     /**
