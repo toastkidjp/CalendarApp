@@ -121,7 +121,10 @@ public class FavoriteSearchActivity extends BaseActivity {
     }
 
     private void invokeAddition() {
-        new Addition(binding.toolbar).invoke();
+        new Addition(
+                binding.additionArea,
+                messageId -> Toaster.snackShort(binding.favoriteSearchView, messageId, colorPair())
+        ).invoke();
     }
 
     @Override

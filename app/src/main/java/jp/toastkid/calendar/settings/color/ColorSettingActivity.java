@@ -21,6 +21,7 @@ import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.appwidget.search.Updater;
 import jp.toastkid.calendar.databinding.ActivitySettingsColorBinding;
+import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.ColorPair;
 
@@ -117,7 +118,7 @@ public class ColorSettingActivity extends BaseActivity {
 
     private void refresh() {
         applyColorToToolbar(binding.settingsColorToolbar);
-        SavedColors.setBgAndText(binding.settingsColorOk, colorPair());
+        Colors.setBgAndText(binding.settingsColorOk, colorPair());
     }
 
     public void ok(final View view) {

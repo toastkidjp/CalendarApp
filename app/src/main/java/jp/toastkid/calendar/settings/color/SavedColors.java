@@ -24,14 +24,6 @@ import jp.toastkid.calendar.libs.preference.ColorPair;
  */
 public class SavedColors {
 
-    static void setBgAndText(
-            final TextView tv,
-            @NonNull final ColorPair pair
-            ) {
-        tv.setBackgroundColor(pair.bgColor());
-        tv.setTextColor(pair.fontColor());
-    }
-
     static void setSaved(final TextView tv, final SavedColor color) {
         tv.setBackgroundColor(color.bgColor);
         tv.setTextColor(color.fontColor);

@@ -12,6 +12,8 @@ import com.github.gfx.android.orma.widget.OrmaRecyclerViewAdapter;
 
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.libs.functions.SingleValueCallback;
 import jp.toastkid.calendar.search.SearchCategory;
 
 /**
@@ -23,21 +25,17 @@ class Adapter extends OrmaRecyclerViewAdapter<FavoriteSearch, FavoriteSearchHold
         void accept(final SearchCategory category, final String query);
     }
 
-    interface ToasterCallback {
-        void accept(@StringRes final int message);
-    }
-
     private LayoutInflater inflater;
 
     private SearchCallback searchAction;
 
-    private ToasterCallback toasterCallback;
+    private SingleValueCallback<Integer> toasterCallback;
 
     Adapter(
             @NonNull final Context context,
             @NonNull final Relation<FavoriteSearch, ?> relation,
             @NonNull final SearchCallback searchAction,
-            @NonNull final ToasterCallback toasterCallback
+            @NonNull final SingleValueCallback<Integer> toasterCallback
     ) {
         super(context, relation);
         this.inflater = LayoutInflater.from(context);

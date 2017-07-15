@@ -1,25 +1,29 @@
 package jp.toastkid.calendar.search.favorite;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.text.MessageFormat;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.libs.Logger;
-import jp.toastkid.calendar.libs.Toaster;
+import jp.toastkid.calendar.databinding.FavoriteSearchAdditionDialogContentBinding;
+import jp.toastkid.calendar.libs.Colors;
+import jp.toastkid.calendar.libs.Inputs;
+import jp.toastkid.calendar.libs.functions.SingleValueCallback;
+import jp.toastkid.calendar.libs.preference.ColorPair;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchCategorySpinnerInitializer;
 
 /**
@@ -27,65 +31,60 @@ import jp.toastkid.calendar.search.SearchCategorySpinnerInitializer;
  *
  * @author toastkidjp
  */
-class Addition {
+public class Addition {
+
+    @LayoutRes
+    private static final int LAYOUT_ID = R.layout.favorite_search_addition_dialog_content;
 
     /** Context. */
     private final Context context;
 
+    private final FavoriteSearchAdditionDialogContentBinding binding;
+
     /** For using extract background color. */
-    private final View view;
+    private final ViewGroup parent;
+
+    private final SingleValueCallback<String> toasterCallback;
+
+    private final Spinner categorySelector;
+
+    private final EditText input;
 
     /**
      *
      * @param view
      */
-    Addition(@NonNull final View view) {
+    Addition(@NonNull final ViewGroup view, @NonNull final SingleValueCallback<String> callback) {
         this.context = view.getContext();
-        this.view = view;
+        this.parent = view;
+
+        binding = DataBindingUtil.inflate(
+                LayoutInflater.from(context),
+                LAYOUT_ID,
+                view,
+                false
+        );
+        this.toasterCallback = callback;
+        binding.setAction(this);
+        final View content = binding.getRoot();
+
+        categorySelector = initSpinner(content);
+
+        input = initInput(content);
+
+        if (view.getChildCount() == 0) {
+            view.addView(content);
+        }
     }
 
     /**
      * Show input dialog.
      */
     void invoke() {
-        final View content = LayoutInflater.from(context)
-                .inflate(R.layout.favorite_search_addition_dialog_content, null);
-
-        final Spinner categorySelector = initSpinner(content);
-
-        final EditText input = initInput(content);
-
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.title_add)
-                .setView(content)
-                .setCancelable(true)
-                .setNegativeButton(R.string.cancel, (d, i) -> d.cancel())
-                .setPositiveButton(R.string.ok,     (d, i) -> {
-                    @ColorInt final int color = ((ColorDrawable) view.getBackground()).getColor();
-
-                    final String query = input.getText().toString();
-
-                    if (TextUtils.isEmpty(query)) {
-                        Toaster.snackShort(
-                                view,
-                                R.string.favorite_search_addition_dialog_empty_message,
-                                color
-                        );
-                        return;
-                    }
-
-                    final String category = categorySelector.getSelectedItem().toString();
-
-                    new Insertion(context, category, query).insert();
-
-                    final String message = MessageFormat.format(
-                            context.getString(R.string.favorite_search_addition_successful_format),
-                            query
-                    );
-                    Toaster.snackShort(view, message, color);
-                    d.dismiss();
-                })
-                .show();
+        final ColorPair colorPair = new PreferenceApplier(context).colorPair();
+        Colors.setBgAndText(binding.close, colorPair);
+        Colors.setBgAndText(binding.add,   colorPair);
+        parent.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -134,5 +133,29 @@ class Addition {
             }
         });
         return input;
+    }
+
+    public void cancel(final View v) {
+        parent.setVisibility(View.GONE);
+        Inputs.hideKeyboard(input);
+    }
+
+    public void ok(final View v) {
+        final String query = input.getText().toString();
+
+        if (TextUtils.isEmpty(query)) {
+            toasterCallback.accept(context.getString(R.string.favorite_search_addition_dialog_empty_message));
+            return;
+        }
+
+        final String category = categorySelector.getSelectedItem().toString();
+
+        new Insertion(context, category, query).insert();
+
+        final String message = MessageFormat.format(
+                context.getString(R.string.favorite_search_addition_successful_format),
+                query
+        );
+        toasterCallback.accept(message);
     }
 }
