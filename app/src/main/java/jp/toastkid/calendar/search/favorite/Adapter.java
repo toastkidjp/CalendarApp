@@ -3,7 +3,6 @@ package jp.toastkid.calendar.search.favorite;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,7 +11,6 @@ import com.github.gfx.android.orma.widget.OrmaRecyclerViewAdapter;
 
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.functions.SingleValueCallback;
 import jp.toastkid.calendar.search.SearchCategory;
 

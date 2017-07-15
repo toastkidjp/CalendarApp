@@ -1,8 +1,6 @@
 package jp.toastkid.calendar.calendar;
 
-import android.app.Activity;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioGroup;
 
@@ -10,7 +8,6 @@ import java.util.Locale;
 
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
-import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * @author toastkidjp

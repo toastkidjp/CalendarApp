@@ -17,7 +17,6 @@ import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
-import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * @author toastkidjp

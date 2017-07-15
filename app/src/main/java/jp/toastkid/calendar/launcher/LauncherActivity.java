@@ -5,15 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import jp.toastkid.calendar.BaseActivity;
@@ -22,7 +18,6 @@ import jp.toastkid.calendar.databinding.ActivityLauncherBinding;
 import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
-import jp.toastkid.calendar.libs.Logger;
 
 /**
  * App Launcher.
