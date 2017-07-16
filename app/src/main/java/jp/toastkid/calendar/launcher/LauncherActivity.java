@@ -119,6 +119,12 @@ public class LauncherActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Inputs.hideKeyboard(binding.filter);
+    }
+
+    @Override
     protected int getTitleId() {
         return R.string.title_apps_launcher;
     }
