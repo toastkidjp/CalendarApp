@@ -118,4 +118,8 @@ public class SuggestAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
+
+    public void add(final String s) {
+        mSuggests.add(s);
+    }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -47,7 +48,7 @@ import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
-import jp.toastkid.calendar.search.SearchActivity;
+import jp.toastkid.calendar.search.SearchFragment;
 import jp.toastkid.calendar.search.favorite.FavoriteSearchActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
@@ -76,6 +77,8 @@ public class MainActivity extends BaseActivity {
 
     /** Interstitial AD. */
     private InterstitialAd interstitialAd;
+    private CalendarFragment calendarFragment;
+    private SearchFragment searchFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -89,9 +92,8 @@ public class MainActivity extends BaseActivity {
 
         initNavigation();
 
-        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.content, new CalendarFragment());
-        transaction.commit();
+        calendarFragment = new CalendarFragment();
+        replaceFragment(calendarFragment);
 
         initInterstitialAd();
 
@@ -104,6 +106,12 @@ public class MainActivity extends BaseActivity {
                 calledIntent.getIntExtra(KEY_EXTRA_MONTH, -1),
                 calledIntent.getIntExtra(KEY_EXTRA_DOM,   -1)
         ).invoke();
+    }
+
+    private void replaceFragment(final Fragment fragment) {
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, fragment);
+        transaction.commit();
     }
 
     private void initInterstitialAd() {
@@ -179,7 +187,16 @@ public class MainActivity extends BaseActivity {
                     return true;
                 case R.id.nav_search:
                     sendLog("nav_search");
-                    startActivity(SearchActivity.makeIntent(MainActivity.this));
+                    if (searchFragment == null) {
+                        searchFragment = new SearchFragment();
+                    }
+                    replaceFragment(searchFragment);
+                    binding.drawerLayout.closeDrawers();
+                    return true;
+                case R.id.nav_calendar:
+                    sendLog("nav_cal");
+                    replaceFragment(calendarFragment);
+                    binding.drawerLayout.closeDrawers();
                     return true;
                 case R.id.nav_favorite_search:
                     sendLog("nav_fav_search");

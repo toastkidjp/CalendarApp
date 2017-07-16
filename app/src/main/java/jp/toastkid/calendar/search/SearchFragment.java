@@ -4,33 +4,40 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.graphics.ColorUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import jp.toastkid.calendar.BaseActivity;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.databinding.ActivitySearchBinding;
+import jp.toastkid.calendar.analytics.LogSender;
+import jp.toastkid.calendar.databinding.FragmentSearchBinding;
 import jp.toastkid.calendar.libs.Colors;
-import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Inputs;
+import jp.toastkid.calendar.libs.Logger;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.ColorPair;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
+import jp.toastkid.calendar.main.MainActivity;
 import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.search.suggest.SuggestAdapter;
 import jp.toastkid.calendar.search.suggest.SuggestFetcher;
@@ -40,41 +47,39 @@ import jp.toastkid.calendar.search.suggest.SuggestFetcher;
  *
  * @author toastkidjp
  */
-public class SearchActivity extends BaseActivity {
+public class SearchFragment extends Fragment {
 
     /** Key of extra. */
     private static final String EXTRA_KEY_FINISH_SOON = "finish_soon";
 
     /** Layout ID. */
-    private static final int LAYOUT_ID = R.layout.activity_search;
+    private static final int LAYOUT_ID = R.layout.fragment_search;
 
     /** Suggest cache capacity. */
     public static final int SUGGEST_CACHE_CAPACITY = 30;
 
     /** View binder. */
-    private ActivitySearchBinding binding;
+    private FragmentSearchBinding binding;
 
     /** Suggest Adapter. */
     private SuggestAdapter mSuggestAdapter;
 
+    private PreferenceApplier preferenceApplier;
+
+    private LogSender logSender;
+
+    private CompositeDisposable disposables;
+
     @Override
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(LAYOUT_ID);
-        binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
+        disposables = new CompositeDisposable();
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-        SearchCategorySpinnerInitializer.initialize(binding.searchCategories);
-        initSuggests();
-        initSearchInput();
-        initToolbar(binding.searchToolbar);
-
-        binding.searchToolbar.inflateMenu(R.menu.search_menu);
-        binding.searchToolbar.getMenu().findItem(R.id.suggest_check)
+        /*binding.searchBar.inflateMenu(R.menu.search_menu);
+        binding.searchBar.getMenu().findItem(R.id.suggest_check)
                 .setChecked(getPreferenceApplier().isEnableSuggest());
-
-        final Intent intent = getIntent();
+*/
+        /*final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
             final String category = intent.hasExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
                     ? intent.getStringExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
@@ -83,14 +88,46 @@ public class SearchActivity extends BaseActivity {
             if (intent.getBooleanExtra(EXTRA_KEY_FINISH_SOON, false)) {
                 finish();
             }
-        }
-
-        binding.searchClear.setOnClickListener(v -> binding.searchInput.setText(""));
+        }*/
     }
 
-    private void initSuggests() {
+    @Override
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+
+        preferenceApplier = new PreferenceApplier(context);
+        logSender = new LogSender(getActivity());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    ) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = DataBindingUtil.inflate(inflater, LAYOUT_ID, container, false);
+        binding.searchClear.setOnClickListener(v -> binding.searchInput.setText(""));
+        SearchCategorySpinnerInitializer.initialize(binding.searchCategories);
+
+        initSearchInput();
+
+        applyColor();
+
+        initSuggests(inflater);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Inputs.toggle(getActivity());
+    }
+
+    private void initSuggests(final LayoutInflater inflater) {
         mSuggestAdapter = new SuggestAdapter(
-                LayoutInflater.from(this),
+                inflater,
                 binding.searchInput,
                 suggest -> search(binding.searchCategories.getSelectedItem().toString(), suggest)
                 );
@@ -108,7 +145,7 @@ public class SearchActivity extends BaseActivity {
 
         binding.searchInput.addTextChangedListener(new TextWatcher() {
 
-            private final SuggestFetcher mFetcher = new SuggestFetcher(SearchActivity.this);
+            private final SuggestFetcher mFetcher = new SuggestFetcher(getActivity());
 
             private final Map<String, List<String>> mCache = new HashMap<>(SUGGEST_CACHE_CAPACITY);
 
@@ -120,7 +157,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (getPreferenceApplier().isDisableSuggest()) {
+                if (preferenceApplier.isDisableSuggest()) {
                     mSuggestAdapter.clear();
                     return;
                 }
@@ -131,7 +168,7 @@ public class SearchActivity extends BaseActivity {
                     return;
                 }
 
-                if (NetworkChecker.isNotAvailable(SearchActivity.this)) {
+                if (NetworkChecker.isNotAvailable(getActivity())) {
                     return;
                 }
 
@@ -160,35 +197,33 @@ public class SearchActivity extends BaseActivity {
      * @param suggests
      */
     private void replaceSuggests(final List<String> suggests) {
-        runOnUiThread(() -> {
-            binding.searchSuggests.setVisibility(View.VISIBLE);
-            mSuggestAdapter.replace(suggests);
-            mSuggestAdapter.notifyDataSetChanged();
-            mSuggestAdapter.notifyDataSetInvalidated();
-        });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Inputs.showKeyboard(this, binding.searchInput);
-        applyColor();
-
-        ImageLoader.setImageToImageView(binding.searchBackground, getBackgroundImagePath());
+        Observable.fromIterable(suggests)
+                .doOnNext(mSuggestAdapter::add)
+                .doOnSubscribe(d -> {
+                    disposables.add(d);
+                    mSuggestAdapter.clear();
+                })
+                .doOnTerminate(() -> {
+                    binding.searchSuggests.setVisibility(View.VISIBLE);
+                    if (mSuggestAdapter.isEmpty()) {
+                        mSuggestAdapter.notifyDataSetInvalidated();
+                    } else {
+                        mSuggestAdapter.notifyDataSetChanged();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     /**
      * Apply color to views.
      */
     private void applyColor() {
-        final ColorPair colorPair = colorPair();
+        final ColorPair colorPair = preferenceApplier.colorPair();
         final int bgColor   = colorPair.bgColor();
         final int fontColor = colorPair.fontColor();
-        applyColorToToolbar(binding.searchToolbar);
-        Colors.setTextColor(binding.searchInput, fontColor);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(bgColor, 255));
-        }
+        Colors.setTextColor(binding.searchInput, bgColor);
 
         binding.searchActionBackground.setBackgroundColor(ColorUtils.setAlphaComponent(bgColor, 128));
         binding.searchAction.setTextColor(fontColor);
@@ -196,16 +231,9 @@ public class SearchActivity extends BaseActivity {
                 binding.searchCategories.getSelectedItem().toString(),
                 binding.searchInput.getText().toString())
         );
-        binding.searchIcon.setColorFilter(fontColor);
-        binding.searchClear.setColorFilter(fontColor);
-        binding.searchInputBorder.setBackgroundColor(fontColor);
-    }
-
-    /**
-     * Close this activity.
-     */
-    private void close() {
-        finish();
+        binding.searchIcon.setColorFilter(bgColor);
+        binding.searchClear.setColorFilter(bgColor);
+        binding.searchInputBorder.setBackgroundColor(bgColor);
     }
 
     /**
@@ -219,30 +247,15 @@ public class SearchActivity extends BaseActivity {
         final Bundle bundle = new Bundle();
         bundle.putString("category", category);
         bundle.putString("query", query);
-        sendLog("search", bundle);
+        logSender.send("search", bundle);
 
-        final ColorPair colorPair = colorPair();
-        new SearchIntentLauncher(this)
+        final ColorPair colorPair = preferenceApplier.colorPair();
+        new SearchIntentLauncher(getActivity())
                 .setBackgroundColor(colorPair.bgColor())
                 .setFontColor(colorPair.fontColor())
                 .setCategory(category)
                 .setQuery(query)
                 .invoke();
-    }
-
-    @Override
-    protected int getTitleId() {
-        return R.string.title_search_action;
-    }
-
-    @Override
-    protected boolean clickMenu(final MenuItem item) {
-        if (item.getItemId() == R.id.suggest_check) {
-            getPreferenceApplier().switchEnableSuggest();
-            item.setChecked(getPreferenceApplier().isEnableSuggest());
-            return true;
-        }
-        return super.clickMenu(item);
     }
 
     /**
@@ -264,7 +277,7 @@ public class SearchActivity extends BaseActivity {
             @NonNull final Context context,
             @NonNull final String  query
             ) {
-        final Intent intent = new Intent(context, SearchActivity.class);
+        final Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         if (query.length() != 0) {
             intent.putExtra(SearchManager.QUERY, query);
@@ -291,5 +304,17 @@ public class SearchActivity extends BaseActivity {
         intent.putExtra(SearchManager.QUERY,   query);
         intent.putExtra(EXTRA_KEY_FINISH_SOON, finishSoon);
         return intent;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Inputs.hideKeyboard(binding.searchInput);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        disposables.dispose();
     }
 }

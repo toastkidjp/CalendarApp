@@ -5,6 +5,11 @@
     <item android:title="@string/title_tools">
         <menu>
             <item
+                android:id="@+id/nav_calendar"
+                android:icon="@drawable/ic_calendar_black"
+                android:title="@string/title_calendar"
+                />
+            <item
                 android:id="@+id/nav_search"
                 android:icon="@drawable/ic_search"
                 android:title="@string/title_search_action"

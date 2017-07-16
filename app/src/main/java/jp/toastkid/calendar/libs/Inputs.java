@@ -20,9 +20,22 @@ public class Inputs {
         final InputMethodManager inputMethodManager
                 = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (!inputMethodManager.isActive()) {
+
+            Logger.i("Active.");
             return;
         }
         inputMethodManager.showSoftInput(editText, 0);
+    }
+
+    /**
+     * For Fragment.
+     * @param activity
+     */
+    public static void toggle(final Activity activity) {
+        final InputMethodManager inputMethodManager
+                = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(
+                InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     /**

@@ -14,7 +14,7 @@ import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.analytics.LogSender;
 import jp.toastkid.calendar.databinding.FragmentCalendarBinding;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
-import jp.toastkid.calendar.search.SearchActivity;
+import jp.toastkid.calendar.search.SearchFragment;
 
 /**
  * Calendar fragment.
@@ -79,7 +79,7 @@ public class CalendarFragment extends Fragment {
                                 }
                                 if (index == 2) {
                                     logSender.send("cal_srch", bundle);
-                                    startActivity(SearchActivity.makeIntent(context, dateTitle));
+                                    startActivity(SearchFragment.makeIntent(context, dateTitle));
                                 }
                             })
                             .setCancelable(true)

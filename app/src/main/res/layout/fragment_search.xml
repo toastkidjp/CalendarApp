@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/soft_background"
+        android:background="@color/filter_white"
         >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/search_toolbar"
+        <FrameLayout
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:minHeight="?android:actionBarSize"
-            android:background="@color/soft_background"
             >
             <LinearLayout
                 android:orientation="horizontal"
@@ -83,7 +83,7 @@
                         />
                 </FrameLayout>
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+        </FrameLayout>
 
         <include layout="@layout/fake_shadow_1px"/>
 
