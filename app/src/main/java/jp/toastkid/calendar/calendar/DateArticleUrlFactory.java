@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import java.text.MessageFormat;
 
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.main.LocaleWrapper;
 
 /**
  * Factory of Wikipedia article's url.

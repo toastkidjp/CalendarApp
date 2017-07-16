@@ -13,8 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
+import jp.toastkid.calendar.analytics.LogSender;
 import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
@@ -24,7 +23,7 @@ import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 public abstract class BaseActivity extends AppCompatActivity {
 
     /** Firebase analytics log sender. */
-    private FirebaseAnalytics sender;
+    private LogSender sender;
 
     /** Preference Applier. */
     private PreferenceApplier preferenceApplier;
@@ -32,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sender = FirebaseAnalytics.getInstance(this);
+        sender = new LogSender(this);
         sendLog("launch");
         preferenceApplier = new PreferenceApplier(this);
     }
@@ -96,10 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param bundle
      */
     protected void sendLog(@NonNull final String key, final Bundle bundle) {
-        if (BuildConfig.DEBUG) {
-            return;
-        }
-        sender.logEvent(key, bundle);
+        sender.send(key, bundle);
     }
 
     protected final ColorPair colorPair() {

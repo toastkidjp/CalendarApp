@@ -1,4 +1,4 @@
-package jp.toastkid.calendar.calendar;
+package jp.toastkid.calendar.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +36,8 @@ import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
 import jp.toastkid.calendar.advertisement.AdInitializers;
 import jp.toastkid.calendar.appwidget.search.Updater;
+import jp.toastkid.calendar.calendar.CalendarArticleLinker;
+import jp.toastkid.calendar.calendar.CalendarFragment;
 import jp.toastkid.calendar.calendar.alarm.DailyAlarm;
 import jp.toastkid.calendar.databinding.ActivityMainBinding;
 import jp.toastkid.calendar.launcher.LauncherActivity;
@@ -86,7 +89,9 @@ public class MainActivity extends BaseActivity {
 
         initNavigation();
 
-        initCalendarView();
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.content, new CalendarFragment());
+        transaction.commit();
 
         initInterstitialAd();
 
@@ -303,41 +308,6 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    /**
-     * Initialize calendar view.
-     */
-    private void initCalendarView() {
-        binding.appBarMain.content.calendar.setDate(System.currentTimeMillis());
-        binding.appBarMain.content.calendar.setOnDateChangeListener(
-                (view, year, month, dayOfMonth) -> {
-                    final String dateTitle = DateTitleFactory.makeDateTitle(this, month, dayOfMonth);
-                    new AlertDialog.Builder(this)
-                            .setTitle(dateTitle)
-                            .setItems(R.array.calendar_menu, (d, index) -> {
-                                final Bundle bundle = new Bundle();
-                                bundle.putString("daily", dateTitle);
-                                if (index == 0) {
-                                    sendLog("cal_wkp", bundle);
-                                    new CalendarArticleLinker(this, month, dayOfMonth).invoke();
-                                    return;
-                                }
-                                if (index == 1) {
-                                    sendLog("cal_schdl", bundle);
-                                    startActivity(IntentFactory.makeCalendar(view.getDate()));
-                                    return;
-                                }
-                                if (index == 2) {
-                                    sendLog("cal_srch", bundle);
-                                    startActivity(SearchActivity.makeIntent(this, dateTitle));
-                                }
-                            })
-                            .setCancelable(true)
-                            .setOnCancelListener(v -> sendLog("cal_x"))
-                            .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
-                            .show();
-        });
-    }
-
     @Override
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -428,7 +398,7 @@ public class MainActivity extends BaseActivity {
      */
     private void setBackgroundImage(@Nullable final BitmapDrawable background) {
         ((ImageView) navBackground.findViewById(R.id.background)).setImageDrawable(background);
-        binding.appBarMain.content.image.setImageDrawable(background);
+        binding.appBarMain.image.setImageDrawable(background);
         if (background == null) {
             navBackground.setBackgroundColor(colorPair().bgColor());
         }

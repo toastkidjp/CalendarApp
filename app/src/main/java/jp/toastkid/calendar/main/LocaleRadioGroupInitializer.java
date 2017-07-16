@@ -1,4 +1,4 @@
-package jp.toastkid.calendar.calendar;
+package jp.toastkid.calendar.main;
 
 import android.os.Build;
 import android.view.View;

@@ -4,7 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import jp.toastkid.calendar.calendar.MainActivity;
+import jp.toastkid.calendar.main.MainActivity;
 import jp.toastkid.calendar.calendar.alarm.DailyCalendarReceiver;
 import jp.toastkid.calendar.launcher.LauncherActivity;
 import jp.toastkid.calendar.search.SearchActivity;
