@@ -77,7 +77,9 @@ public class MainActivity extends BaseActivity {
 
     /** Interstitial AD. */
     private InterstitialAd interstitialAd;
+
     private CalendarFragment calendarFragment;
+
     private SearchFragment searchFragment;
 
     @Override
@@ -344,7 +346,8 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.settings_toolbar_menu_exit) {
+            finish();
             return true;
         }
 

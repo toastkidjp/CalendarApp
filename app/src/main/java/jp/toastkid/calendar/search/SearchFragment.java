@@ -10,14 +10,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +26,11 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.analytics.LogSender;
 import jp.toastkid.calendar.databinding.FragmentSearchBinding;
 import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.Inputs;
-import jp.toastkid.calendar.libs.Logger;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
@@ -57,6 +54,7 @@ public class SearchFragment extends Fragment {
 
     /** Suggest cache capacity. */
     public static final int SUGGEST_CACHE_CAPACITY = 30;
+    public static final int MENU_ID_SUGGEST_CHECK = R.id.suggest_check;
 
     /** View binder. */
     private FragmentSearchBinding binding;
@@ -116,7 +114,25 @@ public class SearchFragment extends Fragment {
         applyColor();
 
         initSuggests(inflater);
+
+        inflateMenuToToolbar();
+
         return binding.getRoot();
+    }
+
+    private void inflateMenuToToolbar() {
+        final FragmentActivity activity = getActivity();
+        final Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.search_menu);
+        toolbar.getMenu().findItem(R.id.suggest_check).setChecked(preferenceApplier.isEnableSuggest());
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == MENU_ID_SUGGEST_CHECK) {
+                preferenceApplier.switchEnableSuggest();
+                item.setChecked(preferenceApplier.isEnableSuggest());
+                return true;
+            }
+            return activity.onOptionsItemSelected(item);
+        });
     }
 
     @Override
@@ -316,5 +332,7 @@ public class SearchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         disposables.dispose();
+        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        toolbar.getMenu().removeItem(MENU_ID_SUGGEST_CHECK);
     }
 }
