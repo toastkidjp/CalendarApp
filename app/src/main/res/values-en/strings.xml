@@ -133,4 +133,5 @@
     <string name="title_favorite_search">Favorite Search</string>
     <string name="title_adding_favorite_search">Add Favorite Search</string>
     <string name="exit">Exit</string>
+    <string name="format_message_done_adding_favorite_search">It has added \"%s\" to favorite search.</string>
 </resources>
