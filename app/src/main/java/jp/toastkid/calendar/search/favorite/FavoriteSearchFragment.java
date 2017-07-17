@@ -63,7 +63,7 @@ public class FavoriteSearchFragment extends Fragment {
                 getActivity(),
                 DbInitter.get(getActivity()).relationOfFavoriteSearch(),
                 this::startSearch,
-                messageId -> Toaster.snackShort(binding.favoriteSearchView, messageId, colorPair())
+                messageId -> Toaster.snackShort(binding.content, messageId, colorPair())
         );
         binding.favoriteSearchView.setAdapter(adapter);
         binding.favoriteSearchView.setLayoutManager(
@@ -128,7 +128,7 @@ public class FavoriteSearchFragment extends Fragment {
     private void invokeAddition() {
         new Addition(
                 binding.additionArea,
-                messageId -> Toaster.snackShort(binding.favoriteSearchView, messageId, colorPair())
+                messageId -> Toaster.snackShort(binding.content, messageId, colorPair())
         ).invoke();
     }
 
