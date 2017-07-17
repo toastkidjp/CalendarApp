@@ -1,59 +1,73 @@
 package jp.toastkid.calendar.search.favorite;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import jp.toastkid.calendar.BaseActivity;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.databinding.ActivityFavoriteSearchBinding;
-import jp.toastkid.calendar.libs.ImageLoader;
+import jp.toastkid.calendar.databinding.FragmentFavoriteSearchBinding;
 import jp.toastkid.calendar.libs.Toaster;
-import jp.toastkid.calendar.main.MainActivity;
+import jp.toastkid.calendar.libs.preference.ColorPair;
+import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 import jp.toastkid.calendar.search.SearchAction;
-import jp.toastkid.calendar.search.SearchFragment;
 import jp.toastkid.calendar.search.SearchCategory;
 
 /**
+ * Favorite search fragment.
+ *
  * @author toastkidjp
  */
-public class FavoriteSearchActivity extends BaseActivity {
+public class FavoriteSearchFragment extends Fragment {
 
-    private static final int LAYOUT_ID = R.layout.activity_favorite_search;
+    /** Layout ID. */
+    private static final int LAYOUT_ID = R.layout.fragment_favorite_search;
 
+    /** RecyclerView's adapter */
     private Adapter adapter;
 
-    private ActivityFavoriteSearchBinding binding;
+    /** Data Binding object. */
+    private FragmentFavoriteSearchBinding binding;
 
+    /** Preferences wrapper. */
+    private PreferenceApplier preferenceApplier;
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(LAYOUT_ID);
-        binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
+    public View onCreateView(
+            final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState
+    ) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        binding = DataBindingUtil.inflate(inflater, LAYOUT_ID, container, false);
         binding.setActivity(this);
 
-        initToolbar(binding.toolbar);
-        binding.toolbar.inflateMenu(R.menu.favorite_toolbar_menu);
         initFavSearchsView();
+
+        setHasOptionsMenu(true);
+
+        return binding.getRoot();
     }
 
     private void initFavSearchsView() {
         adapter = new Adapter(
-                this,
-                DbInitter.get(this).relationOfFavoriteSearch(),
+                getActivity(),
+                DbInitter.get(getActivity()).relationOfFavoriteSearch(),
                 this::startSearch,
                 messageId -> Toaster.snackShort(binding.favoriteSearchView, messageId, colorPair())
         );
         binding.favoriteSearchView.setAdapter(adapter);
         binding.favoriteSearchView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.RIGHT, ItemTouchHelper.RIGHT) {
                     @Override
@@ -87,26 +101,24 @@ public class FavoriteSearchActivity extends BaseActivity {
      * @param query    Search query
      */
     private void startSearch(final SearchCategory category, final String query) {
-        new SearchAction(this, category.name(), query).invoke();
+        new SearchAction(getActivity(), category.name(), query).invoke();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        applyColorToToolbar(binding.toolbar);
-        ImageLoader.setImageToImageView(binding.background, getBackgroundImagePath());
-    }
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
-    @Override
-    protected boolean clickMenu(final MenuItem item) {
-        final int itemId = item.getItemId();
-        if (itemId == R.id.favorite_toolbar_menu_clear) {
-            new Clear(binding.toolbar, adapter.getRelation().deleter()).invoke();
-        }
-        if (itemId == R.id.favorite_toolbar_menu_add) {
+        inflater.inflate(R.menu.favorite_toolbar_menu, menu);
+
+        menu.findItem(R.id.favorite_toolbar_menu_clear).setOnMenuItemClickListener(v -> {
+            new Clear(binding.favoriteSearchView, adapter.getRelation().deleter()).invoke();
+            return true;
+        });
+
+        menu.findItem(R.id.favorite_toolbar_menu_add).setOnMenuItemClickListener(v -> {
             invokeAddition();
-        }
-        return super.clickMenu(item);
+            return true;
+        });
     }
 
     public void add(final View v) {
@@ -120,19 +132,10 @@ public class FavoriteSearchActivity extends BaseActivity {
         ).invoke();
     }
 
-    @Override
-    protected int getTitleId() {
-        return R.string.title_favorite_search;
-    }
-
-    /**
-     * Make launcher intent.
-     * @param context
-     * @return {@link FavoriteSearchActivity} launcher intent
-     */
-    public static Intent makeIntent(final Context context) {
-        final Intent intent = new Intent(context, FavoriteSearchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
+    private ColorPair colorPair() {
+        if (preferenceApplier == null) {
+            preferenceApplier = new PreferenceApplier(getContext());
+        }
+        return preferenceApplier.colorPair();
     }
 }

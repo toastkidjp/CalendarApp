@@ -53,7 +53,7 @@ import jp.toastkid.calendar.search.SearchAction;
 import jp.toastkid.calendar.search.SearchCategory;
 import jp.toastkid.calendar.search.SearchFragment;
 import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
-import jp.toastkid.calendar.search.favorite.FavoriteSearchActivity;
+import jp.toastkid.calendar.search.favorite.FavoriteSearchFragment;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -72,8 +72,10 @@ public class MainActivity extends BaseActivity {
 
     /** For using daily alarm. */
     private static final String KEY_EXTRA_DOM = "dom";
-    public static final String KEY_EXTRA_LAUNCH = "launch";
-    public static final String VALUE_EXTRA_LAUNCH_SEARCH = "search";
+
+    private static final String KEY_EXTRA_LAUNCH = "launch";
+
+    private static final String VALUE_EXTRA_LAUNCH_SEARCH = "search";
 
     /** Navigation's background. */
     private View navBackground;
@@ -84,9 +86,14 @@ public class MainActivity extends BaseActivity {
     /** Interstitial AD. */
     private InterstitialAd interstitialAd;
 
+    /** Calendar. */
     private CalendarFragment calendarFragment;
 
+    /** Search. */
     private SearchFragment searchFragment;
+
+    /** Favorite search. */
+    private FavoriteSearchFragment favoriteSearchFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -236,7 +243,10 @@ public class MainActivity extends BaseActivity {
                     return true;
                 case R.id.nav_favorite_search:
                     sendLog("nav_fav_search");
-                    startActivity(FavoriteSearchActivity.makeIntent(MainActivity.this));
+                    if (favoriteSearchFragment == null) {
+                        favoriteSearchFragment = new FavoriteSearchFragment();
+                    }
+                    replaceFragment(favoriteSearchFragment);
                     return true;
                 case R.id.nav_tweet:
                     sendLog("nav_twt");
