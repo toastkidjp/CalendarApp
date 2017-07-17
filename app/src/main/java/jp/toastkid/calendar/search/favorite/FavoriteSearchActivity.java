@@ -17,6 +17,7 @@ import jp.toastkid.calendar.databinding.ActivityFavoriteSearchBinding;
 import jp.toastkid.calendar.libs.ImageLoader;
 import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.main.MainActivity;
+import jp.toastkid.calendar.search.SearchAction;
 import jp.toastkid.calendar.search.SearchFragment;
 import jp.toastkid.calendar.search.SearchCategory;
 
@@ -86,7 +87,7 @@ public class FavoriteSearchActivity extends BaseActivity {
      * @param query    Search query
      */
     private void startSearch(final SearchCategory category, final String query) {
-        startActivity(MainActivity.makeShortcutIntent(this, category, query, true));
+        new SearchAction(this, category.name(), query).invoke();
     }
 
     @Override
