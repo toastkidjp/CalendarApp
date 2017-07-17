@@ -1,19 +1,17 @@
 package jp.toastkid.calendar.search;
 
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -27,15 +25,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.analytics.LogSender;
 import jp.toastkid.calendar.databinding.FragmentSearchBinding;
 import jp.toastkid.calendar.libs.Colors;
 import jp.toastkid.calendar.libs.Inputs;
 import jp.toastkid.calendar.libs.network.NetworkChecker;
 import jp.toastkid.calendar.libs.preference.ColorPair;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
-import jp.toastkid.calendar.main.MainActivity;
-import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.search.suggest.SuggestAdapter;
 import jp.toastkid.calendar.search.suggest.SuggestFetcher;
 
@@ -46,15 +41,11 @@ import jp.toastkid.calendar.search.suggest.SuggestFetcher;
  */
 public class SearchFragment extends Fragment {
 
-    /** Key of extra. */
-    private static final String EXTRA_KEY_FINISH_SOON = "finish_soon";
-
     /** Layout ID. */
     private static final int LAYOUT_ID = R.layout.fragment_search;
 
     /** Suggest cache capacity. */
     public static final int SUGGEST_CACHE_CAPACITY = 30;
-    public static final int MENU_ID_SUGGEST_CHECK = R.id.suggest_check;
 
     /** View binder. */
     private FragmentSearchBinding binding;
@@ -64,29 +55,12 @@ public class SearchFragment extends Fragment {
 
     private PreferenceApplier preferenceApplier;
 
-    private LogSender logSender;
-
     private CompositeDisposable disposables;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         disposables = new CompositeDisposable();
-
-        /*binding.searchBar.inflateMenu(R.menu.search_menu);
-        binding.searchBar.getMenu().findItem(R.id.suggest_check)
-                .setChecked(getPreferenceApplier().isEnableSuggest());
-*/
-        /*final Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(SearchManager.QUERY)) {
-            final String category = intent.hasExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
-                    ? intent.getStringExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
-                    : SearchCategory.WEB.name();
-            search(category, intent.getStringExtra(SearchManager.QUERY));
-            if (intent.getBooleanExtra(EXTRA_KEY_FINISH_SOON, false)) {
-                finish();
-            }
-        }*/
     }
 
     @Override
@@ -94,7 +68,6 @@ public class SearchFragment extends Fragment {
         super.onAttach(context);
 
         preferenceApplier = new PreferenceApplier(context);
-        logSender = new LogSender(getActivity());
     }
 
     @Nullable
@@ -115,23 +88,22 @@ public class SearchFragment extends Fragment {
 
         initSuggests(inflater);
 
-        inflateMenuToToolbar();
+        setHasOptionsMenu(true);
 
         return binding.getRoot();
     }
 
-    private void inflateMenuToToolbar() {
-        final FragmentActivity activity = getActivity();
-        final Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.search_menu);
-        toolbar.getMenu().findItem(R.id.suggest_check).setChecked(preferenceApplier.isEnableSuggest());
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == MENU_ID_SUGGEST_CHECK) {
-                preferenceApplier.switchEnableSuggest();
-                item.setChecked(preferenceApplier.isEnableSuggest());
-                return true;
-            }
-            return activity.onOptionsItemSelected(item);
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.suggest_check);
+        item.setChecked(preferenceApplier.isEnableSuggest());
+        item.setOnMenuItemClickListener(i -> {
+            preferenceApplier.switchEnableSuggest();
+            i.setChecked(preferenceApplier.isEnableSuggest());
+            return true;
         });
     }
 
@@ -259,67 +231,7 @@ public class SearchFragment extends Fragment {
      * @param query    search query
      */
     private void search(final String category, final String query) {
-
-        final Bundle bundle = new Bundle();
-        bundle.putString("category", category);
-        bundle.putString("query", query);
-        logSender.send("search", bundle);
-
-        final ColorPair colorPair = preferenceApplier.colorPair();
-        new SearchIntentLauncher(getActivity())
-                .setBackgroundColor(colorPair.bgColor())
-                .setFontColor(colorPair.fontColor())
-                .setCategory(category)
-                .setQuery(query)
-                .invoke();
-    }
-
-    /**
-     * Make launcher intent.
-     * @param context
-     * @return launcher intent
-     */
-    public static Intent makeIntent(@NonNull final Context context) {
-        return makeIntent(context, "");
-    }
-
-    /**
-     * Make launcher intent with search query.
-     * @param context
-     * @param query
-     * @return launcher intent
-     */
-    public static Intent makeIntent(
-            @NonNull final Context context,
-            @NonNull final String  query
-            ) {
-        final Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        if (query.length() != 0) {
-            intent.putExtra(SearchManager.QUERY, query);
-        }
-        return intent;
-    }
-
-    /**
-     * Make launcher intent.
-     * @param context
-     * @param category
-     * @param query
-     * @param finishSoon
-     * @return launcher intent
-     */
-    public static Intent makeShortcutIntent(
-            @NonNull final Context context,
-            @NonNull final SearchCategory category,
-            @NonNull final String query,
-            final boolean finishSoon
-    ) {
-        final Intent intent = makeIntent(context);
-        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY, category.name());
-        intent.putExtra(SearchManager.QUERY,   query);
-        intent.putExtra(EXTRA_KEY_FINISH_SOON, finishSoon);
-        return intent;
+        new SearchAction(getActivity(), category, query).invoke();
     }
 
     @Override
@@ -332,7 +244,5 @@ public class SearchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         disposables.dispose();
-        final Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.getMenu().removeItem(MENU_ID_SUGGEST_CHECK);
     }
 }

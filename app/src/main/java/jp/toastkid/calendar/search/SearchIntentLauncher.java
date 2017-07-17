@@ -55,7 +55,7 @@ class SearchIntentLauncher {
                 context, backgroundColor, fontColor, R.drawable.ic_back)
                 .addMenuItem(
                         context.getString(R.string.title_search),
-                        PendingIntentFactory.makeSearchIntent(context)
+                        PendingIntentFactory.makeSearchLauncher(context)
                 )
                 .addMenuItem(
                         context.getString(R.string.title_settings_color),

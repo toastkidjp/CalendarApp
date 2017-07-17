@@ -23,8 +23,8 @@ public class PendingIntentFactory {
      * @param context
      * @return {@link SearchFragment}'s pending intent
      */
-    public static PendingIntent makeSearchIntent(final Context context) {
-        final Intent intent = SearchFragment.makeIntent(context);
+    public static PendingIntent makeSearchLauncher(final Context context) {
+        final Intent intent = MainActivity.makeSearchLauncherIntent(context);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

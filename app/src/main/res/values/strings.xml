@@ -132,4 +132,5 @@
     <string name="favorite_search_addition_successful_format">{0} をお気に入りに追加しました。</string>
     <string name="title_favorite_search">お気に入り検索</string>
     <string name="title_adding_favorite_search">お気に入り検索に追加</string>
+    <string name="exit">終了</string>
 </resources>

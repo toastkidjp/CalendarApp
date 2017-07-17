@@ -1,5 +1,6 @@
 package jp.toastkid.calendar.main;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -48,7 +49,10 @@ import jp.toastkid.calendar.libs.intent.CustomTabsFactory;
 import jp.toastkid.calendar.libs.intent.IntentFactory;
 import jp.toastkid.calendar.libs.intent.SettingsIntentFactory;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
+import jp.toastkid.calendar.search.SearchAction;
+import jp.toastkid.calendar.search.SearchCategory;
 import jp.toastkid.calendar.search.SearchFragment;
+import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.search.favorite.FavoriteSearchActivity;
 import jp.toastkid.calendar.settings.background.BackgroundSettingActivity;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
@@ -68,6 +72,8 @@ public class MainActivity extends BaseActivity {
 
     /** For using daily alarm. */
     private static final String KEY_EXTRA_DOM = "dom";
+    public static final String KEY_EXTRA_LAUNCH = "launch";
+    public static final String VALUE_EXTRA_LAUNCH_SEARCH = "search";
 
     /** Navigation's background. */
     private View navBackground;
@@ -89,25 +95,53 @@ public class MainActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, LAYOUT_ID);
 
         initToolbar(binding.appBarMain.toolbar);
+        setSupportActionBar(binding.appBarMain.toolbar);
 
         initDrawer(binding.appBarMain.toolbar);
 
         initNavigation();
 
-        calendarFragment = new CalendarFragment();
-        replaceFragment(calendarFragment);
+        setInitialFragment();
 
         initInterstitialAd();
 
+        processShortcut();
+    }
+
+    private void setInitialFragment() {
+        final Intent intent = getIntent();
+        if (intent.hasExtra(KEY_EXTRA_LAUNCH)) {
+            searchFragment = new SearchFragment();
+            replaceFragment(searchFragment);
+        } else {
+            calendarFragment = new CalendarFragment();
+            replaceFragment(calendarFragment);
+        }
+    }
+
+    private void processShortcut() {
         final Intent calledIntent = getIntent();
-        if (calledIntent == null || !calledIntent.hasExtra(KEY_EXTRA_MONTH)) {
+        if (calledIntent == null) {
             return;
         }
-        new CalendarArticleLinker(
-                this,
-                calledIntent.getIntExtra(KEY_EXTRA_MONTH, -1),
-                calledIntent.getIntExtra(KEY_EXTRA_DOM,   -1)
-        ).invoke();
+
+        if (calledIntent.hasExtra(KEY_EXTRA_MONTH)) {
+            new CalendarArticleLinker(
+                    this,
+                    calledIntent.getIntExtra(KEY_EXTRA_MONTH, -1),
+                    calledIntent.getIntExtra(KEY_EXTRA_DOM,   -1)
+            ).invoke();
+            return;
+        }
+
+        if (calledIntent.hasExtra(SearchManager.QUERY)) {
+            final String category = calledIntent.hasExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    ? calledIntent.getStringExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY)
+                    : SearchCategory.WEB.name();
+            new SearchAction(this, category, calledIntent.getStringExtra(SearchManager.QUERY))
+                    .invoke();
+            return;
+        }
     }
 
     private void replaceFragment(final Fragment fragment) {
@@ -461,4 +495,56 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
+
+    /**
+     * Make launcher intent with search query.
+     * @param context
+     * @return launcher intent
+     */
+    public static Intent makeSearchLauncherIntent(
+            @NonNull final Context context
+    ) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(KEY_EXTRA_LAUNCH, VALUE_EXTRA_LAUNCH_SEARCH);
+        return intent;
+    }
+
+    /**
+     * Make launcher intent with search query.
+     * @param context
+     * @param query
+     * @return launcher intent
+     */
+    public static Intent makeSearchIntent(
+            @NonNull final Context context,
+            @NonNull final String  query
+    ) {
+        final Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        if (query.length() != 0) {
+            intent.putExtra(SearchManager.QUERY, query);
+        }
+        return intent;
+    }
+
+    /**
+     * Make launcher intent.
+     * @param context
+     * @param category
+     * @param query
+     * @param finishSoon
+     * @return launcher intent
+     */
+    public static Intent makeShortcutIntent(
+            @NonNull final Context context,
+            @NonNull final SearchCategory category,
+            @NonNull final String query,
+            final boolean finishSoon
+    ) {
+        final Intent intent = makeIntent(context);
+        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY, category.name());
+        intent.putExtra(SearchManager.QUERY,   query);
+        return intent;
+    }
 }
