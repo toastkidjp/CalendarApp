@@ -7,7 +7,7 @@
     >
     <item
         android:id="@+id/settings_toolbar_menu_exit"
-        android:title="@string/exit"
+        android:title="@string/close"
         android:orderInCategory="100"
         app:showAsAction="never"
         />
