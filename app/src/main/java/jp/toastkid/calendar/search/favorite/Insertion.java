@@ -4,7 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.libs.Toaster;
 
 /**
  * @author toastkidjp
@@ -35,7 +38,12 @@ class Insertion {
         Completable.create(e -> {
             DbInitter.get(context).insertIntoFavoriteSearch(favoriteSearch);
             e.onComplete();
-        }).subscribeOn(Schedulers.io()).subscribe();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Toaster.tShort(
+                        context,
+                        context.getString(R.string.format_message_done_adding_favorite_search, query)));
     }
 
     private FavoriteSearch makeFavoriteSearch(final String category, final String query) {

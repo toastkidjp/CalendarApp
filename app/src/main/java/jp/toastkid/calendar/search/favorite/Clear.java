@@ -14,6 +14,8 @@ import jp.toastkid.calendar.libs.Toaster;
 import jp.toastkid.calendar.libs.preference.PreferenceApplier;
 
 /**
+ * Action of clear favorite search.
+ *
  * @author toastkidjp
  */
 class Clear {
@@ -24,9 +26,9 @@ class Clear {
 
     private final Deleter<FavoriteSearch, ?> deleter;
 
-    Clear(@NonNull final View view, final Deleter<FavoriteSearch, ?> deleter) {
-        this.view    = view;
-        this.context = view.getContext();
+    Clear(@NonNull final View snackbarParent, final Deleter<FavoriteSearch, ?> deleter) {
+        this.view    = snackbarParent;
+        this.context = snackbarParent.getContext();
         this.deleter = deleter;
     }
 

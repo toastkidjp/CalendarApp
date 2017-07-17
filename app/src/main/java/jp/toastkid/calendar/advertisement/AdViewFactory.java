@@ -1,9 +1,7 @@
 package jp.toastkid.calendar.advertisement;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;

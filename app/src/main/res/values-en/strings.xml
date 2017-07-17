@@ -111,6 +111,7 @@
     <string name="link_privacy_policy">https://tmblr.co/ZDG7Be2NVdctY</string>
     <string name="message_please_view_ad">Please could you bear to see interstitial ad...</string>
     <string name="app_widget_name_search">Web Search App-Widget</string>
+    <string name="app_widget_search">Search</string>
     <string name="title_daily_notification">Daily notification at 8:00 a.m.</string>
     <string name="subtext_notification">Do you know what happened this day?</string>
     <string name="message_set_daily_alarm">It has set daily alarm.</string>
@@ -131,4 +132,6 @@
     <string name="favorite_search_addition_successful_format">It has been insert "{0}" to "Favorite search word".</string>
     <string name="title_favorite_search">Favorite Search</string>
     <string name="title_adding_favorite_search">Add Favorite Search</string>
+    <string name="exit">Exit</string>
+    <string name="format_message_done_adding_favorite_search">It has added \"%s\" to favorite search.</string>
 </resources>

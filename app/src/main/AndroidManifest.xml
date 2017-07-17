@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name=".calendar.MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize|locale"
@@ -20,14 +20,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".search.SearchActivity"
-            android:theme="@style/AppTheme.Translucent"
-            android:configChanges="orientation|screenSize"
-            >
-            <intent-filter>
                 <action android:name="android.intent.action.WEB_SEARCH" />
             </intent-filter>
         </activity>
@@ -50,11 +42,6 @@
             android:name=".launcher.LauncherActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
-            />
-        <activity
-            android:name=".search.favorite.FavoriteSearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="screenSize"
             />
         <service android:name=".search.favorite.AddingFavoriteSearchService">
             <intent-filter>

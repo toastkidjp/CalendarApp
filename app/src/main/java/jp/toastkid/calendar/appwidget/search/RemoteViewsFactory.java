@@ -83,7 +83,7 @@ class RemoteViewsFactory {
      */
     private static void setTapActions(final Context context, final RemoteViews remoteViews) {
         remoteViews.setOnClickPendingIntent(
-                R.id.widget_search,   PendingIntentFactory.makeSearchIntent(context));
+                R.id.widget_search,   PendingIntentFactory.makeSearchLauncher(context));
         remoteViews.setOnClickPendingIntent(
                 R.id.widget_launcher, PendingIntentFactory.launcher(context));
         remoteViews.setOnClickPendingIntent(

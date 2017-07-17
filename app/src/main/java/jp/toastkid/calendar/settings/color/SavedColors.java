@@ -17,20 +17,11 @@ import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.libs.Toaster;
-import jp.toastkid.calendar.libs.preference.ColorPair;
 
 /**
  * @author toastkidjp
  */
 public class SavedColors {
-
-    static void setBgAndText(
-            final TextView tv,
-            @NonNull final ColorPair pair
-            ) {
-        tv.setBackgroundColor(pair.bgColor());
-        tv.setTextColor(pair.fontColor());
-    }
 
     static void setSaved(final TextView tv, final SavedColor color) {
         tv.setBackgroundColor(color.bgColor);

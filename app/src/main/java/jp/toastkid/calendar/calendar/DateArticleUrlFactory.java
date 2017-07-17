@@ -4,10 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.libs.Logger;
+import jp.toastkid.calendar.main.LocaleWrapper;
 
 /**
  * Factory of Wikipedia article's url.

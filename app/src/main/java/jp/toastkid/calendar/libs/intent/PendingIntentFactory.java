@@ -4,10 +4,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import jp.toastkid.calendar.main.MainActivity;
 import jp.toastkid.calendar.calendar.alarm.DailyCalendarReceiver;
-import jp.toastkid.calendar.calendar.MainActivity;
 import jp.toastkid.calendar.launcher.LauncherActivity;
-import jp.toastkid.calendar.search.SearchActivity;
+import jp.toastkid.calendar.search.SearchFragment;
 import jp.toastkid.calendar.search.favorite.AddingFavoriteSearchService;
 import jp.toastkid.calendar.settings.color.ColorSettingActivity;
 
@@ -21,10 +21,10 @@ public class PendingIntentFactory {
     /**
      * Make launch search intent.
      * @param context
-     * @return {@link SearchActivity}'s pending intent
+     * @return {@link SearchFragment}'s pending intent
      */
-    public static PendingIntent makeSearchIntent(final Context context) {
-        final Intent intent = SearchActivity.makeIntent(context);
+    public static PendingIntent makeSearchLauncher(final Context context) {
+        final Intent intent = MainActivity.makeSearchLauncherIntent(context);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

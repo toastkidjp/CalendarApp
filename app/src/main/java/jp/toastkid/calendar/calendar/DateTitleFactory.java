@@ -5,6 +5,7 @@ import android.content.Context;
 import java.text.MessageFormat;
 
 import jp.toastkid.calendar.R;
+import jp.toastkid.calendar.main.LocaleWrapper;
 
 /**
  * Date title factory.

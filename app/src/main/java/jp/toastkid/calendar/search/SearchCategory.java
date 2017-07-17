@@ -6,7 +6,7 @@ import android.net.Uri;
 import java.util.Locale;
 
 import jp.toastkid.calendar.R;
-import jp.toastkid.calendar.calendar.LocaleWrapper;
+import jp.toastkid.calendar.main.LocaleWrapper;
 
 /**
  * Web search category.
