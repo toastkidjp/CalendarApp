@@ -528,23 +528,4 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
-    /**
-     * Make launcher intent.
-     * @param context
-     * @param category
-     * @param query
-     * @param finishSoon
-     * @return launcher intent
-     */
-    public static Intent makeShortcutIntent(
-            @NonNull final Context context,
-            @NonNull final SearchCategory category,
-            @NonNull final String query,
-            final boolean finishSoon
-    ) {
-        final Intent intent = makeIntent(context);
-        intent.putExtra(AddingFavoriteSearchService.EXTRA_KEY_CATEGORY, category.name());
-        intent.putExtra(SearchManager.QUERY,   query);
-        return intent;
-    }
 }
