@@ -13,6 +13,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -155,6 +156,7 @@ public class MainActivity extends BaseActivity {
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content, fragment);
         transaction.commit();
+        binding.drawerLayout.closeDrawers();
     }
 
     private void initInterstitialAd() {
@@ -234,12 +236,10 @@ public class MainActivity extends BaseActivity {
                         searchFragment = new SearchFragment();
                     }
                     replaceFragment(searchFragment);
-                    binding.drawerLayout.closeDrawers();
                     return true;
                 case R.id.nav_calendar:
                     sendLog("nav_cal");
                     replaceFragment(calendarFragment);
-                    binding.drawerLayout.closeDrawers();
                     return true;
                 case R.id.nav_favorite_search:
                     sendLog("nav_fav_search");
