@@ -3,6 +3,7 @@ package jp.toastkid.calendar.search.favorite;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import jp.toastkid.calendar.BaseFragment;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.FragmentFavoriteSearchBinding;
 import jp.toastkid.calendar.libs.Toaster;
@@ -26,7 +28,7 @@ import jp.toastkid.calendar.search.SearchCategory;
  *
  * @author toastkidjp
  */
-public class FavoriteSearchFragment extends Fragment {
+public class FavoriteSearchFragment extends BaseFragment {
 
     /** Layout ID. */
     private static final int LAYOUT_ID = R.layout.fragment_favorite_search;
@@ -137,5 +139,11 @@ public class FavoriteSearchFragment extends Fragment {
             preferenceApplier = new PreferenceApplier(getContext());
         }
         return preferenceApplier.colorPair();
+    }
+
+    @Override
+    @StringRes
+    public int titleId() {
+        return R.string.title_favorite_search;
     }
 }

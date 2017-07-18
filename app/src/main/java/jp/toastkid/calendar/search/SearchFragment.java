@@ -24,6 +24,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import jp.toastkid.calendar.BaseFragment;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.databinding.FragmentSearchBinding;
 import jp.toastkid.calendar.libs.Colors;
@@ -39,7 +40,7 @@ import jp.toastkid.calendar.search.suggest.SuggestFetcher;
  *
  * @author toastkidjp
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends BaseFragment {
 
     /** Layout ID. */
     private static final int LAYOUT_ID = R.layout.fragment_search;
@@ -244,5 +245,10 @@ public class SearchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         disposables.dispose();
+    }
+
+    @Override
+    public int titleId() {
+        return R.string.title_search;
     }
 }
