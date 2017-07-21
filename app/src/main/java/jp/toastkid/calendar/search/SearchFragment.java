@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -91,7 +92,19 @@ public class SearchFragment extends BaseFragment {
 
         setHasOptionsMenu(true);
 
+        binding.scroll.setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            return false;
+        });
+
         return binding.getRoot();
+    }
+
+    /**
+     * Hide software keyboard.
+     */
+    private void hideKeyboard() {
+        Inputs.hideKeyboard(binding.searchInput);
     }
 
     @Override
@@ -238,7 +251,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Inputs.hideKeyboard(binding.searchInput);
+        hideKeyboard();
     }
 
     @Override
