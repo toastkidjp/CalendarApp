@@ -2,6 +2,7 @@ package jp.toastkid.calendar.libs;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.ColorUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ public class Colors {
     public static void setTextColor(final EditText editText, @ColorInt final int fontColor) {
         editText.setTextColor(fontColor);
         editText.setHintTextColor(fontColor);
-        editText.setHighlightColor(fontColor);
+        editText.setHighlightColor(ColorUtils.setAlphaComponent(fontColor, 128));
     }
 
     public static void setBgAndText(

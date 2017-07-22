@@ -4,12 +4,14 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import jp.toastkid.calendar.BaseFragment;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.analytics.LogSender;
 import jp.toastkid.calendar.databinding.FragmentCalendarBinding;
@@ -22,7 +24,7 @@ import jp.toastkid.calendar.search.SearchFragment;
  *
  * @author toastkidjp
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends BaseFragment {
 
     /** Data binding object. */
     private FragmentCalendarBinding binding;
@@ -88,5 +90,11 @@ public class CalendarFragment extends Fragment {
                             .setPositiveButton(R.string.close, (d, i) -> d.dismiss())
                             .show();
                 });
+    }
+
+    @Override
+    @StringRes
+    public int titleId() {
+        return R.string.title_calendar;
     }
 }

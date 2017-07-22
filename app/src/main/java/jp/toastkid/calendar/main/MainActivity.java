@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import jp.toastkid.calendar.BaseActivity;
+import jp.toastkid.calendar.BaseFragment;
 import jp.toastkid.calendar.BuildConfig;
 import jp.toastkid.calendar.R;
 import jp.toastkid.calendar.about.AboutThisAppActivity;
@@ -152,11 +153,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void replaceFragment(final Fragment fragment) {
+    private void replaceFragment(final BaseFragment fragment) {
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content, fragment);
         transaction.commit();
         binding.drawerLayout.closeDrawers();
+        binding.appBarMain.toolbar.setTitle(fragment.titleId());
     }
 
     private void initInterstitialAd() {
