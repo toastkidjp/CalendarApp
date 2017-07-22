@@ -19,20 +19,26 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.WEB_SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="http" />
-                <data android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity-alias
+            android:name=".search.SearchActivity"
+            android:targetActivity=".main.MainActivity"
+            android:label="@string/title_search"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
         <activity
             android:name=".settings.color.ColorSettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
         <activity
-            android:name=".settings.background.BackgroundSettingActivity\"
+            android:name=".settings.background.BackgroundSettingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             />
